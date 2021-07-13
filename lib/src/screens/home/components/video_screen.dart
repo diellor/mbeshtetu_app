@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoScreen extends StatefulWidget {
-
   final String id;
 
   VideoScreen({this.id});
@@ -13,7 +12,6 @@ class VideoScreen extends StatefulWidget {
 }
 
 class _VideoScreenState extends State<VideoScreen> {
-
   YoutubePlayerController _controller;
   @override
   void initState() {
@@ -49,11 +47,13 @@ class _VideoScreenState extends State<VideoScreen> {
       body: youtubeHierarchy(),
     );
   }
+
   youtubeHierarchy() {
     SystemChrome.setEnabledSystemUIOverlays([]);
     _controller.updateValue(_controller.value.copyWith(isFullScreen: true));
+
     return WillPopScope(
-      onWillPop: (){
+      onWillPop: () {
         if (_controller.value.isPlaying) {
           _controller.pause();
         }
@@ -64,23 +64,21 @@ class _VideoScreenState extends State<VideoScreen> {
 
         return new Future.value(true);
       },
-      child: Column(
-        children: [
-          Container(
-            child: FittedBox(
-              fit: BoxFit.fill,
-              child: YoutubePlayer(
-                controller: _controller,
-              ),
-            ),
+      child: Container(
+        child: YoutubePlayerBuilder(
+          player: YoutubePlayer(
+            controller: _controller,
           ),
-          // IconButton(
-          //   icon: Icon(Icons.arrow_back),
-          //   onPressed: (){
-          //     Navigator.pop(context);
-          //   },
-          // )
-        ],
+          builder: (context, player) {
+            return Column(
+              children: [
+                // some widgets
+                player,
+                Text("Test")
+              ],
+            );
+          },
+        ),
       ),
     );
   }
