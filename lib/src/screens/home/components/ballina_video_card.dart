@@ -43,7 +43,7 @@ class BallinaVideoCard extends StatelessWidget {
                         offset: Offset(0, 3), // changes position of shadow
                       ),
                     ]),
-                child: Image.asset(image)),
+                child: Image.network(image)),
             GestureDetector(
               onTap: press,
               child: Container(

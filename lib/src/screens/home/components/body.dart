@@ -37,7 +37,7 @@ class _BodyState extends State<Body> {
     columns.add(SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: new Row(children: filteredVideos.map((item) => new BallinaVideoCard(
-          image: "images/splash_1.png",
+          image: "http://img.youtube.com/vi/${item.videoId}/sddefault.jpg",
           title: item.title,
           press: () {}, videoId: item.videoId
       )).toList()),

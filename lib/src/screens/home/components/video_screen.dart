@@ -1,8 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mbeshtetu_app/src/commons.dart';
+import 'package:mbeshtetu_app/src/size_config.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-
-import '../../../commons.dart';
 
 class VideoScreen extends StatefulWidget {
   final String id;
@@ -46,6 +48,11 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MediaQuery.of(context).orientation == Orientation.portrait? AppBar(
+        backgroundColor: primary_blue,
+        title: Text('Kthehu'),
+        centerTitle: false,
+      ): null,
       backgroundColor: primary_blue,
       body: youtubeHierarchy(),
     );
@@ -68,6 +75,7 @@ class _VideoScreenState extends State<VideoScreen> {
         return new Future.value(true);
       },
       child: Container(
+        color: primary_blue,
         child: YoutubePlayerBuilder(
           player: YoutubePlayer(
             controller: _controller,
@@ -76,8 +84,24 @@ class _VideoScreenState extends State<VideoScreen> {
             return Column(
               children: [
                 // some widgets
-                player,
-                Text("Test")
+                Flexible(
+                  flex: 1,
+                    fit: FlexFit.loose,
+                    child: player
+                ),
+                Flexible(
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                          child: Padding(
+                            padding:  EdgeInsets.symmetric(vertical: 2.5 * SizeConfig.heightMultiplier, horizontal: 3 * SizeConfig.widthMultiplier),
+                            child: AutoSizeText("Ushtrimi i menaxhimit te simptomave iuhuhuhuhuhu",
+                              minFontSize: 10,
+                              style: TextStyle(fontSize: 3 * SizeConfig.textMultiplier),),
+                          ),
+                      ),
+                    ),
+                  ),
               ],
             );
           },
