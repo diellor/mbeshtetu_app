@@ -8,7 +8,7 @@ class YoutubeServiceImpl implements YoutubeService{
   @override
   Future<CategoryMetadata> fetchCategoriesWithVideos() async {
     Uri uri = Uri.http(
-      '192.168.0.163:3000', '/category',
+      '192.168.0.101:3000', '/category',
     );
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: 'application/json',

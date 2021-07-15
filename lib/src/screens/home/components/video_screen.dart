@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+import '../../../commons.dart';
+
 class VideoScreen extends StatefulWidget {
   final String id;
 
@@ -44,6 +46,7 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: primary_blue,
       body: youtubeHierarchy(),
     );
   }
