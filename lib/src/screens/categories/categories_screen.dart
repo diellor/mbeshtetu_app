@@ -15,6 +15,10 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:mbeshtetu_app/src/business_logic/category_screen_viewmodel.dart';
+import 'package:mbeshtetu_app/src/models/category_model.dart';
+import 'package:mbeshtetu_app/src/service_locator.dart';
+
 class CatetegoriesScreen extends StatefulWidget {
   @override
   _CatetegoriesScreenState createState() => _CatetegoriesScreenState();
@@ -22,12 +26,20 @@ class CatetegoriesScreen extends StatefulWidget {
 
 class _CatetegoriesScreenState extends State<CatetegoriesScreen> with SingleTickerProviderStateMixin {
   TabController _tabController;
+  CategoryScreenViewModel model = serviceLocator<CategoryScreenViewModel>();
+  Future categoryTabs;
 
   @override
-  void initState() {
-    //get list of Tabs (Only categories in db)
+  initState() {
+    //get list of Tabs that will be displayed (categories)
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    categoryTabs = _loadCategoryTabs();
+  }
+
+  _loadCategoryTabs() async {
+    var result = await model.loadCategoryTabs();
+    _tabController = TabController(length: model.getCategoryTabList.length, vsync: this);
+    return result;
   }
 
   @override
@@ -44,38 +56,28 @@ class _CatetegoriesScreenState extends State<CatetegoriesScreen> with SingleTick
           children: [
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: TabBar(
-                  controller: _tabController,
-                  indicatorColor: Colors.transparent,
-                  labelColor: Color(0xFFC88D67),
-                  isScrollable: true,
-                  labelPadding: EdgeInsets.only(right: 45.0),
-                  unselectedLabelColor: Color(0xFFCDCDCD),
-                  tabs: [
-                    //Display the list that we got above (only categories list)
-                    //circle while loading?
-                    Tab(
-                      child: Text('Cookies',
-                          style: TextStyle(
-                            fontFamily: 'Varela',
-                            fontSize: 21.0,
-                          )),
-                    ),
-                    Tab(
-                      child: Text('Cookie cake',
-                          style: TextStyle(
-                            fontFamily: 'Varela',
-                            fontSize: 21.0,
-                          )),
-                    ),
-                    Tab(
-                      child: Text('Ice cream',
-                          style: TextStyle(
-                            fontFamily: 'Varela',
-                            fontSize: 21.0,
-                          )),
-                    )
-                  ]),
+              child: FutureBuilder(
+                future: categoryTabs,
+                builder: (context, snapshot){
+                  return TabBar(
+                    controller: _tabController,
+                    indicatorColor: Colors.transparent,
+                    labelColor: Color(0xFFC88D67),
+                    isScrollable: true,
+                    labelPadding: EdgeInsets.only(right: 45.0),
+                    unselectedLabelColor: Color(0xFFCDCDCD),
+                    tabs: model.getCategoryTabList.map((Category category) {
+                      return Tab(
+                        child: Text(category.category,
+                            style: TextStyle(
+                              fontFamily: 'Wow',
+                              fontSize: 21.0,
+                            )),
+                      );
+                    }).toList(),
+                  );
+                }
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 9.0),
@@ -83,7 +85,10 @@ class _CatetegoriesScreenState extends State<CatetegoriesScreen> with SingleTick
                 height: MediaQuery.of(context).size.height - 50.0,
                 width: double.infinity,
                 child: TabBarView(controller: _tabController, children: [
-                  //foreach (categories only list), send category id inside widget below
+                  //foreach _categorylist, display it's grid values.
+                  //Go to db display circle when loading
+                  //Make categoriesGridItem stateful
+                  CategoriesGridItem(),
                   CategoriesGridItem(),
                   CategoriesGridItem(),
                   CategoriesGridItem(),
@@ -106,7 +111,7 @@ class _CategoriesGridItemState extends State<CategoriesGridItem> {
 
   @override
   void initState() {
-    //get videos by category id that is passed here
+    //get videos by tab-category
     super.initState();
   }
 
@@ -121,8 +126,6 @@ class _CategoriesGridItemState extends State<CategoriesGridItem> {
               padding: EdgeInsets.only(right: 15.0),
               width: MediaQuery.of(context).size.width - 30.0,
               height: MediaQuery.of(context).size.height - 50.0,
-              //build gridView based on list of videos loaded on initState
-              //circle while loading?
               child: GridView.count(
                 crossAxisCount: 2,
                 primary: false,
