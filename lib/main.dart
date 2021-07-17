@@ -85,8 +85,9 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     var initialzationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initIOSSettings = IOSInitializationSettings();
     var initializationSettings =
-        InitializationSettings(android: initialzationSettingsAndroid);
+        InitializationSettings(android: initialzationSettingsAndroid, iOS: initIOSSettings);
 
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
