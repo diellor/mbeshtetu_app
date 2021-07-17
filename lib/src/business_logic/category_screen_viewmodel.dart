@@ -19,8 +19,8 @@ class CategoryScreenViewModel extends ChangeNotifier {
   }
 
   Future<VideoMetadata> loadVideosByCategoryId(int page, int categoryId) async {
-    videoMetadata = await _youtubeService.
-    loadVideosByCategoryId(categoryId, page, 4);
+    videoMetadata =
+        await _youtubeService.loadVideosByCategoryId(categoryId, page, 6);
     return videoMetadata;
   }
 }

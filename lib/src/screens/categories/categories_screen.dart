@@ -39,7 +39,7 @@ class _CatetegoriesScreenState extends State<CatetegoriesScreen>
     super.initState();
     categoryTabs = _loadCategoryTabs();
     setState(() {
-      _tabController = TabController(vsync: this, length: 4);
+      _tabController = TabController(vsync: this, length: 5);
     });
   }
 
@@ -244,40 +244,44 @@ class _CategoriesGridItemState extends State<CategoriesGridItem> {
                       });
 
                       return NotificationListener<ScrollNotification>(
-                        onNotification: _onScrollNotification,
-                        child: GridView.builder(
-                            shrinkWrap: true,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 10.0,
-                              mainAxisSpacing: 5.0,
-                              childAspectRatio: 0.8,
-                            ),
-                            itemCount: gridList.length,
-                            itemBuilder: (context, index) {
+                          onNotification: _onScrollNotification,
+                          child: CustomScrollView(
+                            slivers: [
+                              SliverGrid(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 10.0,
+                                    mainAxisSpacing: 5.0,
+                                    childAspectRatio: 0.8,
+                                  ),
+                                  delegate: SliverChildBuilderDelegate(
+                                      (BuildContext context, int index) {
+                                    if (snapshot.connectionState ==
+                                            ConnectionState.waiting ||
+                                        !snapshot.hasData) {
+                                      isLoading = true;
+                                    }
+                                    return _buildCard(
+                                        gridList[index].title,
+                                        'images/ballina_main.png',
+                                        false,
+                                        false,
+                                        context);
+                                  }, childCount: gridList.length)),
                               if (snapshot.connectionState ==
                                       ConnectionState.waiting ||
-                                  !snapshot.hasData) {
-                                isLoading = true;
-                                // return Center(
-                                //   child: CircularProgressIndicator(),
-                                // );
-                              }
-                              if (isLoading) {
-                                print(isLoading);
-                                return CircularProgressIndicator();
-                              } else {
-                                print(isLoading);
-                                return _buildCard(
-                                    gridList[index].title,
-                                    'images/ballina_main.png',
-                                    false,
-                                    false,
-                                    context);
-                              }
-                            }),
-                      );
+                                  !snapshot.hasData)
+                                new SliverToBoxAdapter(
+                                    child: Center(
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Theme.of(context).primaryColor, // Red
+                                    ),
+                                  ),
+                                )),
+                            ],
+                          ));
                     }
                     return Center(
                       child: CircularProgressIndicator(
