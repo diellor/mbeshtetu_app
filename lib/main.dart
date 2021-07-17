@@ -1,7 +1,6 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -88,8 +87,9 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     var initialzationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initIOSSettings = IOSInitializationSettings();
     var initializationSettings =
-        InitializationSettings(android: initialzationSettingsAndroid);
+        InitializationSettings(android: initialzationSettingsAndroid, iOS: initIOSSettings);
 
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {

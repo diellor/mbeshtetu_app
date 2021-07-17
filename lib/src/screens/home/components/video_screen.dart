@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
+import 'package:mbeshtetu_app/src/models/create_schedule_model.dart';
+import 'package:mbeshtetu_app/src/services/schedule_service.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+import '../../../service_locator.dart';
 
 class VideoScreen extends StatefulWidget {
   final String id;
@@ -18,6 +22,7 @@ class VideoScreen extends StatefulWidget {
 
 class _VideoScreenState extends State<VideoScreen> {
   YoutubePlayerController _controller;
+  final ScheduleService _scheduleService = serviceLocator<ScheduleService>();
   @override
   void initState() {
     super.initState();
@@ -59,8 +64,9 @@ class _VideoScreenState extends State<VideoScreen> {
     );
   }
   _scheduleVideo(DateTime dateTime, String videoId) {
+    print('qitu');
     final timestamp = dateTime.millisecondsSinceEpoch;
-
+    this._scheduleService.scheduleVideo(CreateSchedule(timestamp, videoId));
   }
   youtubeHierarchy() {
     SystemChrome.setEnabledSystemUIOverlays([]);
@@ -118,6 +124,7 @@ class _VideoScreenState extends State<VideoScreen> {
                                   print('change $date');
                                 }, onConfirm: (date) {
                                   print('confirm $date');
+                                  _scheduleVideo(date, this._controller.initialVideoId);
                                 }, currentTime: DateTime.now(), locale: LocaleType.sq);
                           },
                           child: Text(
