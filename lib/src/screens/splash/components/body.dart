@@ -1,8 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mbeshtetu_app/src/models/create_user_model.dart';
 import 'package:mbeshtetu_app/src/screens/intro/intro_screen.dart';
+import 'package:mbeshtetu_app/src/services/user_service.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 import 'package:mbeshtetu_app/src/screens/splash/components/default_button.dart';
 import 'package:mbeshtetu_app/src/screens/splash/components/splash_content.dart';
+
+import '../../../../main.dart';
+import '../../../service_locator.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -10,6 +16,8 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  final UserService _userService = serviceLocator<UserService>();
+
   PageController _pageController;
   List<Map<String, String>> splashData = [
     {
@@ -28,11 +36,14 @@ class _BodyState extends State<Body> {
       "secondaryText": "bisedo me njërin nga vullnetarët tanë"
     },
   ];
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
+    _userService.createUser();
     _pageController = PageController(initialPage: 0, viewportFraction: 0.8);
   }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -50,36 +61,36 @@ class _BodyState extends State<Body> {
                 children: [
                   Positioned.fill(
                       child: Image.asset(
-                        "images/green_shadow.png",
-                        fit: BoxFit.contain,
-                        alignment: Alignment.bottomCenter,
-                      )),
+                    "images/green_shadow.png",
+                    fit: BoxFit.contain,
+                    alignment: Alignment.bottomCenter,
+                  )),
                   Positioned.fill(
                       child: Image.asset(
-                        "images/green_shadow.png",
-                        fit: BoxFit.fill,
-                        repeat: ImageRepeat.repeat,
-                      )),
+                    "images/green_shadow.png",
+                    fit: BoxFit.fill,
+                    repeat: ImageRepeat.repeat,
+                  )),
                   Positioned.fill(
                       child: Image.asset(
-                        "images/green_shadow.png",
-                        fit: BoxFit.fill,
-                        repeat: ImageRepeat.repeatX,
-                      )),
+                    "images/green_shadow.png",
+                    fit: BoxFit.fill,
+                    repeat: ImageRepeat.repeatX,
+                  )),
                   Positioned.fill(
                       child: Image.asset(
-                        "images/green_shadow.png",
-                        fit: BoxFit.fill,
-                        repeat: ImageRepeat.repeatY,
-                      )),
+                    "images/green_shadow.png",
+                    fit: BoxFit.fill,
+                    repeat: ImageRepeat.repeatY,
+                  )),
                   PageView.builder(
                     itemCount: splashData.length,
                     controller: _pageController,
                     itemBuilder: (context, index) => AnimatedBuilder(
                       animation: _pageController,
-                      builder: (BuildContext context, Widget widget){
+                      builder: (BuildContext context, Widget widget) {
                         double value = 1;
-                        if(_pageController.position.haveDimensions){
+                        if (_pageController.position.haveDimensions) {
                           value = _pageController.page - 1;
                           value = (1 - (value.abs() * 0.3)).clamp(0.0, 1.0);
                         }
@@ -98,8 +109,7 @@ class _BodyState extends State<Body> {
                           mainImage: splashData[index]["mainImage"],
                           text: splashData[index]['text'],
                           secondaryText: splashData[index]['secondaryText'],
-                          size: size
-                      ),
+                          size: size),
                     ),
                   ),
                 ],

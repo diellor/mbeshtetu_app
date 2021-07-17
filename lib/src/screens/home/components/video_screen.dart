@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -57,7 +58,10 @@ class _VideoScreenState extends State<VideoScreen> {
       body: youtubeHierarchy(),
     );
   }
+  _scheduleVideo(DateTime dateTime, String videoId) {
+    final timestamp = dateTime.millisecondsSinceEpoch;
 
+  }
   youtubeHierarchy() {
     SystemChrome.setEnabledSystemUIOverlays([]);
     _controller.updateValue(_controller.value.copyWith(isFullScreen: true));
@@ -102,6 +106,27 @@ class _VideoScreenState extends State<VideoScreen> {
                       ),
                     ),
                   ),
+                Flexible(
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      child: TextButton(
+                          onPressed: () {
+                            DatePicker.showDateTimePicker(context,
+                                showTitleActions: true,
+                                onChanged: (date) {
+                                  print('change $date');
+                                }, onConfirm: (date) {
+                                  print('confirm $date');
+                                }, currentTime: DateTime.now(), locale: LocaleType.sq);
+                          },
+                          child: Text(
+                            'Shiko më vonë',
+                            style: TextStyle(color: Colors.blue),
+                          )),
+                    ),
+                  ),
+                )
               ],
             );
           },

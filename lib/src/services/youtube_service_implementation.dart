@@ -1,17 +1,17 @@
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
+
+import 'package:http/http.dart' as http;
 import 'package:mbeshtetu_app/src/models/categoryMetadata_model.dart';
 import 'package:mbeshtetu_app/src/models/category_model.dart';
 import 'package:mbeshtetu_app/src/models/videoMetadata_model.dart';
-import 'package:mbeshtetu_app/src/models/video_model.dart';
 import 'package:mbeshtetu_app/src/services/youtube_service.dart';
-import 'package:http/http.dart' as http;
 
 class YoutubeServiceImpl implements YoutubeService{
   @override
   Future<CategoryMetadata> fetchCategoriesWithVideos() async {
     Uri uri = Uri.http(
-      '192.168.0.170:3000', '/category',
+      '192.168.0.226:3000', '/category',
     );
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: 'application/json',
@@ -31,7 +31,7 @@ class YoutubeServiceImpl implements YoutubeService{
   @override
   Future<List<Category>> fetchCategoriesNoVideos() async {
     Uri uri = Uri.http(
-      '192.168.0.170:3000', '/category/videosByCategory',
+      '192.168.0.226:3000', '/category/videosByCategory',
     );
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: 'application/json',
@@ -55,7 +55,7 @@ class YoutubeServiceImpl implements YoutubeService{
       'limit': limitPerPage.toString(),
       'page': pageNumber.toString(),
     };
-    Uri uri = Uri.http('192.168.0.170:3000','/youtube/findByCategory', queryParameters);
+    Uri uri = Uri.http('192.168.0.226:3000','/youtube/findByCategory', queryParameters);
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: 'application/json',
     };

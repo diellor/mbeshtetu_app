@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "477973353237",
+    "project_id": "mbeshtetu-f1d1c",
+    "storage_bucket": "mbeshtetu-f1d1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477973353237:android:76b040949f083e47cb8f1c",
+        "android_client_info": {
+          "package_name": "com.example.mbeshtetu_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "477973353237-0vpj14e9r8mkflluat7cn1ojhpa3un93.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWKYrMQ6lpWui69nsUaMkcxuRscqPPC14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "477973353237-0vpj14e9r8mkflluat7cn1ojhpa3un93.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
