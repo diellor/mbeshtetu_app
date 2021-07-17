@@ -23,12 +23,12 @@ class TabNavigationItem {
           title: "Home",
         ),
         TabNavigationItem(
-          page: CatetegoriesScreen(),
+          page: ChatScreen(),
           icon: Icon(Icons.shopping_basket),
           title: "Shop",
         ),
         TabNavigationItem(
-          page: ChatScreen(),
+          page: CatetegoriesScreen(),
           icon: Icon(Icons.shopping_basket),
           title: "Chati",
         ),

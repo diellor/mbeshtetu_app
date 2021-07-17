@@ -18,15 +18,18 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   int _pageNumber = 1;
   bool _isLoading = false;
-  CategoryMetadata _categoryMetadata;
+  Future categoriesWithVideos;
 
   HomeScreenViewModel model = serviceLocator<HomeScreenViewModel>();
 
   @override
   void initState() {
-    model.loadCategoriesData();
-    _categoryMetadata = model.getCategories;
     super.initState();
+    categoriesWithVideos = _loadCategoriesWithVideos();
+  }
+
+  _loadCategoriesWithVideos() async {
+    return await model.loadCategoriesData();
   }
 
   List<Widget> getVideoCardsBasedOnCategory(Category category)
@@ -51,9 +54,17 @@ class _BodyState extends State<Body> {
         SystemUiOverlayStyle(statusBarColor: primary_blue));
     return SafeArea(
       child: FutureBuilder(
-          future: model.loadCategoriesData(),
+          future: categoriesWithVideos,
           builder: (BuildContext context, AsyncSnapshot snapshot){
-            if(model.getCategories.categories.length > 0){
+            if (!snapshot.hasData || model.getCategories.categories.length == 0)
+              return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).primaryColor, // Red
+                ),
+              ),
+            ); //CIRCULAR INDICATOR
+            else
               return SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
@@ -66,15 +77,6 @@ class _BodyState extends State<Body> {
                   ],
                 ),
               ).build(context);
-            } else {
-              return Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Theme.of(context).primaryColor, // Red
-                  ),
-                ),
-              );
-            }
           }
       ),
     );
