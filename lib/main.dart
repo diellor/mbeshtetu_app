@@ -1,19 +1,16 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mbeshtetu_app/routes.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
-import 'package:flutter/services.dart';
 import 'package:mbeshtetu_app/src/screens/splash/spash_screen.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -36,10 +33,10 @@ Future<String> getDeviceDetails() async {
   try {
     if (Platform.isAndroid) {
       var build = await deviceInfoPlugin.androidInfo;
-      identifier = build.androidId;  //UUID for Android
+      identifier = build.androidId; //UUID for Android
     } else if (Platform.isIOS) {
       var data = await deviceInfoPlugin.iosInfo;
-      identifier = data.identifierForVendor;  //UUID for iOS
+      identifier = data.identifierForVendor; //UUID for iOS
     }
   } on PlatformException {
     print('Failed to get platform version');

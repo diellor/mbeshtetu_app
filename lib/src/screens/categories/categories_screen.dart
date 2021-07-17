@@ -27,7 +27,8 @@ class CatetegoriesScreen extends StatefulWidget {
   _CatetegoriesScreenState createState() => _CatetegoriesScreenState();
 }
 
-class _CatetegoriesScreenState extends State<CatetegoriesScreen> with TickerProviderStateMixin  {
+class _CatetegoriesScreenState extends State<CatetegoriesScreen>
+    with TickerProviderStateMixin {
   TabController _tabController;
   CategoryScreenViewModel model = serviceLocator<CategoryScreenViewModel>();
   Future categoryTabs;
@@ -37,8 +38,9 @@ class _CatetegoriesScreenState extends State<CatetegoriesScreen> with TickerProv
     //get list of Tabs that will be displayed (categories)
     super.initState();
     categoryTabs = _loadCategoryTabs();
-    setState((){_tabController = TabController(vsync: this, length: 3); });
-
+    setState(() {
+      _tabController = TabController(vsync: this, length: 4);
+    });
   }
 
   _loadCategoryTabs() async {
@@ -56,69 +58,84 @@ class _CatetegoriesScreenState extends State<CatetegoriesScreen> with TickerProv
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding:  EdgeInsets.symmetric(vertical:1 * SizeConfig.heightMultiplier, horizontal: 1 * SizeConfig.widthMultiplier),
-              child: FutureBuilder(
-                future: categoryTabs,
-                builder: (context, snapshot){
-                  if(snapshot.hasData){
-                    return TabBar(
-                      controller: _tabController,
-                      indicatorColor: Colors.transparent,
-                      labelColor: Color(0xFFC88D67),
-                      isScrollable: true,
-                      labelPadding: EdgeInsets.only(right: 45.0),
-                      unselectedLabelColor: Color(0xFFCDCDCD),
-                      tabs: model.getCategoryTabList.map((Category category) {
-                        return Tab(
-                          child: Text(category.category,
-                              style: TextStyle(
-                                fontFamily: 'Wow',
-                                fontSize: 21.0,
-                              )),
-                        );
-                      }).toList(),
-                    );
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).primaryColor, // Red
-                        ),
-                      ),
-                    );
-                  }
-                }
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 9.0),
-              child: Container(
-                height: MediaQuery.of(context).size.height - 50.0,
-                width: double.infinity,
-                child: FutureBuilder(
-                    future: categoryTabs,
-                    builder: (context, snapshot){
-                      if(snapshot.hasData){
-                        return TabBarView(controller: _tabController, children: [
-                          ...model.getCategoryTabList.map((e) => new CategoriesGridItem(e.id)).toList()
-                        ]);
-                      } else {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Theme.of(context).primaryColor, // Red
-                            ),
+        child: Padding(
+          padding: EdgeInsets.only(
+              top: 6 * SizeConfig.heightMultiplier,
+              left: 6 * SizeConfig.widthMultiplier,
+              right: 6 * SizeConfig.widthMultiplier),
+          child: Column(
+            children: [
+              FutureBuilder(
+                  future: categoryTabs,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return TabBar(
+                        controller: _tabController,
+                        indicatorColor: Colors.transparent,
+                        labelColor: Color(0xFFC88D67),
+                        isScrollable: true,
+                        labelPadding: EdgeInsets.only(right: 45.0),
+                        unselectedLabelColor: Color(0xFFCDCDCD),
+                        tabs: model.getCategoryTabList.map((Category category) {
+                          return Tab(
+                            child: Text(category.category,
+                                style: TextStyle(
+                                  fontFamily: 'Wow',
+                                  fontSize: 21.0,
+                                )),
+                          );
+                        }).toList(),
+                      );
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).primaryColor, // Red
                           ),
-                        );
-                      }
+                        ),
+                      );
                     }
+                  }),
+              Padding(
+                padding: const EdgeInsets.only(top: 9.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height - 50.0,
+                  width: double.infinity,
+                  child: FutureBuilder(
+                      future: categoryTabs,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).primaryColor, // Red
+                              ),
+                            ),
+                          );
+                        }
+                        if (snapshot.hasData) {
+                          return TabBarView(
+                              controller: _tabController,
+                              children: [
+                                ...model.getCategoryTabList
+                                    .map((e) => new CategoriesGridItem(e.id))
+                                    .toList()
+                              ]);
+                        } else {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).primaryColor, // Red
+                              ),
+                            ),
+                          );
+                        }
+                      }),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -138,11 +155,12 @@ class _CategoriesGridItemState extends State<CategoriesGridItem> {
   Future future;
   List<Video> gridList;
 
-  ScrollController _scrollController = ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
+  ScrollController _scrollController =
+      ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
   int _currentPage = 1, _limit = 10;
 
   bool shouldLoadMore = true;
-
+  bool isLoading = true;
   @override
   void initState() {
     //get videos by tab-category
@@ -154,16 +172,16 @@ class _CategoriesGridItemState extends State<CategoriesGridItem> {
 
     _scrollController.addListener(() {
       _scrollController.addListener(() {
-        var isEnd = _scrollController.offset == _scrollController.position.maxScrollExtent;
-        if (isEnd)
-          if(shouldLoadMore){
-            setState(() {
-              future = _loadVideosByCategoryId(++_currentPage);
-            });
-          }
+        var isEnd = _scrollController.offset ==
+            _scrollController.position.maxScrollExtent;
+        if (isEnd) if (shouldLoadMore) {
+          setState(() {
+            isLoading = true;
+            future = _loadVideosByCategoryId(++_currentPage);
+          });
+        }
       });
     });
-
   }
 
   @override
@@ -173,7 +191,7 @@ class _CategoriesGridItemState extends State<CategoriesGridItem> {
   }
 
   _loadVideosByCategoryId(int page) async {
-    return await model.loadVideosByCategoryId(_currentPage,widget.id);
+    return await model.loadVideosByCategoryId(_currentPage, widget.id);
   }
 
   bool _onScrollNotification(ScrollNotification notification) {
@@ -185,8 +203,8 @@ class _CategoriesGridItemState extends State<CategoriesGridItem> {
         // load next page
         // code here will be called only if scrolled to the very bottom
         print("END Without items HERE");
-        if(shouldLoadMore){
-          print("END with items HERE");
+        if (shouldLoadMore) {
+          isLoading = true;
           setState(() {
             future = _loadVideosByCategoryId(++_currentPage);
           });
@@ -198,61 +216,77 @@ class _CategoriesGridItemState extends State<CategoriesGridItem> {
 
   @override
   Widget build(BuildContext context) {
-
     //use FutureBuilder to get videos by category
     //display circle or grid
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            margin: EdgeInsets.only(bottom: 10),
-            padding: EdgeInsets.only(right: 15.0),
-            width: MediaQuery
-                .of(context)
-                .size
-                .width - 30.0,
-            height: MediaQuery
-                .of(context)
-                .size
-                .height - 50.0,
-            child: FutureBuilder(
-                future: future,
-                builder:(BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.hasData) {
-                    if(gridList.length == snapshot.data.total)
-                      shouldLoadMore = false;
-                    // snapshot.data.videos?.foreach((video){
-                    //   if(!gridList.contains(video)) gridList.add(video);
-                    // });
-                    VideoMetadata videoMetadata = snapshot.data as VideoMetadata;
-                    videoMetadata.videos.forEach((element) {
-                      if(!gridList.contains(element)) gridList.add(element);
-                    });
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.only(right: 15.0),
+              width: MediaQuery.of(context).size.width - 30.0,
+              height: MediaQuery.of(context).size.height -
+                  30 * SizeConfig.heightMultiplier, //200.0,
+              child: FutureBuilder(
+                  future: future,
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      isLoading = false;
+                      if (gridList.length == snapshot.data.total)
+                        shouldLoadMore = false;
+                      // snapshot.data.videos?.foreach((video){
+                      //   if(!gridList.contains(video)) gridList.add(video);
+                      // });
+                      VideoMetadata videoMetadata =
+                          snapshot.data as VideoMetadata;
+                      videoMetadata.videos.forEach((element) {
+                        if (!gridList.contains(element)) gridList.add(element);
+                      });
+
                       return NotificationListener<ScrollNotification>(
-                      onNotification: _onScrollNotification,
-                      child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                        crossAxisSpacing: 10.0,
-                        mainAxisSpacing: 15.0,
-                        childAspectRatio: 0.8,
-                      ),
-                      itemCount: gridList.length,
-                      itemBuilder: (context, index) {
-                        return _buildCard(gridList[index].title, 'images/ballina_main.png', false, false, context);
-                       return Container(child: Text(gridList[index].title),);
-                      }
-                      ),
+                        onNotification: _onScrollNotification,
+                        child: GridView.builder(
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10.0,
+                              mainAxisSpacing: 5.0,
+                              childAspectRatio: 0.8,
+                            ),
+                            itemCount: gridList.length,
+                            itemBuilder: (context, index) {
+                              if (snapshot.connectionState ==
+                                      ConnectionState.waiting ||
+                                  !snapshot.hasData) {
+                                isLoading = true;
+                                // return Center(
+                                //   child: CircularProgressIndicator(),
+                                // );
+                              }
+                              if (isLoading) {
+                                print(isLoading);
+                                return CircularProgressIndicator();
+                              } else {
+                                print(isLoading);
+                                return _buildCard(
+                                    gridList[index].title,
+                                    'images/ballina_main.png',
+                                    false,
+                                    false,
+                                    context);
+                              }
+                            }),
                       );
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Theme.of(context).primaryColor, // Red
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).primaryColor, // Red
+                        ),
                       ),
-                    ),
-                  );
-                }
+                    );
+                  }),
             ),
           ),
         ),
