@@ -20,6 +20,7 @@ import 'package:mbeshtetu_app/src/models/category_model.dart';
 import 'package:mbeshtetu_app/src/models/videoMetadata_model.dart';
 import 'package:mbeshtetu_app/src/models/video_model.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
+import 'package:mbeshtetu_app/src/size_config.dart';
 
 class CatetegoriesScreen extends StatefulWidget {
   @override
@@ -58,7 +59,7 @@ class _CatetegoriesScreenState extends State<CatetegoriesScreen> with TickerProv
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding:  EdgeInsets.symmetric(vertical:1 * SizeConfig.heightMultiplier, horizontal: 1 * SizeConfig.widthMultiplier),
               child: FutureBuilder(
                 future: categoryTabs,
                 builder: (context, snapshot){
@@ -204,6 +205,7 @@ class _CategoriesGridItemState extends State<CategoriesGridItem> {
       body: SingleChildScrollView(
         child: Center(
           child: Container(
+            margin: EdgeInsets.only(bottom: 10),
             padding: EdgeInsets.only(right: 15.0),
             width: MediaQuery
                 .of(context)
@@ -262,7 +264,7 @@ class _CategoriesGridItemState extends State<CategoriesGridItem> {
 Widget _buildCard(
     String name, String imgPath, bool added, bool isFavorite, context) {
   return Padding(
-    padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
+    padding: EdgeInsets.only(top: 5.0, bottom: 8.0, left: 5.0, right: 5.0),
     child: InkWell(
       onTap: () {
         // Navigator.of(context).push(MaterialPageRoute(
