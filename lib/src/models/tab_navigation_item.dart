@@ -7,7 +7,6 @@ import 'package:mbeshtetu_app/src/screens/home/home.dart';
 import 'package:mbeshtetu_app/src/screens/meditations/meditation_screen.dart';
 import 'package:mbeshtetu_app/src/screens/music/music_screen.dart';
 
-
 class TabNavigationItem {
   final Widget page;
   final String title;
@@ -28,7 +27,7 @@ class TabNavigationItem {
           title: "Shop",
         ),
         TabNavigationItem(
-          page: CatetegoriesScreen(),
+          page: CatetegoriesScreen(0),
           icon: Icon(Icons.shopping_basket),
           title: "Chati",
         ),

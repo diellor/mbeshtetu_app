@@ -23,6 +23,9 @@ import 'package:mbeshtetu_app/src/service_locator.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 
 class CatetegoriesScreen extends StatefulWidget {
+  int selectedPage;
+  CatetegoriesScreen(this.selectedPage);
+
   @override
   _CatetegoriesScreenState createState() => _CatetegoriesScreenState();
 }
@@ -39,7 +42,9 @@ class _CatetegoriesScreenState extends State<CatetegoriesScreen>
     super.initState();
     categoryTabs = _loadCategoryTabs();
     setState(() {
-      _tabController = TabController(vsync: this, length: 5);
+      print(widget.selectedPage);
+      _tabController = TabController(
+          vsync: this, length: 7, initialIndex: widget.selectedPage);
     });
   }
 
@@ -80,7 +85,6 @@ class _CatetegoriesScreenState extends State<CatetegoriesScreen>
                           return Tab(
                             child: Text(category.category,
                                 style: TextStyle(
-                                  fontFamily: 'Wow',
                                   fontSize: 21.0,
                                 )),
                           );

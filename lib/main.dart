@@ -1,4 +1,3 @@
-// import 'package:firebase_core/firebase_core.dart';
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
@@ -8,12 +7,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mbeshtetu_app/routes.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/screens/splash/spash_screen.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
 import 'package:overlay_support/overlay_support.dart';
+
+import 'src/screens/home/components/video_screen.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+String videoId = "";
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -21,9 +24,17 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   print('Handling a background message ${message.messageId}');
   print(message.data);
+  videoId = message.data["videoId"];
   showSimpleNotification(
-    Container(child: Text(message.category)),
+    Container(child: Text(message.notification.title)),
     position: NotificationPosition.top,
+  );
+}
+
+Uri getApiUri(String path) {
+  return Uri.http(
+    '192.168.0.163:3000',
+    '/$path',
   );
 }
 
@@ -59,14 +70,14 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: black));
   WidgetsFlutterBinding.ensureInitialized();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp(new MyApp());
+    runApp(MaterialApp(home: MyApp()));
   });
 }
 
@@ -83,27 +94,27 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    var initialzationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-    var initIOSSettings = IOSInitializationSettings();
-    var initializationSettings =
-        InitializationSettings(android: initialzationSettingsAndroid, iOS: initIOSSettings);
+    if (videoId.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => VideoScreen(id: videoId),
+        ),
+      );
+    }
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      print("onMessage: $message");
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+      print("onMessageOpenedApp: $message");
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification notification = message.notification;
-      AndroidNotification android = message.notification?.android;
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                  channel.id, channel.name, channel.description,
-                  icon: android?.smallIcon, priority: Priority.high),
-            ));
-      }
+      Navigator.push(
+          navigatorKey.currentState.context,
+          MaterialPageRoute(
+              builder: (context) => VideoScreen(
+                    id: message.data["videoId"],
+                  )));
     });
   }
 
@@ -112,6 +123,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Mbeshtetu App',
+      navigatorKey: navigatorKey,
       theme: ThemeData(
           fontFamily: 'Cera',
           primaryColor: bold_blue,

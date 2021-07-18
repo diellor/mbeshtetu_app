@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,32 +17,34 @@ class FirebaseNotificationHandler {
   }
 
   void firebaseMessageListener(BuildContext context) async {
-    NotificationSettings notificationSettings = await _messaging
-        .requestPermission(
-        alert: true,
-        announcement: true,
-        badge: true,
-        criticalAlert: false,
-        provisional: false,
-        sound: true
-    );
+    NotificationSettings notificationSettings =
+        await _messaging.requestPermission(
+            alert: true,
+            announcement: true,
+            badge: true,
+            criticalAlert: false,
+            provisional: false,
+            sound: true);
     print("Settings: $notificationSettings");
     FirebaseMessaging.onMessage.listen((event) {
       print("MESSAGE: $event");
       showNotification(event.notification.title, event.notification.body);
     });
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      showDialog(context: _context, builder: (context) =>
-          CupertinoAlertDialog(title: Text(event.notification.title),
-            content: Text(event.notification.body),
-            actions: [
-              CupertinoDialogAction(
-                isDefaultAction: true,
-                child: Text(''),
-                onPressed: () => Navigator.of(context).pushNamed("/intro"),
-              )
-            ],))
-    })
+      showDialog(
+          context: _context,
+          builder: (context) => CupertinoAlertDialog(
+                title: Text(event.notification.title),
+                content: Text(event.notification.body),
+                actions: [
+                  CupertinoDialogAction(
+                    isDefaultAction: true,
+                    child: Text(''),
+                    onPressed: () => Navigator.of(context).pushNamed("/intro"),
+                  )
+                ],
+              ));
+    });
   }
 
   void showNotification(String title, String body) async {
@@ -55,13 +55,12 @@ class FirebaseNotificationHandler {
         importance: Importance.max,
         autoCancel: false,
         priority: Priority.high,
-        ongoing: true
-    );
-    const IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
-    var details = NotificationDetails(
-        android: channel, iOS: iosNotificationDetails);
-    await NotificationHandler.flutterNotificationPlugin.show(
-        999, title, body, details);
+        ongoing: true);
+    const IOSNotificationDetails iosNotificationDetails =
+        IOSNotificationDetails();
+    var details =
+        NotificationDetails(android: channel, iOS: iosNotificationDetails);
+    await NotificationHandler.flutterNotificationPlugin
+        .show(999, title, body, details);
   }
-
 }
