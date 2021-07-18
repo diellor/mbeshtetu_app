@@ -3,7 +3,8 @@ import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/screens/home/components/video_screen.dart';
 
 class BallinaVideoCard extends StatelessWidget {
-  const BallinaVideoCard({Key key, this.image, this.title, this.press, this.videoId})
+  const BallinaVideoCard(
+      {Key key, this.image, this.title, this.press, this.videoId})
       : super(key: key);
 
   final String image, title;
@@ -16,10 +17,10 @@ class BallinaVideoCard extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return InkWell(
       onTap: () => Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => VideoScreen(id: videoId),
-      ),
+        context,
+        MaterialPageRoute(
+          builder: (_) => VideoScreen(id: videoId),
+        ),
       ),
       child: Container(
         margin: EdgeInsets.only(
