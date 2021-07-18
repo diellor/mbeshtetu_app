@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/models/create_schedule_model.dart';
+import 'package:mbeshtetu_app/src/models/started_watching_videos_model.dart';
 import 'package:mbeshtetu_app/src/services/schedule_service.dart';
+import 'package:mbeshtetu_app/src/services/user_service.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -23,6 +25,7 @@ class VideoScreen extends StatefulWidget {
 class _VideoScreenState extends State<VideoScreen> {
   YoutubePlayerController _controller;
   final ScheduleService _scheduleService = serviceLocator<ScheduleService>();
+  final UserService _userService = serviceLocator<UserService>();
   @override
   void initState() {
     super.initState();
@@ -33,6 +36,7 @@ class _VideoScreenState extends State<VideoScreen> {
         autoPlay: true,
       ),
     );
+    _userService.startedWatchingVideo(StartedWatchingVideosRequest(_controller.initialVideoId, DateTime.now().millisecondsSinceEpoch ~/ 1000));
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,

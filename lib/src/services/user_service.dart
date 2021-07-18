@@ -1,5 +1,6 @@
-import 'package:mbeshtetu_app/src/models/create_user_model.dart';
+import 'package:mbeshtetu_app/src/models/started_watching_videos_model.dart';
 
 abstract class UserService {
   Future<void> createUser();
+  Future<void> startedWatchingVideo(StartedWatchingVideosRequest request);
 }

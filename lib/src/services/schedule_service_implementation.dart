@@ -25,8 +25,9 @@ class ScheduleServiceImplementation extends ScheduleService {
     };
     await Firebase.initializeApp();
     String deviceId = await FirebaseMessaging.instance.getToken();
-    print("NANA JOTE " + deviceId.replaceAll(":", ""));
-    FirebaseMessaging.instance.subscribeToTopic(deviceId.replaceAll(":", ""));
+    deviceId = deviceId.replaceAll(":", "");
+    print("NANA JOTE " + deviceId);
+    FirebaseMessaging.instance.subscribeToTopic(deviceId);
     var response = await http.post(uri, headers: headers, body: jsonEncode(<String, dynamic>{
       'deviceId': deviceId,
       'timestamp': request.timestamp,
