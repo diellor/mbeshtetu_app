@@ -29,6 +29,7 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   void initState() {
     super.initState();
+    print("te nana jote");
     _controller = YoutubePlayerController(
       initialVideoId: widget.id,
       flags: YoutubePlayerFlags(
@@ -57,12 +58,13 @@ class _VideoScreenState extends State<VideoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("ne build");
     return Scaffold(
-      appBar: MediaQuery.of(context).orientation == Orientation.portrait? AppBar(
-        backgroundColor: primary_blue,
-        title: Text('Kthehu'),
-        centerTitle: false,
-      ): null,
+      // appBar: MediaQuery.of(context).orientation == Orientation.portrait? AppBar(
+      //   backgroundColor: primary_blue,
+      //   title: Text('Kthehu'),
+      //   centerTitle: false,
+      // ): null,
       backgroundColor: primary_blue,
       body: youtubeHierarchy(),
     );
@@ -72,10 +74,18 @@ class _VideoScreenState extends State<VideoScreen> {
     final timestamp = dateTime.millisecondsSinceEpoch;
     this._scheduleService.scheduleVideo(CreateSchedule(timestamp, videoId));
   }
+
+  _pushToNextScreen() {
+    print("hini ne push");
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    Navigator.of(context).pushNamed("/intro");
+  }
   youtubeHierarchy() {
     SystemChrome.setEnabledSystemUIOverlays([]);
     _controller.updateValue(_controller.value.copyWith(isFullScreen: true));
-
+    print("ne hierarchy");
     return WillPopScope(
       onWillPop: () {
         if (_controller.value.isPlaying) {
@@ -93,6 +103,10 @@ class _VideoScreenState extends State<VideoScreen> {
         child: YoutubePlayerBuilder(
           player: YoutubePlayer(
             controller: _controller,
+            onEnded: (data) {
+              print("edhe qitu");
+              _pushToNextScreen();
+            },
           ),
           builder: (context, player) {
             return Column(
@@ -116,28 +130,6 @@ class _VideoScreenState extends State<VideoScreen> {
                       ),
                     ),
                   ),
-                Flexible(
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      child: TextButton(
-                          onPressed: () {
-                            DatePicker.showDateTimePicker(context,
-                                showTitleActions: true,
-                                onChanged: (date) {
-                                  print('change $date');
-                                }, onConfirm: (date) {
-                                  print('confirm $date');
-                                  _scheduleVideo(date, this._controller.initialVideoId);
-                                }, currentTime: DateTime.now(), locale: LocaleType.sq);
-                          },
-                          child: Text(
-                            'Shiko më vonë',
-                            style: TextStyle(color: Colors.blue),
-                          )),
-                    ),
-                  ),
-                )
               ],
             );
           },

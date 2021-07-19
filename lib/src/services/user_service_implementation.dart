@@ -23,9 +23,11 @@ class UserServiceImplementation extends UserService {
     deviceId = deviceId.replaceAll(":", "");
     print("NANA JOTE " + deviceId);
     FirebaseMessaging.instance.subscribeToTopic(deviceId);
-    var response = await http.post(uri, headers: headers, body: jsonEncode(<String, String>{
-      'deviceId': deviceId,
-    }));
+    var response = await http.post(uri,
+        headers: headers,
+        body: jsonEncode(<String, String>{
+          'deviceId': deviceId,
+        }));
     var userData = json.decode(response.body);
     User user = User.fromJson(userData);
     if (user.isSubscribedToQuotes) {
@@ -37,7 +39,8 @@ class UserServiceImplementation extends UserService {
   }
 
   @override
-  Future<void> startedWatchingVideo(StartedWatchingVideosRequest request) async {
+  Future<void> startedWatchingVideo(
+      StartedWatchingVideosRequest request) async {
     Uri uri = getApiUri('users/started-video');
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: 'application/json',
@@ -46,11 +49,49 @@ class UserServiceImplementation extends UserService {
     String deviceId = await FirebaseMessaging.instance.getToken();
     deviceId = deviceId.replaceAll(":", "");
     print("NANA JOTE " + deviceId);
-    var response = await http.post(uri, headers: headers, body: jsonEncode(<String, dynamic>{
-      'deviceId': deviceId,
-      'videoId': request.videoId,
-      'timestamp': request.timestamp,
-    }));
+    var response = await http.post(uri,
+        headers: headers,
+        body: jsonEncode(<String, dynamic>{
+          'deviceId': deviceId,
+          'videoId': request.videoId,
+          'timestamp': request.timestamp,
+        }));
     print(response.body);
+  }
+
+  @override
+  Future<User> getUser() async {
+    await Firebase.initializeApp();
+    String deviceId = await FirebaseMessaging.instance.getToken();
+    deviceId = deviceId.replaceAll(":", "");
+    Uri uri = getApiUri('users/$deviceId');
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+    var response = await http.get(uri, headers: headers);
+    print(response.body);
+    var userData = json.decode(response.body);
+    return User.fromJson(userData);
+  }
+
+  @override
+  Future<void> changeSubscription(bool subscribe) async {
+    String deviceId = await FirebaseMessaging.instance.getToken();
+    deviceId = deviceId.replaceAll(":", "");
+    Uri uri = getApiUri('users/subscribe-quotes');
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+    if (subscribe) {
+      FirebaseMessaging.instance.subscribeToTopic("epic");
+    } else {
+      FirebaseMessaging.instance.unsubscribeFromTopic("epic");
+    }
+    await http.put(uri,
+        headers: headers,
+        body: jsonEncode(<String, dynamic>{
+          'deviceId': deviceId,
+          'subscribe': subscribe,
+        }));
   }
 }

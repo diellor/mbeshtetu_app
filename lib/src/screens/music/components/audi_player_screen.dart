@@ -15,7 +15,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   Duration _postitionPlayer = new Duration();
 
   final String pathUrl =
-      "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
+      "https://mbeshtetu.fra1.digitaloceanspaces.com/DJ%20ARNE%20L%20II%20-%20Grave%20Diggers%20%28Original%20Mix%29.mp3";
   bool isPlaying = false;
   bool isPause = false;
   bool isRepeating = false;

@@ -18,8 +18,7 @@ class ScheduleServiceImplementation extends ScheduleService {
   Future<void> scheduleVideo(CreateSchedule request) async {
     // TODO: implement scheduleVideo
     Uri uri = Uri.http(
-      '192.168.0.163:3000',
-      '/schedule',
+      '10.10.5.10:3000', '/schedule',
     );
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: 'application/json',
@@ -39,5 +38,13 @@ class ScheduleServiceImplementation extends ScheduleService {
     if (response.statusCode != 201) {
       throw json.decode(response.body)['error']['message'];
     }
+  }
+
+  @override
+  Future<bool> getSubscription() async {
+    String deviceId = await FirebaseMessaging.instance.getToken();
+    deviceId = deviceId.replaceAll(":", "");
+    print("NANA JOTE " + deviceId);
+    FirebaseMessaging.instance.subscribeToTopic(deviceId);
   }
 }

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mbeshtetu_app/src/models/create_user_model.dart';
 import 'package:mbeshtetu_app/src/screens/intro/intro_screen.dart';
+import 'package:mbeshtetu_app/src/screens/quotes/subscribe_quotes_screen.dart';
 import 'package:mbeshtetu_app/src/services/user_service.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 import 'package:mbeshtetu_app/src/screens/splash/components/default_button.dart';
@@ -124,7 +125,7 @@ class _BodyState extends State<Body> {
                 child: DefaultButton(
                   text: "Vazhdo",
                   press: () {
-                    Navigator.pushNamed(context, IntroScreen.routeName);
+                    Navigator.pushNamed(context, SubscribeToQuotesScreen.routeName);
                   },
                 ),
               ),

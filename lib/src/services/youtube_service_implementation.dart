@@ -25,7 +25,6 @@ class YoutubeServiceImpl implements YoutubeService {
       var categorydata = json.decode(response.body);
       CategoryMetadata categoryMetadata =
           CategoryMetadata.fromJson(categorydata);
-      print("TI QIFSHA MOTRAT NGOJ");
       final recentVideos = await this.fetchRecentVideos();
       print(recentVideos);
       categoryMetadata.categories.add(Category(
@@ -60,8 +59,7 @@ class YoutubeServiceImpl implements YoutubeService {
   @override
   Future<List<Category>> fetchCategoriesNoVideos() async {
     Uri uri = Uri.http(
-      '192.168.0.163:3000',
-      '/category/videosByCategory',
+      '10.10.5.10:3000', '/category/videosByCategory',
     );
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: 'application/json',
@@ -87,8 +85,7 @@ class YoutubeServiceImpl implements YoutubeService {
       'limit': limitPerPage.toString(),
       'page': pageNumber.toString(),
     };
-    Uri uri = Uri.http(
-        '192.168.0.163:3000', '/youtube/findByCategory', queryParameters);
+    Uri uri = Uri.http('10.10.5.10:3000','/youtube/findByCategory', queryParameters);
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: 'application/json',
     };

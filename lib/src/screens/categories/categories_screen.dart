@@ -43,13 +43,13 @@ class _CatetegoriesScreenState extends State<CatetegoriesScreen>
     categoryTabs = _loadCategoryTabs();
     setState(() {
       print(widget.selectedPage);
-      _tabController = TabController(
-          vsync: this, length: 7, initialIndex: widget.selectedPage);
     });
   }
 
   _loadCategoryTabs() async {
     var result = await model.loadCategoryTabs();
+    _tabController = TabController(
+        vsync: this, length: result.length, initialIndex: widget.selectedPage);
     return result;
   }
 
