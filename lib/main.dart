@@ -33,27 +33,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Uri getApiUri(String path) {
   return Uri.http(
-    '192.168.0.163:3000',
+    '10.10.5.10:3000',
     '/$path',
   );
-}
-
-Future<String> getDeviceDetails() async {
-  String identifier;
-  final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
-  try {
-    if (Platform.isAndroid) {
-      var build = await deviceInfoPlugin.androidInfo;
-      identifier = build.androidId; //UUID for Android
-    } else if (Platform.isIOS) {
-      var data = await deviceInfoPlugin.iosInfo;
-      identifier = data.identifierForVendor; //UUID for iOS
-    }
-  } on PlatformException {
-    print('Failed to get platform version');
-  }
-
-  return identifier;
 }
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
