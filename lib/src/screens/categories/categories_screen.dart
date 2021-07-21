@@ -268,7 +268,7 @@ class _CategoriesGridItemState extends State<CategoriesGridItem> {
                                     }
                                     return _buildCard(
                                         gridList[index].title,
-                                        'images/ballina_main.png',
+                                        'images/question_3.png',
                                         false,
                                         false,
                                         context);

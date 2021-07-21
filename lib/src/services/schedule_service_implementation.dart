@@ -18,7 +18,8 @@ class ScheduleServiceImplementation extends ScheduleService {
   Future<void> scheduleVideo(CreateSchedule request) async {
     // TODO: implement scheduleVideo
     Uri uri = Uri.http(
-      '10.10.5.10:3000', '/schedule',
+      '192.168.0.163:3000',
+      '/schedule',
     );
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: 'application/json',

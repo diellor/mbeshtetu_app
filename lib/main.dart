@@ -33,7 +33,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Uri getApiUri(String path) {
   return Uri.http(
-    '10.10.5.10:3000',
+    '192.168.0.38:3000',
     '/$path',
   );
 }

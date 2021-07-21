@@ -37,7 +37,6 @@ class HomeScreenViewModel extends ChangeNotifier {
   }
 
   String getTitleRecomended(Category category) {
-    print("erdh QITU");
     if (category.category == "Ankthi" && category.subCategory == "MESO") {
       return "Meso per ankthin";
     } else if (category.category == "Ankthi" &&
@@ -52,7 +51,7 @@ class HomeScreenViewModel extends ChangeNotifier {
     } else if (category.category == "Depresioni" &&
         category.subCategory == "MESO") {
       return "Meso per depresionin";
-    } else if (category.category == "Recent") {
+    } else if (category.category == "Recent" && category.videos.length > 0) {
       return "Shikuar së fundmi";
     } else if (category.category == "Depresioni" &&
         category.subCategory == "LEHTESO") {
