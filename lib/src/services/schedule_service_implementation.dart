@@ -18,8 +18,7 @@ class ScheduleServiceImplementation extends ScheduleService {
   Future<void> scheduleVideo(CreateSchedule request) async {
     // TODO: implement scheduleVideo
     Uri uri = Uri.http(
-      '192.168.0.163:3000',
-      '/schedule',
+      '192.168.0.101:3000', '/schedule',
     );
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: 'application/json',
@@ -48,4 +47,22 @@ class ScheduleServiceImplementation extends ScheduleService {
     print("NANA JOTE " + deviceId);
     FirebaseMessaging.instance.subscribeToTopic(deviceId);
   }
+
+  @override
+  Future<String> getRandomQuote() async {
+    Uri uri = Uri.http(
+      '192.168.0.101:3000', '/schedule',
+    );
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+
+    // Get Playlist Videos
+    var response = await http.get(uri, headers: headers);
+    if (response.statusCode == 200) {
+      String randomQuote = response.body;
+      return randomQuote;
+    }
+  }
+
 }

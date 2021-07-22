@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:mbeshtetu_app/src/models/categoryMetadata_model.dart';
 import 'package:mbeshtetu_app/src/models/category_model.dart';
@@ -21,6 +23,19 @@ class HomeScreenViewModel extends ChangeNotifier {
 
   CategoryMetadata get getCategories {
     return _categories;
+  }
+
+
+  T getRandomElement<T>(List<T> list) {
+    final random = new Random();
+    var i = random.nextInt(list.length);
+    return list[i];
+  }
+
+  Video get getMainVideo {
+    Category category  = getRandomElement(_categories.categories);
+    Video video = getRandomElement(category.videos);
+    return video;
   }
 
   List<Video> filteredVideosByCategory(Category category) {
@@ -56,8 +71,10 @@ class HomeScreenViewModel extends ChangeNotifier {
     } else if (category.category == "Depresioni" &&
         category.subCategory == "LEHTESO") {
       return "Lehteso simptomet e depresionit";
-    } else {
+    } else if (category.videos.length > 0){
       return "Te tjera";
+    } else {
+      return "";
     }
   }
 }

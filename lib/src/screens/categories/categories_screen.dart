@@ -267,6 +267,7 @@ class _CategoriesGridItemState extends State<CategoriesGridItem> {
                                       isLoading = true;
                                     }
                                     return _buildCard(
+                                      index,
                                         gridList[index].title,
                                         'images/question_3.png',
                                         false,
@@ -304,7 +305,7 @@ class _CategoriesGridItemState extends State<CategoriesGridItem> {
 }
 
 Widget _buildCard(
-    String name, String imgPath, bool added, bool isFavorite, context) {
+    int index, String name, String imgPath, bool added, bool isFavorite, context) {
   return Padding(
     padding: EdgeInsets.only(top: 5.0, bottom: 8.0, left: 5.0, right: 5.0),
     child: InkWell(
@@ -333,7 +334,7 @@ Widget _buildCard(
                       : Icon(Icons.favorite_border, color: Color(0xFFEF7532))
                 ])),
             Hero(
-                tag: imgPath,
+                tag: index.toString(),
                 child: Container(
                     height: 100.0,
                     width: 100.0,

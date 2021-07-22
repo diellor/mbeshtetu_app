@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mbeshtetu_app/routes.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
+import 'package:mbeshtetu_app/src/screens/postvideo/post_video_screen.dart';
 import 'package:mbeshtetu_app/src/screens/splash/spash_screen.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -33,9 +34,27 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Uri getApiUri(String path) {
   return Uri.http(
-    '192.168.0.38:3000',
+    '192.168.0.101:3000',
     '/$path',
   );
+}
+
+Future<String> getDeviceDetails() async {
+  String identifier;
+  final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
+  try {
+    if (Platform.isAndroid) {
+      var build = await deviceInfoPlugin.androidInfo;
+      identifier = build.androidId; //UUID for Android
+    } else if (Platform.isIOS) {
+      var data = await deviceInfoPlugin.iosInfo;
+      identifier = data.identifierForVendor; //UUID for iOS
+    }
+  } on PlatformException {
+    print('Failed to get platform version');
+  }
+
+  return identifier;
 }
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -114,8 +133,9 @@ class _MyAppState extends State<MyApp> {
             buttonColor: Colors.deepPurple, //  <-- dark color
             textTheme: ButtonTextTheme
                 .primary, //  <-- this auto selects the right color
-          )),
-      initialRoute: SplashScreen.routeName,
+          ),
+      ),
+      initialRoute: PostVideoScreen.routeName,
       routes: routes,
     );
   }

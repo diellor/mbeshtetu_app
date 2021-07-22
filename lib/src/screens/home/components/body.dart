@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:mbeshtetu_app/src/business_logic/home_screen_viewmodel.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/models/category_model.dart';
+import 'package:mbeshtetu_app/src/models/videoMetadata_model.dart';
 import 'package:mbeshtetu_app/src/models/video_model.dart';
 import 'package:mbeshtetu_app/src/screens/categories/categories_screen.dart';
 import 'package:mbeshtetu_app/src/screens/home/components/ballina_video_card.dart';
@@ -35,12 +36,15 @@ class _BodyState extends State<Body> {
   List<Widget> getVideoCardsBasedOnCategory(Category category) {
     List<Video> filteredVideos = model.filteredVideosByCategory(category);
     List<Widget> columns = <Widget>[];
-    columns.add(TitleRecomended(
-        text: model.getTitleRecomended(category),
-        press: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CatetegoriesScreen(2)));
-        }));
+    if(model.getTitleRecomended(category) != ""){
+      columns.add(TitleRecomended(
+          text: model.getTitleRecomended(category),
+          press: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CatetegoriesScreen(2)));
+          })
+      );
+    }
     columns.add(SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: new Row(
@@ -76,12 +80,9 @@ class _BodyState extends State<Body> {
               return SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    HeaderWithVideoDetails(
-                        text: "Ankthi test",
-                        imageUrl: "images/ballina_main.png"),
+                    // HeaderWithVideoDetails(video: model.getMainVideo),
                     //titleRecommended gets the text based on category
-                    for (int i = 0;
-                        i < model.getCategories.categories.length;
+                    for (int i = 0; i < model.getCategories.categories.length;
                         i++)
                       //Container will cover 40% of our page width
                       ...getVideoCardsBasedOnCategory(

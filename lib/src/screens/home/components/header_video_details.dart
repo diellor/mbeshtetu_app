@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
+import 'package:mbeshtetu_app/src/models/video_model.dart';
 
 class HeaderWithVideoDetails extends StatelessWidget {
-  const HeaderWithVideoDetails({Key key, @required this.text, @required this.imageUrl})
+  const HeaderWithVideoDetails({Key key, @required this.video})
       : super(key: key);
-  final String text;
-  final String imageUrl;
+  final Video video;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class HeaderWithVideoDetails extends StatelessWidget {
                     bottomLeft: Radius.circular(36),
                     bottomRight: Radius.circular(36)),
                 image: DecorationImage(
-                    image: AssetImage(imageUrl))),
+                    image: AssetImage(video.thumbnail))),
           ),
           Positioned(
             bottom: 15,
@@ -39,7 +39,7 @@ class HeaderWithVideoDetails extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: Text(
-                      "Menaxhimi i ankthit ",
+                      video.title,
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),

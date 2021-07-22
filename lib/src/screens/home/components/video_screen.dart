@@ -6,6 +6,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/models/create_schedule_model.dart';
 import 'package:mbeshtetu_app/src/models/started_watching_videos_model.dart';
+import 'package:mbeshtetu_app/src/screens/splash/components/default_button.dart';
 import 'package:mbeshtetu_app/src/services/schedule_service.dart';
 import 'package:mbeshtetu_app/src/services/user_service.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
@@ -46,14 +47,15 @@ class _VideoScreenState extends State<VideoScreen> {
 
   @override
   void deactivate() {
+    // Pauses video while navigating to next page.
     _controller.pause();
     super.deactivate();
   }
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -80,7 +82,7 @@ class _VideoScreenState extends State<VideoScreen> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    Navigator.of(context).pushNamed("/intro");
+    Navigator.of(context).pushNamed("/postVideo");
   }
   youtubeHierarchy() {
     SystemChrome.setEnabledSystemUIOverlays([]);
@@ -99,7 +101,7 @@ class _VideoScreenState extends State<VideoScreen> {
         return new Future.value(true);
       },
       child: Container(
-        color: primary_blue,
+        color: Colors.white,
         child: YoutubePlayerBuilder(
           player: YoutubePlayer(
             controller: _controller,
@@ -118,6 +120,7 @@ class _VideoScreenState extends State<VideoScreen> {
                     child: player
                 ),
                 Flexible(
+                  flex: 1,
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Container(
@@ -130,6 +133,24 @@ class _VideoScreenState extends State<VideoScreen> {
                       ),
                     ),
                   ),
+                Flexible(
+                  flex: 1,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 13 * SizeConfig.widthMultiplier,
+                        vertical: 13 * SizeConfig.heightMultiplier),
+                    child: DefaultButton(
+                      text: "Kthehu",
+                      press: () {
+                        if (_controller.value.isPlaying) {
+                          _controller.pause();
+                        }
+                        //_controller.dispose();
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ),
               ],
             );
           },

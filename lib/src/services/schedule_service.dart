@@ -4,4 +4,5 @@ abstract class ScheduleService {
   Future<void> scheduleVideo(CreateSchedule request);
   Future<void> scheduleAudio();
   Future<bool> getSubscription();
+  Future<String> getRandomQuote();
 }
