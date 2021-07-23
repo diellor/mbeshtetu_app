@@ -5,6 +5,7 @@ import 'package:mbeshtetu_app/src/size_config.dart';
 const primary_blue = Color(0xFFDFE5FF);
 const Color secondary_blue = Color(0xFFDFE5FF);
 const Color bold_blue = Color(0xFFACA8FC);
+const Color preMeditation_bg = Color(0xFFACA8FC);
 const Color white = Colors.white;
 const Color black = Colors.black;
 const Color grey = Colors.grey;
