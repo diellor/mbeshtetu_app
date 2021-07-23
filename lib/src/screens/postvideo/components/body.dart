@@ -50,7 +50,8 @@ class _BodyState extends State<Body> {
                           onPressed: () {})
                     ],
                   )),
-              Expanded(flex:3, child: Column(
+              Expanded(flex:3,
+                  child: Column(
                 children: [
                   Text("Vlereso",style: TextStyle(fontSize: 2.6 * SizeConfig.textMultiplier, fontWeight: FontWeight.bold),),
                   Expanded(
