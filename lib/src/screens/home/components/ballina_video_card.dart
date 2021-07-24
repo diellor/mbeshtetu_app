@@ -46,10 +46,15 @@ class BallinaVideoCard extends StatelessWidget {
                         offset: Offset(0, 3), // changes position of shadow
                       ),
                     ]),
-                child: FittedBox(fit:BoxFit.contain,child: Image.network(image, width: size.width * 0.4, height: size.width * 0.4))),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 3),
+                  child: FittedBox(fit:BoxFit.contain,child: Image.network(image, width: size.width * 0.4, height: size.width * 0.4)),
+                )),
             GestureDetector(
               onTap: press,
               child: Container(
+                height: SizeConfig.heightMultiplier * 9,
+
                 padding: EdgeInsets.all(kDefaultPadding),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -69,18 +74,6 @@ class BallinaVideoCard extends StatelessWidget {
                     Expanded(child: AutoSizeText(title, maxLines: 2,))
                   ],
                 ),
-                // child: Row(
-                //   children: [
-                //     RichText(
-                //         text: TextSpan(
-                //       children: [
-                //         TextSpan(
-                //             text: title,
-                //             style: Theme.of(context).textTheme.button),
-                //       ],
-                //     )),
-                //   ],
-                // ),
               ),
             ),
           ],
