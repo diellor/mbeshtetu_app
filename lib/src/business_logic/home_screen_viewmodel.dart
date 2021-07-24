@@ -33,7 +33,7 @@ class HomeScreenViewModel extends ChangeNotifier {
   }
 
   Video get getMainVideo {
-    Category category  = getRandomElement(_categories.categories);
+    Category category  = getRandomElement(_categories.categories.where((element) => element.category != "Meditimi" && element.category != "Gjumi").toList());
     Video video = getRandomElement(category.videos);
     return video;
   }
@@ -63,12 +63,12 @@ class HomeScreenViewModel extends ChangeNotifier {
     } else if (category.category == "Stresi" &&
         category.subCategory == "LEHTESO") {
       return "Lehteso simptomet e stresit";
-    } else if (category.category == "Depresioni" &&
+    } else if (category.category == "Drepresioni" &&
         category.subCategory == "MESO") {
       return "Meso per depresionin";
     } else if (category.category == "Recent" && category.videos.length > 0) {
       return "Shikuar së fundmi";
-    } else if (category.category == "Depresioni" &&
+    } else if (category.category == "Drepresioni" &&
         category.subCategory == "LEHTESO") {
       return "Lehteso simptomet e depresionit";
     } else if (category.videos.length > 0){
