@@ -1,6 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/screens/home/components/video_screen.dart';
+import 'package:mbeshtetu_app/src/size_config.dart';
 
 class BallinaVideoCard extends StatelessWidget {
   const BallinaVideoCard(
@@ -44,10 +46,15 @@ class BallinaVideoCard extends StatelessWidget {
                         offset: Offset(0, 3), // changes position of shadow
                       ),
                     ]),
-                child: Image.network(image)),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 3),
+                  child: FittedBox(fit:BoxFit.contain,child: Image.network(image, width: size.width * 0.4, height: size.width * 0.4)),
+                )),
             GestureDetector(
               onTap: press,
               child: Container(
+                height: SizeConfig.heightMultiplier * 9,
+
                 padding: EdgeInsets.all(kDefaultPadding),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -64,14 +71,7 @@ class BallinaVideoCard extends StatelessWidget {
                     ]),
                 child: Row(
                   children: [
-                    RichText(
-                        text: TextSpan(
-                      children: [
-                        TextSpan(
-                            text: title,
-                            style: Theme.of(context).textTheme.button),
-                      ],
-                    )),
+                    Expanded(child: AutoSizeText(title, maxLines: 2,))
                   ],
                 ),
               ),

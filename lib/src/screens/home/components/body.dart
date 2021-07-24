@@ -37,6 +37,7 @@ class _BodyState extends State<Body> {
     List<Video> filteredVideos = model.filteredVideosByCategory(category);
     List<Widget> columns = <Widget>[];
     if(model.getTitleRecomended(category) != ""){
+      if(category.category != "Meditimi" && category.category != "Gjumi")
       columns.add(TitleRecomended(
           text: model.getTitleRecomended(category),
           press: () {
@@ -45,13 +46,14 @@ class _BodyState extends State<Body> {
           })
       );
     }
+    if(category.category != "Meditimi" && category.category != "Gjumi")
     columns.add(SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: new Row(
           children: filteredVideos
               .map((item) => new BallinaVideoCard(
                   image:
-                      "http://img.youtube.com/vi/${item.videoId}/sddefault.jpg",
+                      item.isAudio ? item.thumbnail : "http://img.youtube.com/vi/${item.videoId}/sddefault.jpg",
                   title: item.title,
                   press: () {},
                   videoId: item.videoId))
@@ -80,7 +82,7 @@ class _BodyState extends State<Body> {
               return SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    // HeaderWithVideoDetails(video: model.getMainVideo),
+                    HeaderWithVideoDetails(video: model.getMainVideo),
                     //titleRecommended gets the text based on category
                     for (int i = 0; i < model.getCategories.categories.length;
                         i++)
