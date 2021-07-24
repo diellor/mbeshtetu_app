@@ -10,8 +10,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mbeshtetu_app/routes.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/screens/meditations/components/pre_meditation_screen.dart';
-import 'package:mbeshtetu_app/src/screens/postvideo/post_video_screen.dart';
 import 'package:mbeshtetu_app/src/screens/splash/spash_screen.dart';
+import 'package:mbeshtetu_app/src/screens/tabs/tabs_screen.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
 import 'package:overlay_support/overlay_support.dart';
 
@@ -35,7 +35,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Uri getApiUri(String path) {
   return Uri.http(
-    '192.168.0.163:3000',
+    '134.122.86.217:3000',
     '/$path',
   );
 }
@@ -136,7 +136,7 @@ class _MyAppState extends State<MyApp> {
                 .primary, //  <-- this auto selects the right color
           ),
       ),
-      initialRoute: PreMeditationScreen.routeName,
+      initialRoute: TabsScreen.routeName,
       routes: routes,
     );
   }

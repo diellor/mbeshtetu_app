@@ -60,7 +60,7 @@ class _BodyState extends State<Body> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SvgPicture.asset("images/meditimi_play_1.svg"),
+                      //SvgPicture.asset("images/meditimi_play_1.svg"),
                       Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
                       Text("10 mins")
                   ],
@@ -72,7 +72,7 @@ class _BodyState extends State<Body> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SvgPicture.asset("images/meditimi_play_1.svg"),
+                      //SvgPicture.asset("images/meditimi_play_1.svg"),
                       Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
                       Text("10 mins")
                     ],
@@ -84,7 +84,7 @@ class _BodyState extends State<Body> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SvgPicture.asset("images/meditimi_play_1.svg"),
+                      //SvgPicture.asset("images/meditimi_play_1.svg"),
                       Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
                       Text("10 mins")
                     ],
@@ -96,7 +96,7 @@ class _BodyState extends State<Body> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SvgPicture.asset("images/meditimi_play_1.svg"),
+                      //SvgPicture.asset("images/meditimi_play_1.svg"),
                       Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
                       Text("10 mins")
                     ],
@@ -108,7 +108,7 @@ class _BodyState extends State<Body> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SvgPicture.asset("images/meditimi_play_1.svg"),
+                      //SvgPicture.asset("images/meditimi_play_1.svg"),
                       Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
                       Text("10 mins")
                     ],
@@ -120,7 +120,7 @@ class _BodyState extends State<Body> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SvgPicture.asset("images/meditimi_play_1.svg"),
+                      //SvgPicture.asset("images/meditimi_play_1.svg"),
                       Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
                       Text("10 mins")
                     ],
@@ -132,7 +132,7 @@ class _BodyState extends State<Body> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SvgPicture.asset("images/meditimi_play_1.svg"),
+                      //SvgPicture.asset("images/meditimi_play_1.svg"),
                       Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
                       Text("10 mins")
                     ],
@@ -144,7 +144,7 @@ class _BodyState extends State<Body> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SvgPicture.asset("images/meditimi_play_1.svg"),
+                      //SvgPicture.asset("images/meditimi_play_1.svg"),
                       Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
                       Text("10 mins")
                     ],
@@ -156,7 +156,7 @@ class _BodyState extends State<Body> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SvgPicture.asset("images/meditimi_play_1.svg"),
+                      //SvgPicture.asset("images/meditimi_play_1.svg"),
                       Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
                       Text("10 mins")
                     ],

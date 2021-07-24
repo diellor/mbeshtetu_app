@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mbeshtetu_app/src/screens/home/components/body.dart';
+import 'package:mbeshtetu_app/src/size_config.dart';
 
 class Home extends StatefulWidget {
   static Route<dynamic> route() => MaterialPageRoute(
@@ -12,6 +13,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return Scaffold(body: Body());
   }
 }

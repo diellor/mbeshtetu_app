@@ -51,7 +51,7 @@ class _BodyState extends State<Body> {
           children: filteredVideos
               .map((item) => new BallinaVideoCard(
                   image:
-                      "http://img.youtube.com/vi/${item.videoId}/sddefault.jpg",
+                      item.isAudio ? item.thumbnail : "http://img.youtube.com/vi/${item.videoId}/sddefault.jpg",
                   title: item.title,
                   press: () {},
                   videoId: item.videoId))
