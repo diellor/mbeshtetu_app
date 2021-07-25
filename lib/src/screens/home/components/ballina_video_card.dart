@@ -26,7 +26,7 @@ class BallinaVideoCard extends StatelessWidget {
       onTap: () => {
         this.isAudio
             ? Navigator.of(context)
-                .pushNamed(MusicScreen.routeName, arguments: Audio(id: videoId, title: title, category: category))
+                .pushNamed(MusicScreen.routeName, arguments: Audio(video: []))
             : Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -71,7 +71,7 @@ class BallinaVideoCard extends StatelessWidget {
                   //   },
                   // ),),
 
-                  child: FittedBox(fit:BoxFit.contain,child: Image.network("image", width: size.width * 0.4, height: size.width * 0.4)),
+                  child: FittedBox(fit:BoxFit.contain,child: Image.network("https://mbeshtetu.fra1.digitaloceanspaces.com/character%20builder%20_%20break%20dance,%20man,%20dance@2x.png", width: size.width * 0.4, height: size.width * 0.4)),
                 )),
             GestureDetector(
               onTap: press,

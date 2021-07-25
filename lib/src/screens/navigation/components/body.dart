@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mbeshtetu_app/src/screens/categories/categories_screen.dart';
+import 'package:mbeshtetu_app/src/screens/categories/categories_screen_second.dart';
 import 'package:mbeshtetu_app/src/screens/chat/chat_screen.dart';
 import 'package:mbeshtetu_app/src/screens/home/home.dart';
 import 'package:mbeshtetu_app/src/screens/tabs/bnb_custom_painter.dart';
@@ -83,7 +84,7 @@ class _BodyState extends State<Body> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => CatetegoriesScreen(1),
+                                  builder: (_) => CatetegoriesScreenSecond(1),
                                 ),
                               );
                             }),

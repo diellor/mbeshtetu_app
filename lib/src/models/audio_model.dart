@@ -1,6 +1,6 @@
+import 'package:mbeshtetu_app/src/models/video_model.dart';
+
 class Audio {
-  final String title;
-  final String id;
-  final String category;
-  Audio({this.id, this.title, this.category});
+  final List<Video> video;
+  Audio({this.video});
 }
