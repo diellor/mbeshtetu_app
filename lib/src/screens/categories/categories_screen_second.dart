@@ -22,14 +22,25 @@ class _CatetegoriesScreenSecondState extends State<CatetegoriesScreenSecond> {
   CategoryScreenViewModel model = serviceLocator<CategoryScreenViewModel>();
   Future categoryTabs;
 
+  Future future;
+  List<Video> gridList;
+
+  int _currentPage = 1, _limit = 10;
+  bool shouldLoadMore = true;
+  bool isLoading = true;
+
   @override
   initState() {
     //get list of Tabs that will be displayed (categories)
     super.initState();
     categoryTabs = _loadCategoryTabs();
-    setState(() {
-      print(widget.selectedPage);
-    });
+    bool shouldLoadMore = true;
+    gridList = [];
+    future = _loadVideosByCategoryId(_currentPage); //load data for first time
+  }
+
+  _loadVideosByCategoryId(int page) async {
+    return await model.loadVideosByCategoryId(_currentPage, widget.selectedPage);
   }
 
   _loadCategoryTabs() async {
@@ -48,221 +59,159 @@ class _CatetegoriesScreenSecondState extends State<CatetegoriesScreenSecond> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomSheet: NavigationScreen(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(
-              top: 6 * SizeConfig.heightMultiplier,
-              left: 6 * SizeConfig.widthMultiplier,
-              right: 6 * SizeConfig.widthMultiplier),
-          child: Column(
-            children: [
-              FutureBuilder(
-                  future: categoryTabs,
+        bottomSheet: NavigationScreen(),
+        body: SliverGrid(
+            gridDelegate:
+                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return FutureBuilder(
+                  future: future,
                   builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Text(snapshot.data.toString());
-                    } else {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Theme.of(context).primaryColor, // Red
-                          ),
-                        ),
-                      );
-                    }
-                  }),
-            ],
-          ),
+                    return snapshot.connectionState == ConnectionState.done
+                        ? snapshot.hasData
+                            ? Text(snapshot.data.toString())
+                            : Text('Retry')
+                        : Text('progress');
+                  },
+                );
+              },
+            ),
         ),
-      ),
     );
   }
 }
 
-class CategoriesGridItem extends StatefulWidget {
-  final int id;
-
-  CategoriesGridItem(this.id);
-
-  @override
-  _CategoriesGridItemState createState() => _CategoriesGridItemState();
-}
-
-class _CategoriesGridItemState extends State<CategoriesGridItem> {
-  CategoryScreenViewModel model = serviceLocator<CategoryScreenViewModel>();
-  Future future;
-  List<Video> gridList;
-
-  ScrollController _scrollController =
-      ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
-  int _currentPage = 1, _limit = 10;
-
-  bool shouldLoadMore = true;
-  bool isLoading = true;
-
-  @override
-  void initState() {
-    //get videos by tab-category
-
-    super.initState();
-    bool shouldLoadMore = true;
-    gridList = [];
-    future = _loadVideosByCategoryId(_currentPage); //load data for first time
-
-    _scrollController.addListener(() {
-      _scrollController.addListener(() {
-        var isEnd = _scrollController.offset ==
-            _scrollController.position.maxScrollExtent;
-        if (isEnd) if (shouldLoadMore) {
-          setState(() {
-            isLoading = true;
-            future = _loadVideosByCategoryId(++_currentPage);
-          });
-        }
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  _loadVideosByCategoryId(int page) async {
-    return await model.loadVideosByCategoryId(_currentPage, widget.id);
-  }
-
-  bool _onScrollNotification(ScrollNotification notification) {
-    if (notification is ScrollEndNotification) {
-      final before = notification.metrics.extentBefore;
-      final max = notification.metrics.maxScrollExtent;
-
-      if (before == max) {
-        // load next page
-        // code here will be called only if scrolled to the very bottom
-        print("END Without items HERE");
-        if (shouldLoadMore) {
-          isLoading = true;
-          setState(() {
-            future = _loadVideosByCategoryId(++_currentPage);
-          });
-        }
-      }
-    }
-    return false;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    //use FutureBuilder to get videos by category
-    //display circle or grid
-    return Scaffold(
-        body: SafeArea(
-      child: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            padding: EdgeInsets.only(right: 15.0),
-            width: MediaQuery.of(context).size.width - 30.0,
-            height: MediaQuery.of(context).size.height -
-                30 * SizeConfig.heightMultiplier, //200.0,
-            child: SliverGrid(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 5.0,
-
-                  childAspectRatio: 0.8,
-                ),
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return FutureBuilder(
-                      future: future,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          isLoading = false;
-                          if (gridList.length == snapshot.data.total) {
-                            shouldLoadMore = false;
-                          }
-                          VideoMetadata videoMetadata =
-                              snapshot.data as VideoMetadata;
-                          videoMetadata.videos.forEach((element) {
-                            if (!gridList.contains(element))
-                              gridList.add(element);
-                          });
-                        }
-                        return snapshot.connectionState == ConnectionState.done
-                            ? snapshot.hasData
-                                ? _buildCard(
-                                    index,
-                                    gridList[index].title,
-                                    'images/question_3.png',
-                                    false,
-                                    false,
-                                    context)
-                                : Text('Retry')
-                            : Text('progress');
-                      },
-                    );
-                  },
-                )),
-          ),
-        ),
-      ),
-    ));
-  }
-}
-
-Widget _buildCard(int index, String name, String imgPath, bool added,
-    bool isFavorite, context) {
-  return Padding(
-    padding: EdgeInsets.only(top: 5.0, bottom: 8.0, left: 5.0, right: 5.0),
-    child: InkWell(
-      onTap: () {
-        // Navigator.of(context).push(MaterialPageRoute(
-        //     builder: (context) =>
-        //         CategoriesDetailPage(assetPath: imgPath, cookiename: name)));
-      },
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15.0),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 3.0,
-                  blurRadius: 5.0)
-            ],
-            color: Colors.white),
-        child: Column(
-          children: [
-            Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  isFavorite
-                      ? Icon(Icons.favorite, color: Color(0xFFEF7532))
-                      : Icon(Icons.favorite_border, color: Color(0xFFEF7532))
-                ])),
-            Hero(
-                tag: index.toString(),
-                child: Container(
-                    height: 100.0,
-                    width: 100.0,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(imgPath), fit: BoxFit.contain)))),
-            SizedBox(height: 7.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child: Text(name,
-                  style: TextStyle(
-                      color: Color(0xFF575E67),
-                      fontFamily: 'Varela',
-                      fontSize: 14.0)),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
+// class CategoriesGridItem extends StatefulWidget {
+//   final int id;
+//
+//   CategoriesGridItem(this.id);
+//
+//   @override
+//   _CategoriesGridItemState createState() => _CategoriesGridItemState();
+// }
+//
+// class _CategoriesGridItemState extends State<CategoriesGridItem> {
+//   CategoryScreenViewModel model = serviceLocator<CategoryScreenViewModel>();
+//   Future future;
+//   List<Video> gridList;
+//
+//   ScrollController _scrollController =
+//       ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
+//   int _currentPage = 1, _limit = 10;
+//
+//   bool shouldLoadMore = true;
+//   bool isLoading = true;
+//
+//   @override
+//   void initState() {
+//     //get videos by tab-category
+//
+//     super.initState();
+//     bool shouldLoadMore = true;
+//     gridList = [];
+//     future = _loadVideosByCategoryId(_currentPage); //load data for first time
+//
+//     _scrollController.addListener(() {
+//       _scrollController.addListener(() {
+//         var isEnd = _scrollController.offset ==
+//             _scrollController.position.maxScrollExtent;
+//         if (isEnd) if (shouldLoadMore) {
+//           setState(() {
+//             isLoading = true;
+//             future = _loadVideosByCategoryId(++_currentPage);
+//           });
+//         }
+//       });
+//     });
+//   }
+//
+//   @override
+//   void dispose() {
+//     _scrollController.dispose();
+//     super.dispose();
+//   }
+//
+//   _loadVideosByCategoryId(int page) async {
+//     return await model.loadVideosByCategoryId(_currentPage, widget.id);
+//   }
+//
+//   bool _onScrollNotification(ScrollNotification notification) {
+//     if (notification is ScrollEndNotification) {
+//       final before = notification.metrics.extentBefore;
+//       final max = notification.metrics.maxScrollExtent;
+//
+//       if (before == max) {
+//         // load next page
+//         // code here will be called only if scrolled to the very bottom
+//         print("END Without items HERE");
+//         if (shouldLoadMore) {
+//           isLoading = true;
+//           setState(() {
+//             future = _loadVideosByCategoryId(++_currentPage);
+//           });
+//         }
+//       }
+//     }
+//     return false;
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     //use FutureBuilder to get videos by category
+//     //display circle or grid
+//     return Scaffold(
+//         body: SafeArea(
+//       child: SingleChildScrollView(
+//         child: Center(
+//           child: Container(
+//             padding: EdgeInsets.only(right: 15.0),
+//             width: MediaQuery.of(context).size.width - 30.0,
+//             height: MediaQuery.of(context).size.height -
+//                 30 * SizeConfig.heightMultiplier, //200.0,
+//             child: SliverGrid(
+//                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//                   crossAxisCount: 2,
+//                   crossAxisSpacing: 10.0,
+//                   mainAxisSpacing: 5.0,
+//                   childAspectRatio: 0.8,
+//                 ),
+//                 delegate: SliverChildBuilderDelegate(
+//                   (BuildContext context, int index) {
+//                     return FutureBuilder(
+//                       future: future,
+//                       builder: (context, snapshot) {
+//                         if (snapshot.hasData) {
+//                           isLoading = false;
+//                           if (gridList.length == snapshot.data.total) {
+//                             shouldLoadMore = false;
+//                           }
+//                           VideoMetadata videoMetadata =
+//                               snapshot.data as VideoMetadata;
+//                           videoMetadata.videos.forEach((element) {
+//                             if (!gridList.contains(element))
+//                               gridList.add(element);
+//                           });
+//                         }
+//                         return snapshot.connectionState == ConnectionState.done
+//                             ? snapshot.hasData
+//                                 ? _buildCard(
+//                                     index,
+//                                     gridList[index].title,
+//                                     'images/question_3.png',
+//                                     false,
+//                                     false,
+//                                     context)
+//                                 : Text('Retry')
+//                             : Text('progress');
+//                       },
+//                     );
+//                   },
+//                 )),
+//           ),
+//         ),
+//       ),
+//     ));
+//   }
+// }
+//
