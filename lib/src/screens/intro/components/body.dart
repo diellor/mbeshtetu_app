@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mbeshtetu_app/src/screens/intro/components/grid_content.dart';
 import 'package:mbeshtetu_app/src/screens/splash/components/default_button.dart';
 import 'package:mbeshtetu_app/src/screens/tabs/tabs_screen.dart';
@@ -88,13 +87,14 @@ class Body extends StatelessWidget {
                     press: () {
                       Navigator.pushNamed(context, TabsScreen.routeName);
                     },
+    ),
                   ),
-                ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
   }
 }
+

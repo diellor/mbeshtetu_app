@@ -1,10 +1,16 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mbeshtetu_app/src/models/video_model.dart';
 import 'package:mbeshtetu_app/src/screens/music/components/audi_player_screen.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 
 class Body extends StatefulWidget {
+   List<Video> videos = [];
+   int index = 0;
+
+   Body({Key key, this.videos,this.index}) : super(key: key);
+
   @override
   _BodyState createState() => _BodyState();
 }
@@ -67,13 +73,13 @@ class _BodyState extends State<Body> {
                       padding: EdgeInsets.only(
                           bottom: 2 * SizeConfig.heightMultiplier),
                       child: Text(
-                        "Audio title",
+                        this.widget?.videos[this.widget.index]?.title,
                         style: TextStyle(
                             fontSize: 3 * SizeConfig.textMultiplier,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    AudioPlayerScreen(advancedPlayer: advancedPlayer),
+                    AudioPlayerScreen( video: this.widget?.videos[this.widget.index]),
                   ],
                 )),
           ],

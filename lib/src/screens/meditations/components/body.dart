@@ -1,14 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mbeshtetu_app/src/business_logic/meditation_screen_viewmodel.dart';
+import 'package:mbeshtetu_app/src/models/videoMetadata_model.dart';
+import 'package:mbeshtetu_app/src/models/video_model.dart';
+import 'package:mbeshtetu_app/src/screens/music/components/audi_player_screen.dart';
+import 'package:mbeshtetu_app/src/screens/music/music_screen.dart';
 import 'package:mbeshtetu_app/src/screens/splash/components/default_button.dart';
+import 'package:mbeshtetu_app/src/service_locator.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 
 class Body extends StatefulWidget {
+  final int categoryId;
+
+  const Body({Key key, this.categoryId}) : super(key: key);
+
   @override
   _BodyState createState() => _BodyState();
 }
 
 class _BodyState extends State<Body> {
+  Future categoriesWithVideos;
+  MeditationScreenViewModel model = serviceLocator<MeditationScreenViewModel>();
+  int _currentPage = 1, _limit = 10;
+
+  @override
+  void initState() {
+    super.initState();
+    print("ERDHII");
+    print(widget.categoryId);
+    categoriesWithVideos = _meditationAudios(_currentPage);
+  }
+
+  _meditationAudios(int page) async {
+    return await model.loadVideosByCategoryId(_currentPage, widget.categoryId);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -52,118 +78,46 @@ class _BodyState extends State<Body> {
           ),
           Container(
             height: SizeConfig.screenHeight - 60 * SizeConfig.heightMultiplier,
-            child: ListView(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      //SvgPicture.asset("images/meditimi_play_1.svg"),
-                      Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
-                      Text("10 mins")
-                  ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      //SvgPicture.asset("images/meditimi_play_1.svg"),
-                      Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
-                      Text("10 mins")
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      //SvgPicture.asset("images/meditimi_play_1.svg"),
-                      Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
-                      Text("10 mins")
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      //SvgPicture.asset("images/meditimi_play_1.svg"),
-                      Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
-                      Text("10 mins")
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      //SvgPicture.asset("images/meditimi_play_1.svg"),
-                      Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
-                      Text("10 mins")
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      //SvgPicture.asset("images/meditimi_play_1.svg"),
-                      Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
-                      Text("10 mins")
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      //SvgPicture.asset("images/meditimi_play_1.svg"),
-                      Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
-                      Text("10 mins")
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      //SvgPicture.asset("images/meditimi_play_1.svg"),
-                      Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
-                      Text("10 mins")
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      //SvgPicture.asset("images/meditimi_play_1.svg"),
-                      Text("Mediation audio one",style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)),
-                      Text("10 mins")
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            child: FutureBuilder(
+              future: categoriesWithVideos,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData || model.getVideoMetadata.videos.length == 0)
+                   return Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).primaryColor, // Red
+                      ),
+                    ),
+                  );
+                else
+                  return ListView.builder(
+                    itemCount: snapshot.data.videos.length,
+                    itemBuilder: (context, index) {
+                      List<Video> videos = snapshot.data.videos;
+                      return Column(
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> MusicScreen(videos: videos, index: index,)));
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Expanded(flex: 1, child: SvgPicture.asset("images/meditimi_play_1.svg")),
+                                  Expanded(flex: 3, child:Text(videos[index].title,style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)), ),
+                                  Expanded(flex: 1, child: Text("10 mins"))
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      );
+                    },
+                  );
+              },
+            )
           )
         ],
       ),),

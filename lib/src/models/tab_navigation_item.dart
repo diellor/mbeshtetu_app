@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mbeshtetu_app/src/screens/categories/categories_screen.dart';
 import 'package:mbeshtetu_app/src/screens/chat/chat_screen.dart';
 import 'package:mbeshtetu_app/src/screens/home/home.dart';
+import 'package:mbeshtetu_app/src/screens/meditations/components/pre_meditation_screen.dart';
 import 'package:mbeshtetu_app/src/screens/meditations/meditation_screen.dart';
 import 'package:mbeshtetu_app/src/screens/music/music_screen.dart';
 
@@ -22,12 +23,12 @@ class TabNavigationItem {
           title: "Home",
         ),
         TabNavigationItem(
-          page: ChatScreen(),
+          page: CatetegoriesScreen(0),
           icon: Icon(Icons.shopping_basket),
           title: "Shop",
         ),
         TabNavigationItem(
-          page: CatetegoriesScreen(0),
+          page: PreMeditationScreen(),
           icon: Icon(Icons.shopping_basket),
           title: "Chati",
         ),
@@ -37,7 +38,7 @@ class TabNavigationItem {
           title: "Music",
         ),
         TabNavigationItem(
-          page: MeditationScreen(),
+          page: MusicScreen(),
           icon: Icon(Icons.shopping_basket),
           title: "Meditation",
         ),
