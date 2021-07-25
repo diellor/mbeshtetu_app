@@ -38,11 +38,11 @@ class _BodyState extends State<Body> {
     List<Widget> columns = <Widget>[];
     if(model.getTitleRecomended(category) != ""){
       if(category.category != "Meditimi" && category.category != "Gjumi")
-      columns.add(TitleRecomended(
+      columns.add(TitleRecommended(
           text: model.getTitleRecomended(category),
           press: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CatetegoriesScreen(2)));
+                MaterialPageRoute(builder: (context) => CatetegoriesScreen(category.id)));
           })
       );
     }
@@ -56,7 +56,10 @@ class _BodyState extends State<Body> {
                       item.isAudio ? item.thumbnail : "http://img.youtube.com/vi/${item.videoId}/sddefault.jpg",
                   title: item.title,
                   press: () {},
-                  videoId: item.videoId))
+                  videoId: item.videoId,
+                  isAudio: item.isAudio,
+                  category: item.category
+          ))
               .toList()),
     ));
     return columns;

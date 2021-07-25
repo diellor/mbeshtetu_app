@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mbeshtetu_app/src/screens/home/home.dart';
 import 'package:mbeshtetu_app/src/screens/intro/components/grid_content.dart';
 import 'package:mbeshtetu_app/src/screens/splash/components/default_button.dart';
-import 'package:mbeshtetu_app/src/screens/tabs/tabs_screen.dart';
+import 'package:mbeshtetu_app/src/screens/tabs/bnb_custom_painter.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 
 class Body extends StatelessWidget {
@@ -85,16 +87,20 @@ class Body extends StatelessWidget {
                   child: DefaultButton(
                     text: "Vazhdo",
                     press: () {
-                      Navigator.pushNamed(context, TabsScreen.routeName);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => Home(),
+                        ),
+                      );
                     },
-    ),
                   ),
+                ),
               ),
             ],
-          ),
+          )
         ],
       ),
     );
   }
 }
-

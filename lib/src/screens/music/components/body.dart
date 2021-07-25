@@ -1,6 +1,6 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:mbeshtetu_app/src/models/video_model.dart';
 import 'package:mbeshtetu_app/src/screens/music/components/audi_player_screen.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';

@@ -8,10 +8,11 @@ class PostVideoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context).settings.arguments;
     SizeConfig().init(context);
-
+    print(args);
     return Scaffold(
-      body: Body(),
+      body: Body(id: args),
     );
   }
 }

@@ -25,10 +25,15 @@ class YoutubeServiceImpl implements YoutubeService {
       var categorydata = json.decode(response.body);
       CategoryMetadata categoryMetadata =
           CategoryMetadata.fromJson(categorydata);
-     // final recentVideos = await this.fetchRecentVideos();
-   //   print(recentVideos);
-   //    categoryMetadata.categories.add(Category(
-   //        id: 999, category: "Recent", subCategory: "", videos: recentVideos));
+      final recentVideos = await this.fetchRecentVideos();
+      print("A KA MBRRI QITU MOTRA");
+      if (recentVideos.isNotEmpty) {
+        categoryMetadata.categories.add(Category(
+            id: 999,
+            category: "Recent",
+            subCategory: "",
+            videos: recentVideos));
+      }
       return categoryMetadata;
     } else {
       throw json.decode(response.body)['error']['message'];
@@ -47,8 +52,9 @@ class YoutubeServiceImpl implements YoutubeService {
     print(response.statusCode);
     if (response.statusCode == 200) {
       Iterable videoData = json.decode(response.body);
-      List<Video> videos = videoData?.map((i) => Video.fromJson(i))?.toList();
-      return videos;
+      Set<Video> videos =
+          videoData?.where((element) => element != null)?.map((i) => Video.fromJson(i))?.toSet();
+      return videos.toList();
     } else {
       throw json.decode(response.body)['error']['message'];
     }
@@ -57,7 +63,8 @@ class YoutubeServiceImpl implements YoutubeService {
   @override
   Future<List<Category>> fetchCategoriesNoVideos() async {
     Uri uri = Uri.http(
-      '134.122.86.217:3000', '/category/videosByCategory',
+      '134.122.86.217:3000',
+      '/category/videosByCategory',
     );
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: 'application/json',
@@ -65,10 +72,12 @@ class YoutubeServiceImpl implements YoutubeService {
 
     // Get Playlist Videos
     var response = await http.get(uri, headers: headers);
+    print(response.body);
     if (response.statusCode == 200) {
       Iterable categorydata = json.decode(response.body);
       List<Category> categories =
           categorydata.map((i) => Category.fromJson(i)).toList();
+      print(categories);
       return categories;
     } else {
       throw json.decode(response.body)['error']['message'];
@@ -83,16 +92,19 @@ class YoutubeServiceImpl implements YoutubeService {
       'limit': limitPerPage.toString(),
       'page': pageNumber.toString(),
     };
-    Uri uri = Uri.http('134.122.86.217:3000','/youtube/findByCategory', queryParameters);
+    Uri uri = Uri.http(
+        '134.122.86.217:3000', '/youtube/findByCategory', queryParameters);
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: 'application/json',
     };
 
     // Get Videos by category and paginate
     var response = await http.get(uri, headers: headers);
+    print(response);
     if (response.statusCode == 200) {
       var videoData = json.decode(response.body);
       VideoMetadata videoMetadata = VideoMetadata.fromJson(videoData);
+      print(videoMetadata);
       return videoMetadata;
     } else {
       throw json.decode(response.body)['error']['message'];

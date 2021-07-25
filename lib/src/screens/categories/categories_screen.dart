@@ -1,24 +1,9 @@
-// import 'package:flutter/material.dart';
-//
-// class CatetegoriesScreen extends StatelessWidget {
-//   static Route<dynamic> route() => MaterialPageRoute(
-//     builder: (context) => CatetegoriesScreen(),
-//   );
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       child: Center(
-//         child: Text("CategoryPage"),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:mbeshtetu_app/src/business_logic/category_screen_viewmodel.dart';
 import 'package:mbeshtetu_app/src/models/category_model.dart';
 import 'package:mbeshtetu_app/src/models/videoMetadata_model.dart';
 import 'package:mbeshtetu_app/src/models/video_model.dart';
+import 'package:mbeshtetu_app/src/screens/navigation/navigation_screen.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 
@@ -49,7 +34,7 @@ class _CatetegoriesScreenState extends State<CatetegoriesScreen>
   _loadCategoryTabs() async {
     var result = await model.loadCategoryTabs();
     _tabController = TabController(
-        vsync: this, length: result.length, initialIndex: widget.selectedPage);
+        vsync: this, length: result.length, initialIndex: widget.selectedPage - 1);
     return result;
   }
 
@@ -62,6 +47,7 @@ class _CatetegoriesScreenState extends State<CatetegoriesScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomSheet: NavigationScreen(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(

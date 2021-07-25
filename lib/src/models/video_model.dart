@@ -4,13 +4,15 @@ class Video {
   final String videoId;
   final String thumbnail;
   final bool isAudio;
+  String category;
 
   Video({
     this.id,
     this.title,
     this.videoId,
     this.thumbnail,
-    this.isAudio
+    this.isAudio,
+    this.category
   });
 
   factory Video.fromJson(Map<String, dynamic> json) {

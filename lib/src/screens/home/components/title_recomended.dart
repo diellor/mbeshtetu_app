@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 
-class TitleRecomended extends StatelessWidget {
-  const TitleRecomended({
+class TitleRecommended extends StatelessWidget {
+  const TitleRecommended({
     Key key,
     this.text,
     this.press,

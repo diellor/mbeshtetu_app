@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/parser.dart';
 import 'package:mbeshtetu_app/src/models/user_model.dart';
+import 'package:mbeshtetu_app/src/screens/intro/intro_screen.dart';
 import 'package:mbeshtetu_app/src/screens/splash/components/default_button.dart';
-import 'package:mbeshtetu_app/src/screens/tabs/tabs_screen.dart';
+import 'package:mbeshtetu_app/src/screens/tabs/bnb_custom_painter.dart';
 import 'package:mbeshtetu_app/src/services/user_service.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 
@@ -119,7 +120,7 @@ class _BodyState extends State<Body> {
                   child: DefaultButton(
                     text: "Vazhdo",
                     press: () {
-                      //Navigator.pushNamed(context, SubscribeToQuotesScreen.routeName);
+                      Navigator.pushNamed(context, IntroScreen.routeName);
                     },
                   ),
                 ),

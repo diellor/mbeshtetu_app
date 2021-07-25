@@ -4,8 +4,11 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
+import 'package:mbeshtetu_app/src/models/create_rate_model.dart';
 import 'package:mbeshtetu_app/src/models/create_schedule_model.dart';
 import 'package:mbeshtetu_app/src/services/schedule_service.dart';
+
+import '../../main.dart';
 
 class ScheduleServiceImplementation extends ScheduleService {
   @override
@@ -63,6 +66,24 @@ class ScheduleServiceImplementation extends ScheduleService {
       String randomQuote = response.body;
       return randomQuote;
     }
+  }
+
+  @override
+  Future<void> rateVideo(CreateRate request) async {
+    Uri uri = getApiUri('rate');
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+    await Firebase.initializeApp();
+    String deviceId = await FirebaseMessaging.instance.getToken();
+    deviceId = deviceId.replaceAll(":", "");
+    await http.post(uri,
+        headers: headers,
+        body: jsonEncode(<String, dynamic>{
+          'deviceId': deviceId,
+          'videoId': request.videoId,
+          'rate': request.rate,
+        }));
   }
 
 }

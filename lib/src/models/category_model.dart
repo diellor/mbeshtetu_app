@@ -16,6 +16,7 @@ class Category {
   factory Category.fromJson(Map<String, dynamic> json) {
     Iterable list = json['videos'];
     List<Video> videos = list?.map((i)=> Video.fromJson(i))?.toList();
+    videos?.forEach((element) => element.category = json['category']);
 
     return Category(
       id: json['id'],

@@ -6,6 +6,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/models/create_schedule_model.dart';
 import 'package:mbeshtetu_app/src/models/started_watching_videos_model.dart';
+import 'package:mbeshtetu_app/src/screens/postvideo/components/body.dart';
 import 'package:mbeshtetu_app/src/screens/splash/components/default_button.dart';
 import 'package:mbeshtetu_app/src/services/schedule_service.dart';
 import 'package:mbeshtetu_app/src/services/user_service.dart';
@@ -25,8 +26,8 @@ class VideoScreen extends StatefulWidget {
 
 class _VideoScreenState extends State<VideoScreen> {
   YoutubePlayerController _controller;
-  final ScheduleService _scheduleService = serviceLocator<ScheduleService>();
   final UserService _userService = serviceLocator<UserService>();
+
   @override
   void initState() {
     super.initState();
@@ -38,7 +39,9 @@ class _VideoScreenState extends State<VideoScreen> {
         autoPlay: true,
       ),
     );
-    _userService.startedWatchingVideo(StartedWatchingVideosRequest(_controller.initialVideoId, DateTime.now().millisecondsSinceEpoch ~/ 1000));
+    _userService.startedWatchingVideo(StartedWatchingVideosRequest(
+        _controller.initialVideoId,
+        DateTime.now().millisecondsSinceEpoch ~/ 1000));
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -71,19 +74,23 @@ class _VideoScreenState extends State<VideoScreen> {
       body: youtubeHierarchy(),
     );
   }
+
   _scheduleVideo(DateTime dateTime, String videoId) {
     print('qitu');
     final timestamp = dateTime.millisecondsSinceEpoch;
-    this._scheduleService.scheduleVideo(CreateSchedule(timestamp, videoId));
+    // this._scheduleService.scheduleVideo(CreateSchedule(timestamp, videoId));
   }
 
   _pushToNextScreen() {
-    print("hini ne push");
+    String omg = this._controller.initialVideoId;
+    print("hini ne push $omg");
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    Navigator.of(context).pushNamed("/postVideo");
+    Navigator.of(context)
+        .pushNamed("/postVideo", arguments: this._controller.initialVideoId);
   }
+
   youtubeHierarchy() {
     SystemChrome.setEnabledSystemUIOverlays([]);
     _controller.updateValue(_controller.value.copyWith(isFullScreen: true));
@@ -114,25 +121,26 @@ class _VideoScreenState extends State<VideoScreen> {
             return Column(
               children: [
                 // some widgets
+                Flexible(flex: 1, fit: FlexFit.loose, child: player),
                 Flexible(
                   flex: 1,
-                    fit: FlexFit.loose,
-                    child: player
-                ),
-                Flexible(
-                  flex: 1,
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                          child: Padding(
-                            padding:  EdgeInsets.symmetric(vertical: 2.5 * SizeConfig.heightMultiplier, horizontal: 3 * SizeConfig.widthMultiplier),
-                            child: AutoSizeText("Ushtrimi i menaxhimit te simptomave iuhuhuhuhuhu",
-                              minFontSize: 10,
-                              style: TextStyle(fontSize: 3 * SizeConfig.textMultiplier),),
-                          ),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 2.5 * SizeConfig.heightMultiplier,
+                            horizontal: 3 * SizeConfig.widthMultiplier),
+                        child: AutoSizeText(
+                          "Ushtrimi i menaxhimit te simptomave iuhuhuhuhuhu",
+                          minFontSize: 10,
+                          style: TextStyle(
+                              fontSize: 3 * SizeConfig.textMultiplier),
+                        ),
                       ),
                     ),
                   ),
+                ),
                 Flexible(
                   flex: 1,
                   child: Padding(
