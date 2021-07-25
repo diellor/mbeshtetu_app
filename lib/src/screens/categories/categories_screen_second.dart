@@ -4,7 +4,6 @@ import 'package:mbeshtetu_app/src/business_logic/category_screen_viewmodel.dart'
 import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/controllers/category_contorller.dart';
 import 'package:mbeshtetu_app/src/models/category_model.dart';
-import 'package:mbeshtetu_app/src/models/videoMetadata_model.dart';
 import 'package:mbeshtetu_app/src/models/video_model.dart';
 import 'package:mbeshtetu_app/src/screens/navigation/navigation_screen.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
@@ -64,14 +63,14 @@ class _CatetegoriesScreenSecondState extends State<CatetegoriesScreenSecond>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffFFF8F6),
+      bottomSheet: NavigationScreen(),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
+        preferredSize: Size.fromHeight(SizeConfig.heightMultiplier * 13),
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
           child: new AppBar(
             automaticallyImplyLeading: false,
-            backgroundColor: Color(0xffFFF8F6),
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0,
             flexibleSpace: new Column(
               children: [
@@ -93,10 +92,18 @@ class _CatetegoriesScreenSecondState extends State<CatetegoriesScreenSecond>
                           tabs:
                               model.getCategoryTabList.map((Category category) {
                             return Tab(
-                              child: Text(category.category,
-                                  style: TextStyle(
-                                    fontSize: 21.0,
-                                  )),
+                              child: Column(
+                                children: [
+                                  Text(category.category,
+                                      style: TextStyle(
+                                        fontSize: SizeConfig.textMultiplier * 3.2,
+                                      )),
+                                  Text(category.subCategory,
+                                      style: TextStyle(
+                                        fontSize: SizeConfig.textMultiplier * 1.2,
+                                      )),
+                                ],
+                              ),
                             );
                           }).toList(),
                         );
@@ -144,220 +151,6 @@ class _CatetegoriesScreenSecondState extends State<CatetegoriesScreenSecond>
           }),
     );
   }
-// return Scaffold(
-//   backgroundColor: Color(0xffFFF8F6 ),
-//   appBar: PreferredSize(
-//     preferredSize: Size.fromHeight(140),
-//   ),
-//   body: Column(
-//     children: [
-//       Expanded(
-//         child: FutureBuilder(
-//             future: categoryTabs,
-//             builder: (context, snapshot) {
-//               if (snapshot.hasData) {
-//                 return TabBar(
-//                   controller: _controller,
-//                   indicatorColor: Colors.transparent,
-//                   labelColor: preMeditation_bg,
-//                   isScrollable: true,
-//                   // labelPadding: EdgeInsets.only(right: 45.0),
-//                   unselectedLabelColor: primary_blue,
-//                   tabs: model.getCategoryTabList.map((Category category) {
-//                     return Tab(
-//                       child: Text(category.category,
-//                           style: TextStyle(
-//                             fontSize: 2 * SizeConfig.textMultiplier,
-//                           )),
-//                     );
-//                   }).toList(),
-//                 );
-//               } else {
-//                 return Center(
-//                   child: CircularProgressIndicator(
-//                     valueColor: AlwaysStoppedAnimation<Color>(
-//                       Theme.of(context).primaryColor, // Red
-//                     ),
-//                   ),
-//                 );
-//               }
-//             }),
-//       ),
-//       Expanded(
-//         flex: 4,
-//         child: TabBarView(
-//           controller: _controller,
-//           children: [
-//             Obx(() {
-//               if (productController.isLoading.value)
-//                 return Center(child: CircularProgressIndicator());
-//               else
-//                 return StaggeredGridView.countBuilder(
-//                   crossAxisCount: 2,
-//                   itemCount: productController.categoryList.value.videos.length,
-//                   crossAxisSpacing: 16,
-//                   mainAxisSpacing: 16,
-//                   itemBuilder: (context, index) {
-//                     return CategoryTile(productController.categoryList.value.videos[index]);
-//                   },
-//                   staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-//                 );
-//             }),
-//             Obx(() {
-//               if (productController.isLoading.value)
-//                 return Center(child: CircularProgressIndicator());
-//               else
-//                 return StaggeredGridView.countBuilder(
-//                   crossAxisCount: 2,
-//                   itemCount: productController.categoryList.value.videos.length,
-//                   crossAxisSpacing: 16,
-//                   mainAxisSpacing: 16,
-//                   itemBuilder: (context, index) {
-//                     return CategoryTile(productController.categoryList.value.videos[index]);
-//                   },
-//                   staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-//                 );
-//             }),
-//             Obx(() {
-//               if (productController.isLoading.value)
-//                 return Center(child: CircularProgressIndicator());
-//               else
-//                 return StaggeredGridView.countBuilder(
-//                   crossAxisCount: 2,
-//                   itemCount: productController.categoryList.value.videos.length,
-//                   crossAxisSpacing: 16,
-//                   mainAxisSpacing: 16,
-//                   itemBuilder: (context, index) {
-//                     return CategoryTile(productController.categoryList.value.videos[index]);
-//                   },
-//                   staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-//                 );
-//             }),
-//             Obx(() {
-//               if (productController.isLoading.value)
-//                 return Center(child: CircularProgressIndicator());
-//               else
-//                 return StaggeredGridView.countBuilder(
-//                   crossAxisCount: 2,
-//                   itemCount: productController.categoryList.value.videos.length,
-//                   crossAxisSpacing: 16,
-//                   mainAxisSpacing: 16,
-//                   itemBuilder: (context, index) {
-//                     return CategoryTile(productController.categoryList.value.videos[index]);
-//                   },
-//                   staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-//                 );
-//             }),
-//             Obx(() {
-//               if (productController.isLoading.value)
-//                 return Center(child: CircularProgressIndicator());
-//               else
-//                 return StaggeredGridView.countBuilder(
-//                   crossAxisCount: 2,
-//                   itemCount: productController.categoryList.value.videos.length,
-//                   crossAxisSpacing: 16,
-//                   mainAxisSpacing: 16,
-//                   itemBuilder: (context, index) {
-//                     return CategoryTile(productController.categoryList.value.videos[index]);
-//                   },
-//                   staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-//                 );
-//             }),
-//             Obx(() {
-//               if (productController.isLoading.value)
-//                 return Center(child: CircularProgressIndicator());
-//               else
-//                 return StaggeredGridView.countBuilder(
-//                   crossAxisCount: 2,
-//                   itemCount: productController.categoryList.value.videos.length,
-//                   crossAxisSpacing: 16,
-//                   mainAxisSpacing: 16,
-//                   itemBuilder: (context, index) {
-//                     return CategoryTile(productController.categoryList.value.videos[index]);
-//                   },
-//                   staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-//                 );
-//             }),
-//             Obx(() {
-//               if (productController.isLoading.value)
-//                 return Center(child: CircularProgressIndicator());
-//               else
-//                 return StaggeredGridView.countBuilder(
-//                   crossAxisCount: 2,
-//                   itemCount: productController.categoryList.value.videos.length,
-//                   crossAxisSpacing: 16,
-//                   mainAxisSpacing: 16,
-//                   itemBuilder: (context, index) {
-//                     return CategoryTile(productController.categoryList.value.videos[index]);
-//                   },
-//                   staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-//                 );
-//             }),
-//             Obx(() {
-//               if (productController.isLoading.value)
-//                 return Center(child: CircularProgressIndicator());
-//               else
-//                 return StaggeredGridView.countBuilder(
-//                   crossAxisCount: 2,
-//                   itemCount: productController.categoryList.value.videos.length,
-//                   crossAxisSpacing: 16,
-//                   mainAxisSpacing: 16,
-//                   itemBuilder: (context, index) {
-//                     return CategoryTile(productController.categoryList.value.videos[index]);
-//                   },
-//                   staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-//                 );
-//             }),
-//             Obx(() {
-//               if (productController.isLoading.value)
-//                 return Center(child: CircularProgressIndicator());
-//               else
-//                 return StaggeredGridView.countBuilder(
-//                   crossAxisCount: 2,
-//                   itemCount: productController.categoryList.value.videos.length,
-//                   crossAxisSpacing: 16,
-//                   mainAxisSpacing: 16,
-//                   itemBuilder: (context, index) {
-//                     return CategoryTile(productController.categoryList.value.videos[index]);
-//                   },
-//                   staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-//                 );
-//             }),
-//             Obx(() {
-//               if (productController.isLoading.value)
-//                 return Center(child: CircularProgressIndicator());
-//               else
-//                 return StaggeredGridView.countBuilder(
-//                   crossAxisCount: 2,
-//                   itemCount: productController.categoryList.value.videos.length,
-//                   crossAxisSpacing: 16,
-//                   mainAxisSpacing: 16,
-//                   itemBuilder: (context, index) {
-//                     return CategoryTile(productController.categoryList.value.videos[index]);
-//                   },
-//                   staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-//                 );
-//             }),
-//
-//             // Text("TEST"),
-//             // Text("TEST"),
-//             // Text("TEST"),
-//             // Text("TEST"),
-//             // Text("TEST"),
-//             // Text("TEST"),
-//             // Text("TEST"),
-//             // Text("TEST"),
-//             // Text("TEST"),
-//             // Text("TEST"),
-//
-//
-//           ],
-//         ),
-//       )
-//     ],
-//   ),
-// );
-
 }
 
 class CategoryGridView extends StatefulWidget {
@@ -422,7 +215,11 @@ class CategoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
+      shadowColor: bold_blue.withOpacity(0.3),
+      elevation: 6,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -435,7 +232,7 @@ class CategoryTile extends StatelessWidget {
                   width: double.infinity,
                   clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Image.network(
                     video.thumbnail,
@@ -452,30 +249,6 @@ class CategoryTile extends StatelessWidget {
                   TextStyle(fontFamily: 'avenir', fontWeight: FontWeight.w800),
               overflow: TextOverflow.ellipsis,
             ),
-            SizedBox(height: 8),
-            if (video.title != null)
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Text(
-                    //   product.rating.toString(),
-                    //   style: TextStyle(color: Colors.white),
-                    // ),
-                    Icon(
-                      Icons.star,
-                      size: 16,
-                      color: Colors.white,
-                    ),
-                  ],
-                ),
-              ),
-            SizedBox(height: 8),
             // Text('\$${product.price}',
             //     style: TextStyle(fontSize: 32, fontFamily: 'avenir')),
           ],

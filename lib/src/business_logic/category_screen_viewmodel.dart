@@ -11,6 +11,7 @@ class CategoryScreenViewModel extends ChangeNotifier {
   VideoMetadata videoMetadata;
   Future<List<Category>> loadCategoryTabs() async {
     _categories = await _youtubeService.fetchCategoriesNoVideos();
+    _categories = _categories.where((element) => element.category != "Meditimi" && element.category != "Gjumi").toList();
     return _categories;
   }
 
