@@ -48,7 +48,20 @@ class BallinaVideoCard extends StatelessWidget {
                     ]),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 3),
-                  child: FittedBox(fit:BoxFit.contain,child: Image.network(image, width: size.width * 0.4, height: size.width * 0.4)),
+                  // child: FittedBox(fit:BoxFit.contain,child: Image.network("https://mbeshtetu.fra1.digitaloceanspaces.com/character%20builder%20_%20break%20dance,%20man,%20dance@2x.png",fit: BoxFit.cover,
+                  //   loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
+                  //     if (loadingProgress == null) return child;
+                  //     return Center(
+                  //       child: CircularProgressIndicator(
+                  //         value: loadingProgress.expectedTotalBytes != null ?
+                  //         loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                  //             : null,
+                  //       ),
+                  //     );
+                  //   },
+                  // ),),
+
+                  child: FittedBox(fit:BoxFit.contain,child: Image.network("image", width: size.width * 0.4, height: size.width * 0.4)),
                 )),
             GestureDetector(
               onTap: press,
