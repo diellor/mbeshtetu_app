@@ -1,20 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mbeshtetu_app/src/business_logic/category_screen_viewmodel.dart';
+import 'package:mbeshtetu_app/src/models/category_model.dart';
+import 'package:mbeshtetu_app/src/screens/categories/categories_screen.dart';
 import 'package:mbeshtetu_app/src/screens/home/home.dart';
 import 'package:mbeshtetu_app/src/screens/intro/components/grid_content.dart';
 import 'package:mbeshtetu_app/src/screens/splash/components/default_button.dart';
 import 'package:mbeshtetu_app/src/screens/tabs/bnb_custom_painter.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 
-class Body extends StatelessWidget {
+import '../../../service_locator.dart';
+
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  CategoryScreenViewModel model = serviceLocator<CategoryScreenViewModel>();
+  Future filteredCategories;
+
+  @override
+  void initState() {
+    super.initState();
+    filteredCategories = _loadCategoryNames();
+  }
+
+  _loadCategoryNames() async {
+    final categories = await model.loadCategoryTabs();
+    return categories.where((element) => element.subCategory == "MESO").toList();
+  }
+
   @override
   Widget build(BuildContext context) {
+    print("FUKTERERD: $filteredCategories");
     var gridImages = [
       "images/question_1.png",
       "images/question_2.png",
       "images/question_3.png",
       "images/question_4.png",
       "images/question_5.png",
+      "images/question_6.png",
       "images/question_6.png",
     ];
     return SafeArea(
@@ -38,12 +64,14 @@ class Body extends StatelessWidget {
                         Text(
                           "Cka ju sjell te",
                           style: TextStyle(
-                              fontSize: 3.2 * SizeConfig.textMultiplier, fontWeight: FontWeight.bold),
+                              fontSize: 3.2 * SizeConfig.textMultiplier,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
                           "mbështetu?",
                           style: TextStyle(
-                              fontSize: 3.2 * SizeConfig.textMultiplier, fontWeight: FontWeight.bold),
+                              fontSize: 3.2 * SizeConfig.textMultiplier,
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -53,26 +81,50 @@ class Body extends StatelessWidget {
               Flexible(
                 flex: 3,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.5  *SizeConfig.widthMultiplier),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 15.5 * SizeConfig.widthMultiplier),
                   child: Container(
                     child: GridView.count(
                       crossAxisCount: 2,
                       shrinkWrap: true,
                       mainAxisSpacing: 15.0,
                       crossAxisSpacing: 15.0,
-                      childAspectRatio: MediaQuery.of(context).size.aspectRatio * 3 / 1.6,
+                      childAspectRatio:
+                          MediaQuery.of(context).size.aspectRatio * 3 / 1.6,
                       physics: NeverScrollableScrollPhysics(),
-                      children: <Widget>[
-                        GridContent(gridImag: gridImages[0], text: "Stresi"),
-                        GridContent(gridImag: gridImages[1], text: "Ankthi"),
-                        GridContent(
-                            gridImag: gridImages[2], text: "Depresioni"),
-                        GridContent(gridImag: gridImages[3], text: "Meditimi"),
-                        GridContent(
-                            gridImag: gridImages[4],
-                            text: "Problemet me gjumë"),
-                        GridContent(
-                            gridImag: gridImages[5], text: "Bisedoj me dikënd")
+                      children: [
+                        FutureBuilder(
+                            future: filteredCategories,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                List<Category> list = snapshot.data as List<
+                                    Category>;
+                                return Stack(
+                                children: list.map((e) => new GestureDetector(
+                                    onTap: () {
+                                      print("PO PREKEN SENET");
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => CatetegoriesScreen(e.id),
+                                        ),
+                                      );
+                                    },
+                                    child: GridContent(
+                                        gridImag:
+                                        gridImages[list.indexOf(e)],
+                                        text: e.category))).toList()
+                                );
+                              }
+                              else
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Theme.of(context).primaryColor, // Red
+                                    ),
+                                  ),
+                                );
+                            }),
                       ],
                     ),
                   ),
