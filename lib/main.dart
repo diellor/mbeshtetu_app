@@ -93,29 +93,23 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    if (videoId.isNotEmpty) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => VideoScreen(id: videoId),
-        ),
-      );
-    }
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       print("onMessage: $message");
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
       print("onMessageOpenedApp: $message");
-
-      Navigator.push(
-          navigatorKey.currentState.context,
-          MaterialPageRoute(
-              builder: (context) => VideoScreen(
-                    id: message.data["videoId"],
-                  )
-          )
-      );
+      if (message.data["videoId"]) {
+        Navigator.push(
+            navigatorKey.currentState.context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    VideoScreen(
+                      id: message.data["videoId"],
+                    )
+            )
+        );
+      }
     });
   }
 
