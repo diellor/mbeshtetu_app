@@ -104,7 +104,7 @@ class Body extends StatefulWidget {
   Video video;
   int index = -1;
 
-  Body({Key key, this.video, this.index}) : super(key: key);
+  Body({Key key, this.video, this.index,this.videos}) : super(key: key);
 
   static Route<dynamic> route() => MaterialPageRoute(
     builder: (context) => Body(),
@@ -123,7 +123,7 @@ class _BodyState extends State<Body> {
     super.initState();
 
     _pageManager = serviceLocator<PageManager>();
-    _pageManager.setPlayList(this.widget.video, this.widget.index);
+    _pageManager.setPlayList(this.widget.video, this.widget.index, this.widget.videos);
   }
 
   @override

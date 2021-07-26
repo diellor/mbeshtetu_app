@@ -96,7 +96,7 @@ class _BodyState extends State<Body> {
                           GestureDetector(
                             onTap: (){
                               Navigator.of(context)
-                                  .pushNamed("/musicScreen", arguments: Audio(video: videos[index], index: index));
+                                  .pushNamed("/musicScreen", arguments: Audio(video: videos[index], index: index, videos: videos));
                             },
                             child: Padding(
                               padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),

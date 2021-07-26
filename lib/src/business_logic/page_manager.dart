@@ -69,7 +69,7 @@ class PageManager {
   // }
 
   void setPlayList(Video video, [int index, List<Video> videos]) async {
-    if(index != null && index != -1 && videos != null || videos.length <= 0){
+    if(index != null && index != -1 && videos != null && videos.length > 0){
       int _currentPage = 1;
       var audioResult = [];
       videos.forEach((element) {
@@ -79,6 +79,7 @@ class PageManager {
         ...audioResult
       ]);
       await _audioPlayer.setAudioSource(_playlist);
+      _audioPlayer.seek(Duration.zero,index: index);
     } else {
       _playlist = ConcatenatingAudioSource(children: [
         AudioSource.uri(Uri.parse(video.videoId), tag: video.videoId),
