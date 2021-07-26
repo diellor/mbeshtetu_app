@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:mbeshtetu_app/src/business_logic/category_screen_viewmodel.dart';
 import 'package:mbeshtetu_app/src/models/category_model.dart';
 import 'package:mbeshtetu_app/src/screens/categories/categories_screen.dart';
+import 'package:mbeshtetu_app/src/screens/categories/categories_screen_second.dart';
 import 'package:mbeshtetu_app/src/screens/home/home.dart';
 import 'package:mbeshtetu_app/src/screens/intro/components/grid_content.dart';
 import 'package:mbeshtetu_app/src/screens/splash/components/default_button.dart';
@@ -102,11 +103,12 @@ class _BodyState extends State<Body> {
                                 return Stack(
                                 children: list.map((e) => new GestureDetector(
                                     onTap: () {
-                                      print("PO PREKEN SENET");
+                                      int i = e.id;
+                                      print("PO PREKEN SENET: $i");
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (_) => CatetegoriesScreen(e.id),
+                                          builder: (_) => CatetegoriesScreenSecond(category: e),
                                         ),
                                       );
                                     },

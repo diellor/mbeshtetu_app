@@ -12,9 +12,9 @@ import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 
 class CatetegoriesScreenSecond extends StatefulWidget {
-  int selectedPage;
+  Category category;
 
-  CatetegoriesScreenSecond(this.selectedPage);
+  CatetegoriesScreenSecond({this.category});
 
   @override
   _CatetegoriesScreenSecondState createState() =>
@@ -45,10 +45,16 @@ class _CatetegoriesScreenSecondState extends State<CatetegoriesScreenSecond>
 
   _loadCategoryTabs() async {
     var result = await model.loadCategoryTabs();
+    int selectedPage = 0;
+    if (this.widget.category != null) {
+      Category ohno = model.getCategoryTabList.where((element) => element.id == this.widget.category.id).first;
+      selectedPage = model.getCategoryTabList.indexOf(ohno);
+      print("WHAT: $selectedPage");
+    }
     _controller = TabController(
         vsync: this,
         length: result.length,
-        initialIndex: widget.selectedPage - 1);
+        initialIndex: selectedPage);
     return result;
   }
 

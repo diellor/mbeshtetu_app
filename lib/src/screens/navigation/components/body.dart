@@ -85,7 +85,7 @@ class _BodyState extends State<Body> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => CatetegoriesScreenSecond(1),
+                                  builder: (_) => CatetegoriesScreenSecond(),
                                 ),
                               );
                             }),

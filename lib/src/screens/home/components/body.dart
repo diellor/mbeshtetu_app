@@ -6,6 +6,7 @@ import 'package:mbeshtetu_app/src/models/category_model.dart';
 import 'package:mbeshtetu_app/src/models/videoMetadata_model.dart';
 import 'package:mbeshtetu_app/src/models/video_model.dart';
 import 'package:mbeshtetu_app/src/screens/categories/categories_screen.dart';
+import 'package:mbeshtetu_app/src/screens/categories/categories_screen_second.dart';
 import 'package:mbeshtetu_app/src/screens/home/components/ballina_video_card.dart';
 import 'package:mbeshtetu_app/src/screens/home/components/header_video_details.dart';
 import 'package:mbeshtetu_app/src/screens/home/components/title_recomended.dart';
@@ -42,7 +43,7 @@ class _BodyState extends State<Body> {
           text: model.getTitleRecomended(category),
           press: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CatetegoriesScreen(category.id)));
+                MaterialPageRoute(builder: (context) => CatetegoriesScreenSecond(category: category)));
           })
       );
     }
