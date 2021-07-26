@@ -4,6 +4,7 @@ import 'package:mbeshtetu_app/src/screens/categories/categories_screen.dart';
 import 'package:mbeshtetu_app/src/screens/categories/categories_screen_second.dart';
 import 'package:mbeshtetu_app/src/screens/chat/chat_screen.dart';
 import 'package:mbeshtetu_app/src/screens/home/home.dart';
+import 'package:mbeshtetu_app/src/screens/meditations/components/pre_meditation_screen.dart';
 import 'package:mbeshtetu_app/src/screens/tabs/bnb_custom_painter.dart';
 
 import '../../../commons.dart';
@@ -102,7 +103,12 @@ class _BodyState extends State<Body> {
                       children: <Widget>[
                         IconButton(
                             icon: SvgPicture.asset("images/tab_meditimi.svg"),
-                            onPressed: () {}),
+                            onPressed: () { Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => PreMeditationScreen(),
+                              ),
+                            );}),
                         Text(
                           "Meditimi",
                           style: TextStyle(

@@ -58,7 +58,8 @@ class _BodyState extends State<Body> {
                   press: () {},
                   videoId: item.videoId,
                   isAudio: item.isAudio,
-                  category: item.category
+                  category: item.category,
+video: item,
           ))
               .toList()),
     ));

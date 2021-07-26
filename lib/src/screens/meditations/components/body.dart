@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mbeshtetu_app/src/business_logic/meditation_screen_viewmodel.dart';
-import 'package:mbeshtetu_app/src/models/videoMetadata_model.dart';
+import 'package:mbeshtetu_app/src/models/audio_model.dart';
 import 'package:mbeshtetu_app/src/models/video_model.dart';
-import 'package:mbeshtetu_app/src/screens/music/components/audi_player_screen.dart';
-import 'package:mbeshtetu_app/src/screens/music/music_screen.dart';
 import 'package:mbeshtetu_app/src/screens/splash/components/default_button.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
@@ -26,7 +24,6 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    print("ERDHII");
     print(widget.categoryId);
     categoriesWithVideos = _meditationAudios(_currentPage);
   }
@@ -98,7 +95,8 @@ class _BodyState extends State<Body> {
                         children: <Widget>[
                           GestureDetector(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> MusicScreen(videos: videos, index: index,)));
+                              Navigator.of(context)
+                                  .pushNamed("/musicScreen", arguments: Audio(video: videos[index], index: index));
                             },
                             child: Padding(
                               padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),

@@ -56,6 +56,10 @@ class AudioPlayerTask extends BackgroundAudioTask {
     AudioServiceBackground.setState(controls: [
       MediaControl.pause,
       MediaControl.stop,
+      MediaControl.skipToNext,
+      MediaControl.skipToPrevious
+    ], systemActions: [
+      MediaAction.seekTo
     ], playing: true, processingState: AudioProcessingState.ready);
     await _audioPlayer.play();
     return super.onPlay();
@@ -66,7 +70,8 @@ class AudioPlayerTask extends BackgroundAudioTask {
 class AudioPlayerScreen extends StatefulWidget {
 
   final Video video;
-  const AudioPlayerScreen({Key key, this.video}) : super(key: key);
+  final List<Video> videos;
+  const AudioPlayerScreen({Key key, this.video, this.videos}) : super(key: key);
 
   @override
   _AudioPlayerScreenState createState() => _AudioPlayerScreenState();
@@ -81,13 +86,17 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   bool isRepeating = false;
   Color color = Colors.black;
 
-
+  int current = 0;
 
   @override
   void initState() {
     initAudioService();
+    MediaItem mediaItem = MediaItem(
+      id: this.widget.videos[current].videoId,
+      title: this.widget.videos[current].title,
+      album: this.widget.videos[current].category
+    );
     super.initState();
-
 
 
     // //this changes all the time as audio plays
@@ -169,23 +178,6 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
           }
       },
     );
-    // return IconButton(
-    //     icon: isPlaying == false
-    //         ? Image.asset("images/audio_play.png")
-    //         : Image.asset("images/audio_pause.png"),
-    //     onPressed: () {
-    //       if (isPlaying == false) {
-    //         this.widget.advancedPlayer.play(this.widget.video.videoId);
-    //         setState(() {
-    //           isPlaying = true;
-    //         });
-    //       } else {
-    //         setState(() {
-    //           this.widget.advancedPlayer.pause();
-    //           isPlaying = false;
-    //         });
-    //       }
-    //     });
   }
 
   Widget loadButtonAssets() {

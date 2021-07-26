@@ -9,13 +9,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mbeshtetu_app/routes.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
-import 'package:mbeshtetu_app/src/screens/intro/intro_screen.dart';
-import 'package:mbeshtetu_app/src/screens/meditations/components/pre_meditation_screen.dart';
 import 'package:mbeshtetu_app/src/screens/splash/spash_screen.dart';
-import 'package:mbeshtetu_app/src/screens/tabs/bnb_custom_painter.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
 import 'package:overlay_support/overlay_support.dart';
-
 import 'src/screens/home/components/video_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
@@ -117,7 +113,9 @@ class _MyAppState extends State<MyApp> {
           MaterialPageRoute(
               builder: (context) => VideoScreen(
                     id: message.data["videoId"],
-                  )));
+                  )
+          )
+      );
     });
   }
 

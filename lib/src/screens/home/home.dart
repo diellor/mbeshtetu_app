@@ -18,6 +18,5 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(body: Body(), bottomSheet: NavigationScreen(),);
-
   }
 }

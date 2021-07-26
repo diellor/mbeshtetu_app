@@ -2,14 +2,14 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/models/audio_model.dart';
+import 'package:mbeshtetu_app/src/models/video_model.dart';
 import 'package:mbeshtetu_app/src/screens/home/components/video_screen.dart';
-import 'package:mbeshtetu_app/src/screens/music/components/audi_player_screen.dart';
 import 'package:mbeshtetu_app/src/screens/music/music_screen.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 
 class BallinaVideoCard extends StatelessWidget {
   const BallinaVideoCard(
-      {Key key, this.image, this.title, this.press, this.videoId, this.isAudio, this.category})
+      {Key key, this.image, this.title, this.press, this.videoId, this.isAudio, this.category, this.video})
       : super(key: key);
 
   final String image, title;
@@ -17,6 +17,7 @@ class BallinaVideoCard extends StatelessWidget {
   final Function press;
   final bool isAudio;
   final String category;
+  final Video video;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class BallinaVideoCard extends StatelessWidget {
       onTap: () => {
         this.isAudio
             ? Navigator.of(context)
-                .pushNamed(MusicScreen.routeName, arguments: Audio(video: []))
+                .pushNamed(MusicScreen.routeName, arguments: Audio(video: video))
             : Navigator.push(
                 context,
                 MaterialPageRoute(
