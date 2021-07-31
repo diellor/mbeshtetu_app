@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mbeshtetu_app/src/business_logic/category_screen_viewmodel.dart';
 import 'package:mbeshtetu_app/src/models/category_model.dart';
+import 'package:mbeshtetu_app/src/models/selected_category.dart';
 import 'package:mbeshtetu_app/src/models/videoMetadata_model.dart';
 import 'package:mbeshtetu_app/src/models/video_model.dart';
 import 'package:mbeshtetu_app/src/screens/navigation/navigation_screen.dart';
@@ -46,8 +47,9 @@ class _CatetegoriesScreenState extends State<CatetegoriesScreen>
 
   @override
   Widget build(BuildContext context) {
+    SelectedCat selectedCat = SelectedCat(ballina: 0,gjumi: 0,meditimi: 0,seancat: 1);
     return Scaffold(
-      bottomSheet: NavigationScreen(),
+      bottomSheet: NavigationScreen(selectedCat: selectedCat,),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(

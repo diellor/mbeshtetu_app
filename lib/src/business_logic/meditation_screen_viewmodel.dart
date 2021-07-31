@@ -9,11 +9,17 @@ class MeditationScreenViewModel extends ChangeNotifier {
 
   List<Category> _categories = [];
   VideoMetadata videoMetadata;
-
+  Category categorySleep;
   Future<List<Category>> loadCategoryTabs() async {
     _categories = await _youtubeService.fetchCategoriesNoVideos();
     _categories = _categories.where((element) => element.category == "Meditimi").toList();
     return _categories;
+  }
+
+  Future<Category> loadSleepCategory() async {
+    _categories = await _youtubeService.fetchCategoriesNoVideos();
+    categorySleep = _categories.firstWhere((element) => element.category == "Gjumi");
+    return categorySleep;
   }
 
   List<Category> get getCategoryTabList {

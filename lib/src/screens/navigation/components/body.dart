@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mbeshtetu_app/src/models/selected_category.dart';
 import 'package:mbeshtetu_app/src/screens/categories/categories_screen.dart';
 import 'package:mbeshtetu_app/src/screens/categories/categories_screen_second.dart';
 import 'package:mbeshtetu_app/src/screens/chat/chat_screen.dart';
 import 'package:mbeshtetu_app/src/screens/home/home.dart';
 import 'package:mbeshtetu_app/src/screens/meditations/components/pre_meditation_screen.dart';
+import 'package:mbeshtetu_app/src/screens/sleep/sleep_screen.dart';
 import 'package:mbeshtetu_app/src/screens/tabs/bnb_custom_painter.dart';
 
 import '../../../commons.dart';
 
 class Body extends StatefulWidget {
+  final SelectedCat categorySelected;
+  const Body({this.categorySelected});
+
   @override
   _BodyState createState() => _BodyState();
 }
@@ -40,12 +45,8 @@ class _BodyState extends State<Body> {
                       child: Image.asset("images/tab_chat.png"),
                       elevation: 0.1,
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => ChatScreen(),
-                          ),
-                        );
+                        Navigator.of(context)
+                            .pushReplacementNamed('/chatScreen');
                       }),
                 ),
               ),
@@ -59,14 +60,10 @@ class _BodyState extends State<Body> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         IconButton(
-                          icon: Image.asset("images/tab_ballina.png"),
+                          icon: widget.categorySelected.ballina == 1? Image.asset("images/tab_ballina.png"):Image.asset("images/ballina_tab_0.png") ,
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => Home(),
-                              ),
-                            );
+                            Navigator.of(context).
+                            pushReplacementNamed('/homeScreen');
                           },
                           splashColor: Colors.white,
                         ),
@@ -80,14 +77,10 @@ class _BodyState extends State<Body> {
                     Column(
                       children: <Widget>[
                         IconButton(
-                            icon: SvgPicture.asset("images/tab_seancat.svg"),
+                            icon: widget.categorySelected.seancat == 1? SvgPicture.asset("images/seanca_tab_1.svg"):SvgPicture.asset("images/seanca_tab_0.svg") ,
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => CatetegoriesScreenSecond(),
-                                ),
-                              );
+                              Navigator.of(context).
+                              pushReplacementNamed('/categoriesScreen');
                             }),
                         Text(
                           "Seancat",
@@ -102,13 +95,9 @@ class _BodyState extends State<Body> {
                     Column(
                       children: <Widget>[
                         IconButton(
-                            icon: SvgPicture.asset("images/tab_meditimi.svg"),
-                            onPressed: () { Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => PreMeditationScreen(),
-                              ),
-                            );}),
+                            icon: widget.categorySelected.meditimi == 1? SvgPicture.asset("images/meditimi_tab_1.svg"):SvgPicture.asset("images/meditimi_tab_0.svg") ,
+                            onPressed: () {    Navigator.of(context)
+                                .pushReplacementNamed('/selectMeditation');}),
                         Text(
                           "Meditimi",
                           style: TextStyle(
@@ -119,8 +108,11 @@ class _BodyState extends State<Body> {
                     Column(
                       children: <Widget>[
                         IconButton(
-                            icon: SvgPicture.asset("images/tab_gjumi.svg"),
-                            onPressed: () {}),
+                            icon: widget.categorySelected.gjumi == 1? SvgPicture.asset("images/gjumi_tab_1.svg"):SvgPicture.asset("images/gjumi_tab_0.svg") ,
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushReplacementNamed('/sleepScreen');
+                            }),
                         Text(
                           "Gjumi",
                           style: TextStyle(
