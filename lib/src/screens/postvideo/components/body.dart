@@ -4,7 +4,9 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mbeshtetu_app/src/business_logic/postVideo_screen_viewmodel.dart';
+import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/models/create_rate_model.dart';
+import 'package:mbeshtetu_app/src/screens/postvideo/components/green_button.dart';
 import 'package:mbeshtetu_app/src/screens/splash/components/default_button.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
@@ -56,10 +58,11 @@ class _BodyState extends State<Body> {
         Positioned.fill(
           child: Image.asset(
             "images/audio_bg.png",
-            width: SizeConfig.screenWidth,
             fit: BoxFit.fitWidth,
-            repeat: ImageRepeat.repeatX,
+            height: 20,
             alignment: Alignment.bottomCenter,
+              // color: Color.fromRGBO(255, 255, 255, 0.7),
+              // colorBlendMode: BlendMode.modulates
           ),
         ),
         Column(
@@ -70,21 +73,24 @@ class _BodyState extends State<Body> {
                   children: [
                     IconButton(
                         icon: SvgPicture.asset("images/audio_back_btn.svg"),
-                        onPressed: () {})
+                        onPressed: () {
+                          Navigator.pop(context);
+                        })
                   ],
                 )),
             Expanded(
-                flex: 3,
+                flex: 5,
                 child: Column(
                   children: [
                     Text(
-                      "Vlereso",
+                      "Vlerëso",
                       style: TextStyle(
+
                           fontSize: 2.6 * SizeConfig.textMultiplier,
                           fontWeight: FontWeight.bold),
                     ),
                     Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: Container(
                         margin: EdgeInsets.symmetric(
                             vertical: 4 * SizeConfig.heightMultiplier,
@@ -106,8 +112,8 @@ class _BodyState extends State<Body> {
                             border: Border.all(
                                 color: Colors.greenAccent.withOpacity(0.2))),
                         child: Center(
-                          child: SizedBox(
-                            width: 50 * SizeConfig.widthMultiplier,
+                            child: SizedBox(
+                          width: 50 * SizeConfig.widthMultiplier,
                             height: 50 * SizeConfig.heightMultiplier,
                             child: Image.asset("images/postVideo_box.png"),
                           ),
@@ -125,7 +131,7 @@ class _BodyState extends State<Body> {
                         itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                         itemBuilder: (context, _) => Icon(
                           Icons.star,
-                          color: Colors.amber,
+                          color: dark_green,
                         ),
                         onRatingUpdate: (double rating) {
                           _handleRate(rating);
@@ -134,60 +140,73 @@ class _BodyState extends State<Body> {
                       ),
                     ),
                     Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            top: 2 * SizeConfig.heightMultiplier),
-                        child: FutureBuilder(
-                            future: quote,
-                            builder:
-                                (BuildContext context, AsyncSnapshot snapshot) {
-                              if (!snapshot.hasData)
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      Theme.of(context).primaryColor, // Red
-                                    ),
-                                  ),
-                                );
-                              else
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          6 * SizeConfig.widthMultiplier),
-                                  child: AutoSizeText(
-                                    snapshot.data,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize:
-                                            2 * SizeConfig.textMultiplier),
-                                  ),
-                                );
-                            }),
+                      flex: 2,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex:1,
+                           child: Padding(
+                              padding: EdgeInsets.only(
+                                  top: 1 * SizeConfig.heightMultiplier),
+                              child: FutureBuilder(
+                                  future: quote,
+                                  builder:
+                                      (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData)
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          valueColor: AlwaysStoppedAnimation<Color>(
+                                            Theme.of(context).primaryColor, // Red
+                                          ),
+                                        ),
+                                      );
+                                    else
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal:
+                                            6 * SizeConfig.widthMultiplier),
+                                        child: AutoSizeText(
+                                          snapshot.data,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize:
+                                              2 * SizeConfig.textMultiplier),
+                                        ),
+                                      );
+                                  }),
+                            ),
+                          ),
+                          Expanded(
+    flex:1,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20 * SizeConfig.widthMultiplier,
+                                  vertical: 2 * SizeConfig.heightMultiplier),
+                              child: GreenButton(
+                                text: "Cakto perkujtues",
+                                press: () {
+                                  DatePicker.showDateTimePicker(context,
+                                      showTitleActions: true, onChanged: (DateTime date) {
+                                        print('change $date');
+                                      }, onConfirm: (DateTime date) {
+                                        _confirmSchedule(date);
+                                      }, currentTime: DateTime.now(), locale: LocaleType.sq);
+                                  // Navigator.pushNamed(context, SubscribeToQuotesScreen.routeName);
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+
                       ),
-                    )
+                    ),
+
                   ],
                 )),
             Expanded(
               flex: 1,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 13 * SizeConfig.widthMultiplier,
-                    vertical: 6.3 * SizeConfig.heightMultiplier),
-                child: DefaultButton(
-                  text: "Cakto perkujtues",
-                  press: () {
-                    DatePicker.showDateTimePicker(context,
-                        showTitleActions: true, onChanged: (DateTime date) {
-                      print('change $date');
-                    }, onConfirm: (DateTime date) {
-                      _confirmSchedule(date);
-                    }, currentTime: DateTime.now(), locale: LocaleType.sq);
-                    // Navigator.pushNamed(context, SubscribeToQuotesScreen.routeName);
-                  },
-                ),
-              ),
+              child: SizedBox()
             ),
           ],
         ),

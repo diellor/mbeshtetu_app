@@ -2,8 +2,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
+import 'package:mbeshtetu_app/src/models/audio_model.dart';
 import 'package:mbeshtetu_app/src/models/video_model.dart';
+import 'package:mbeshtetu_app/src/models/video_model_arg.dart';
 import 'package:mbeshtetu_app/src/screens/home/components/video_screen.dart';
+import 'package:mbeshtetu_app/src/screens/music/music_screen.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 
 class HeaderWithVideoDetails extends StatelessWidget {
@@ -17,12 +20,10 @@ class HeaderWithVideoDetails extends StatelessWidget {
 
     // TODO: implement build
     return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => VideoScreen(id: video.id),
-        ),
-      ),
+      onTap: () => video.isAudio ?  Navigator.of(context)
+          .pushNamed(MusicScreen.routeName, arguments: Audio(video: video))
+    :Navigator.of(context)
+          .pushNamed(VideoScreen.routeName, arguments: VideoArgs(video: video)),
       child: Container(
         height: size.height * 0.35,
         child: Stack(
@@ -35,7 +36,9 @@ class HeaderWithVideoDetails extends StatelessWidget {
                       bottomLeft: Radius.circular(36),
                       bottomRight: Radius.circular(36)),
                   image: DecorationImage(
-                      image: NetworkImage(video.thumbnail))),
+                    fit: BoxFit.contain,
+                      colorFilter: ColorFilter.mode(primary_blue.withOpacity(0.7), BlendMode.dstATop),
+                      image: AssetImage(video.thumbnail))),
             ),
             Positioned(
               bottom: 15,

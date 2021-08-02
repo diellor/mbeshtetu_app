@@ -1,16 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mbeshtetu_app/src/business_logic/home_screen_viewmodel.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/models/category_model.dart';
-import 'package:mbeshtetu_app/src/models/videoMetadata_model.dart';
 import 'package:mbeshtetu_app/src/models/video_model.dart';
-import 'package:mbeshtetu_app/src/screens/categories/categories_screen.dart';
 import 'package:mbeshtetu_app/src/screens/categories/categories_screen_second.dart';
 import 'package:mbeshtetu_app/src/screens/home/components/ballina_video_card.dart';
 import 'package:mbeshtetu_app/src/screens/home/components/header_video_details.dart';
 import 'package:mbeshtetu_app/src/screens/home/components/title_recomended.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
+import 'package:mbeshtetu_app/src/size_config.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -18,12 +19,11 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  int _pageNumber = 1;
-  bool _isLoading = false;
   Future categoriesWithVideos;
 
+  bool isOnline = false;
+  var listener;
   HomeScreenViewModel model = serviceLocator<HomeScreenViewModel>();
-
   @override
   void initState() {
     super.initState();
@@ -38,13 +38,13 @@ class _BodyState extends State<Body> {
     List<Video> filteredVideos = model.filteredVideosByCategory(category);
     List<Widget> columns = <Widget>[];
     if(model.getTitleRecomended(category) != ""){
-      if(category.category != "Meditimi" && category.category != "Gjumi")
+      if(category.category != "Meditimi" && category.category != "Gjumi" )
       columns.add(TitleRecommended(
           text: model.getTitleRecomended(category),
           press: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => CatetegoriesScreenSecond(category: category)));
-          })
+          },isTeFundit: category.category == "Recent"? true: false)
       );
     }
     if(category.category != "Meditimi" && category.category != "Gjumi")
@@ -54,7 +54,7 @@ class _BodyState extends State<Body> {
           children: filteredVideos
               .map((item) => new BallinaVideoCard(
                   image:
-                      item.isAudio ? item.thumbnail : "http://img.youtube.com/vi/${item.videoId}/sddefault.jpg",
+                      item.thumbnail,
                   title: item.title,
                   press: () {},
                   videoId: item.videoId,
@@ -69,8 +69,6 @@ video: item,
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: primary_blue));
     return SafeArea(
       child: FutureBuilder(
           future: categoriesWithVideos,
@@ -94,10 +92,13 @@ video: item,
                       //Container will cover 40% of our page width
                       ...getVideoCardsBasedOnCategory(
                           model.getCategories.categories[i]),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier *7.5,
+                    )
                   ],
                 ),
               ).build(context);
-          }),
+          })
     );
   }
 }

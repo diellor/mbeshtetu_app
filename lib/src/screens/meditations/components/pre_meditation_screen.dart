@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:mbeshtetu_app/src/business_logic/meditation_screen_viewmodel.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/models/category_model.dart';
+import 'package:mbeshtetu_app/src/models/selected_category.dart';
 import 'package:mbeshtetu_app/src/screens/meditations/meditation_screen.dart';
+import 'package:mbeshtetu_app/src/screens/navigation/navigation_screen.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
 
@@ -37,8 +39,12 @@ class _PreMeditationScreenState extends State<PreMeditationScreen> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     Size size = MediaQuery.of(context).size;
+    SelectedCat selectedCat = SelectedCat(ballina: 0,gjumi: 0,meditimi: 1,seancat: 0);
     return Scaffold(
+        bottomSheet: NavigationScreen(selectedCat: selectedCat),
       body: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Padding(
             padding: EdgeInsets.only(top: 18 * SizeConfig.heightMultiplier, bottom: 1 * SizeConfig.heightMultiplier),
@@ -57,16 +63,16 @@ class _PreMeditationScreenState extends State<PreMeditationScreen> {
               ),
               child: Column(children: <Widget>[
             Expanded(
-              flex: 1,
+              flex: 2,
               child: InkWell(
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => MeditationScreen(model.getCategoryTabList[0].id),
+                    builder: (_) => MeditationScreen(model.getCategoryTabList[0].id, "Qetësoj mendjen","images/postVideo_box.png"),
                   ),
                 ),
                 child: Container(
-                margin: EdgeInsets.symmetric(vertical: 4 * SizeConfig.heightMultiplier, horizontal: 6 * SizeConfig.widthMultiplier),
+                margin: EdgeInsets.symmetric(vertical: 3 * SizeConfig.heightMultiplier, horizontal: 6 * SizeConfig.widthMultiplier),
                   decoration: BoxDecoration(
                       color: Theme.of(context).scaffoldBackgroundColor,
                       boxShadow: [
@@ -78,7 +84,7 @@ class _PreMeditationScreenState extends State<PreMeditationScreen> {
                         ),
                       ],
                       borderRadius: BorderRadius.all(
-                          Radius.circular(10.0) //                 <--- border radius here
+                          Radius.circular(10.0) //
                       ),
                       border: Border.all(color: Colors.greenAccent.withOpacity(0.2))
                   ),
@@ -92,18 +98,18 @@ class _PreMeditationScreenState extends State<PreMeditationScreen> {
                  ),
               ),
               ),
-                AutoSizeText("Meditimet 1", style: TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 2.3 * SizeConfig.textMultiplier),),
+                AutoSizeText("Qetësoj mendjen", style: TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 2.3 * SizeConfig.textMultiplier),),
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: InkWell(
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => MeditationScreen(model.getCategoryTabList[1].id),
+                        builder: (_) => MeditationScreen(model.getCategoryTabList[1].id,"7 ditet e qetësisë", "images/10.png" ),
                       ),
                     ),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 4 * SizeConfig.heightMultiplier, horizontal: 6 * SizeConfig.widthMultiplier),
+                      margin: EdgeInsets.symmetric(vertical: 3 * SizeConfig.heightMultiplier, horizontal: 6 * SizeConfig.widthMultiplier),
                       decoration: BoxDecoration(
                           color: Theme.of(context).scaffoldBackgroundColor,
                           boxShadow: [
@@ -123,13 +129,16 @@ class _PreMeditationScreenState extends State<PreMeditationScreen> {
                         child: SizedBox(
                           width: 50 * SizeConfig.widthMultiplier,
                           height: 50 * SizeConfig.heightMultiplier,
-                          child: Image.asset("images/postVideo_box.png"),
+                          child: Image.asset("images/10.png"),
                         ),
                       ),
                     ),
                   ),
                 ),
-                AutoSizeText("Meditimet 2", style: TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 2.3 * SizeConfig.textMultiplier),),
+                AutoSizeText("7 ditet e qetësisë", style: TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 2.3 * SizeConfig.textMultiplier),),
+                Spacer(
+                  flex: 1,
+                ),
               ],
             ),),
           ),

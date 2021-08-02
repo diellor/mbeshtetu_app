@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/models/audio_model.dart';
 import 'package:mbeshtetu_app/src/models/video_model.dart';
+import 'package:mbeshtetu_app/src/models/video_model_arg.dart';
 import 'package:mbeshtetu_app/src/screens/home/components/video_screen.dart';
 import 'package:mbeshtetu_app/src/screens/music/music_screen.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
@@ -23,18 +24,14 @@ class BallinaVideoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     Size size = MediaQuery.of(context).size;
-    return InkWell(
-      onTap: () => {
-        this.isAudio
-            ? Navigator.of(context)
-                .pushNamed(MusicScreen.routeName, arguments: Audio(video: video))
-            : Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => VideoScreen(id: videoId),
-                ),
-              ),
-      },
+      return InkWell(
+        onTap: () => {
+          this.isAudio
+              ? Navigator.of(context)
+                  .pushNamed(MusicScreen.routeName, arguments: Audio(video: video))
+              : Navigator.of(context)
+              .pushNamed(VideoScreen.routeName, arguments: VideoArgs(video: video))
+        },
       child: Container(
         margin: EdgeInsets.only(
             left: kDefaultPadding * 2,
@@ -59,20 +56,10 @@ class BallinaVideoCard extends StatelessWidget {
                     ]),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 3),
-                  // child: FittedBox(fit:BoxFit.contain,child: Image.network(image,fit: BoxFit.cover,
-                  //   loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
-                  //     if (loadingProgress == null) return child;
-                  //     return Center(
-                  //       child: CircularProgressIndicator(
-                  //         value: loadingProgress.expectedTotalBytes != null ?
-                  //         loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                  //             : null,
-                  //       ),
-                  //     );
-                  //   },
-                  // ),),
-
-                  child: FittedBox(fit:BoxFit.contain,child: Image.network(image, width: size.width * 0.4, height: size.width * 0.4)),
+                  child: FittedBox(fit:BoxFit.contain,child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Image.asset(image, width: size.width * 0.4, height: size.width * 0.4),
+                  )),
                 )),
             GestureDetector(
               onTap: press,
@@ -99,6 +86,7 @@ class BallinaVideoCard extends StatelessWidget {
                         child: AutoSizeText(
                       title,
                       maxLines: 2,
+                          style: TextStyle(fontWeight: FontWeight.bold),
                     ))
                   ],
                 ),

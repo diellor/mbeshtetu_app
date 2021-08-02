@@ -10,7 +10,8 @@ const Color white = Colors.white;
 const Color black = Colors.black;
 const Color grey = Colors.grey;
 const textColor = Colors.black;
-
+const dark_green =  Color(0xFFa5e6d4);
+const green =  Color(0xFFE4F6E0);
 
 const onboarding_animation = Duration(milliseconds: 200);
 

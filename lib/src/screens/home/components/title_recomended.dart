@@ -8,10 +8,12 @@ class TitleRecommended extends StatelessWidget {
     Key key,
     this.text,
     this.press,
+    this.isTeFundit
   }) : super(key: key);
 
   final String text;
   final Function press;
+  final bool isTeFundit;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class TitleRecommended extends StatelessWidget {
             ),
           ),
           // Spacer(),
-          Expanded(
+          !isTeFundit?Expanded(
             flex:1,
             child: FlatButton(
               shape: RoundedRectangleBorder(
@@ -51,10 +53,13 @@ class TitleRecommended extends StatelessWidget {
                 child: AutoSizeText(
                   "Me shume",
                   maxLines: 1,
-                  style: TextStyle(color: Colors.black.withOpacity(0.60), fontSize: 2 * SizeConfig.textMultiplier),
+                  style: TextStyle(color: Colors.black.withOpacity(0.60), fontSize:4  * SizeConfig.textMultiplier),
                 ),
               ),
             ),
+          ): Expanded(
+            flex:1,
+            child: Container()
           ),
         ],
       ),

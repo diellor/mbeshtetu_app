@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,10 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mbeshtetu_app/routes.dart';
+import 'package:mbeshtetu_app/src/business_logic/connection_status_singleton.dart';
+import 'package:mbeshtetu_app/src/business_logic/internet_check.dart';
+import 'package:mbeshtetu_app/src/business_logic/page_manager.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
+import 'package:mbeshtetu_app/src/models/audio_model.dart';
+import 'package:mbeshtetu_app/src/models/video_model_arg.dart';
+import 'package:mbeshtetu_app/src/network_indicator.dart';
+import 'package:mbeshtetu_app/src/screens/music/music_screen.dart';
 import 'package:mbeshtetu_app/src/screens/splash/spash_screen.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'src/models/video_model.dart';
 import 'src/screens/home/components/video_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
@@ -65,9 +74,11 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 void main() async {
-  setupServiceLocator();
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupServiceLocator();
+
   SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: black));
+      SystemUiOverlayStyle(statusBarColor: primary_blue));
   WidgetsFlutterBinding.ensureInitialized();
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await flutterLocalNotificationsPlugin
@@ -76,7 +87,25 @@ void main() async {
       ?.createNotificationChannel(channel);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp(MaterialApp(home: MyApp()));
+    runApp(OverlaySupport(
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Mbeshtetu App',
+          navigatorKey: navigatorKey,
+          theme: ThemeData(
+            fontFamily: 'Cera',
+            primaryColor: bold_blue,
+            primarySwatch: Colors.green,
+            buttonTheme: ButtonThemeData(
+              buttonColor: Colors.deepPurple, //  <-- dark color
+              textTheme: ButtonTextTheme
+                  .primary, //  <-- this auto selects the right color
+            ),
+          ),
+          initialRoute: SplashScreen.routeName,
+          routes: routes,
+          home: MyApp()),
+    ));
   });
 }
 
@@ -92,51 +121,49 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    //Check connection
+    OverlaySupportEntry entry;
+    DataConnectivityService()
+        .connectivityStreamController
+        .stream
+        .listen((event) {
+      print(event);
+      if (event == DataConnectionStatus.disconnected) {
+        entry = showOverlayNotification((context) {
+          return NetworkErrorAnimation();
+        }, duration: Duration(hours: 1));
+      } else {
+        if (entry != null) {
+          entry.dismiss();
+        }
+      }
+    });
+
     super.initState();
-    if (videoId.isNotEmpty) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => VideoScreen(id: videoId),
-        ),
-      );
-    }
+    serviceLocator<PageManager>().init();
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       print("onMessage: $message");
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
       print("onMessageOpenedApp: $message");
-
-      Navigator.push(
-          navigatorKey.currentState.context,
-          MaterialPageRoute(
-              builder: (context) => VideoScreen(
-                    id: message.data["videoId"],
-                  )
-          )
-      );
+      print("videoid"+message.data["videoId"]);
+      print("title"+message.data["title"]);
+      if (message.data["videoId"] != null && !message.data["videoId"].toString().endsWith("mp3")) {
+        Navigator.of(context)
+            .pushNamed(VideoScreen.routeName, arguments: VideoArgs(video: Video(videoId: message.data["videoId"], title: message.data["title"])));
+      } else {
+        print(message.data["category"]);
+        Navigator.of(context)
+            .pushNamed(MusicScreen.routeName, arguments: Audio(video: Video(videoId: message.data["videoId"], title: message.data["title"]) ));
+      }
     });
   }
-
+  //DISPOSE INIT PANGEMANGER
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Mbeshtetu App',
-      navigatorKey: navigatorKey,
-      theme: ThemeData(
-          fontFamily: 'Cera',
-          primaryColor: bold_blue,
-          primarySwatch: Colors.green,
-          buttonTheme: ButtonThemeData(
-            buttonColor: Colors.deepPurple, //  <-- dark color
-            textTheme: ButtonTextTheme
-                .primary, //  <-- this auto selects the right color
-          ),
-      ),
-      initialRoute: SplashScreen.routeName,
-      routes: routes,
+    return Scaffold(
+
     );
   }
 }
