@@ -135,7 +135,7 @@ class _BodyState extends State<Body> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.of(context).pushReplacementNamed('/selectMeditation');
+                                        Navigator.of(context).pushReplacementNamed('/sleepScreen');
                                       },
                                       child: GridContent(
                                           gridImag:

@@ -38,8 +38,6 @@ class _SleepScreenState extends State<SleepScreen> {
   @override
   Widget build(BuildContext context) {
     SelectedCat selectedCat = SelectedCat(ballina: 0,gjumi: 1,meditimi: 0,seancat: 0);
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: green));
     return Scaffold(backgroundColor: green, bottomSheet: NavigationScreen(selectedCat: selectedCat,),
         body: FutureBuilder(
       future: sleepCategory,

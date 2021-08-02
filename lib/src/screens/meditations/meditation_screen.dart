@@ -15,8 +15,6 @@ class MeditationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.white));
     SelectedCat selectedCat = SelectedCat(ballina: 0,gjumi: 0,meditimi: 1,seancat: 0);
     return Scaffold(backgroundColor: primary_blue, body: Body(categoryId: id, title: title, thumbnail: thumbnail,), bottomSheet: NavigationScreen(selectedCat: selectedCat),);
   }

@@ -189,18 +189,18 @@ class _BodyState extends State<Body> {
                         ),
                       ),
                       SizedBox(
-                        height: SizeConfig.heightMultiplier *4,
+                        height: SizeConfig.heightMultiplier * 4,
                       ),
-                      Text(
-                        "Category",
-                        style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier),
-                      ),
+                      // Text(
+                      //   widget.video.category != null? widget.video.category: widget.videos[widget.index].category,
+                      //   style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier),
+                      // ),
                       CurrentSongTitle(),
                       Container(
                         child: Expanded(
                           child: Column(
                             children: [
-                             AudioProgressBar(),
+                            AudioProgressBar(videoId: this.widget.video?.videoId != null?this.widget.video.videoId: this.widget.videos[this.widget.index].videoId ,),
                               AudioControlButtons(),
                             ],
                           ),
@@ -266,14 +266,26 @@ class Playlist extends StatelessWidget {
 }
 
 class AudioProgressBar extends StatelessWidget {
-  const AudioProgressBar({Key key}) : super(key: key);
+  final String videoId;
+  AudioProgressBar({Key key, this.videoId}) : super(key: key);
 
+  var flag = false;
   @override
   Widget build(BuildContext context) {
     // final pageManager = serviceLocator<PageManager>();
     return ValueListenableBuilder<ProgressBarState>(
       valueListenable: pageManager.progressNotifier,
       builder: (_, value, __) {
+        print("CURRENT"+value.current.toString());
+        print("TOTAL"+value.total.toString());
+        if(value.current.compareTo(value.total) > 0 && flag == false){
+          WidgetsBinding.instance.addPostFrameCallback((_){
+            flag = true;
+            print("VIDEOID"+videoId);
+            Navigator.of(context)
+                .pushNamed("/postVideo", arguments: videoId );
+          });
+        }
         return ProgressBar(
           baseBarColor: secondary_blue,
           bufferedBarColor: secondary_blue,

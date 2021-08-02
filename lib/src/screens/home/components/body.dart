@@ -30,12 +30,6 @@ class _BodyState extends State<Body> {
     categoriesWithVideos = _loadCategoriesWithVideos();
   }
 
-  // @override
-  // void dispose(){
-  //   super.dispose();
-  //   listener.cancel();
-  // }
-
   _loadCategoriesWithVideos() async {
     return await model.loadCategoriesData();
   }
@@ -75,8 +69,6 @@ video: item,
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: primary_blue));
     return SafeArea(
       child: FutureBuilder(
           future: categoriesWithVideos,

@@ -98,7 +98,8 @@ class _CatetegoriesScreenSecondState extends State<CatetegoriesScreenSecond>
                         return TabBar(
                           controller: _controller,
                           isScrollable: true,
-                          indicatorWeight: 0.01,
+                          indicatorWeight: 0.5,
+                          indicatorColor: Color(0xff2D2727),
                           labelColor: Color(0xff2D2727),
                           labelStyle: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: SizeConfig.textMultiplier * 4),

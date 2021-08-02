@@ -13,8 +13,10 @@ import 'package:mbeshtetu_app/src/business_logic/connection_status_singleton.dar
 import 'package:mbeshtetu_app/src/business_logic/internet_check.dart';
 import 'package:mbeshtetu_app/src/business_logic/page_manager.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
+import 'package:mbeshtetu_app/src/models/audio_model.dart';
 import 'package:mbeshtetu_app/src/models/video_model_arg.dart';
 import 'package:mbeshtetu_app/src/network_indicator.dart';
+import 'package:mbeshtetu_app/src/screens/music/music_screen.dart';
 import 'package:mbeshtetu_app/src/screens/splash/spash_screen.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -85,7 +87,25 @@ void main() async {
       ?.createNotificationChannel(channel);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp(MaterialApp(home: MyApp()));
+    runApp(OverlaySupport(
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Mbeshtetu App',
+          navigatorKey: navigatorKey,
+          theme: ThemeData(
+            fontFamily: 'Cera',
+            primaryColor: bold_blue,
+            primarySwatch: Colors.green,
+            buttonTheme: ButtonThemeData(
+              buttonColor: Colors.deepPurple, //  <-- dark color
+              textTheme: ButtonTextTheme
+                  .primary, //  <-- this auto selects the right color
+            ),
+          ),
+          initialRoute: SplashScreen.routeName,
+          routes: routes,
+          home: MyApp()),
+    ));
   });
 }
 
@@ -127,33 +147,23 @@ class _MyAppState extends State<MyApp> {
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
       print("onMessageOpenedApp: $message");
-      if (message.data["videoId"] != null) {
+      print("videoid"+message.data["videoId"]);
+      print("title"+message.data["title"]);
+      if (message.data["videoId"] != null && !message.data["videoId"].toString().endsWith("mp3")) {
         Navigator.of(context)
-            .pushNamed(VideoScreen.routeName, arguments: VideoArgs(video: message.data as Video));
+            .pushNamed(VideoScreen.routeName, arguments: VideoArgs(video: Video(videoId: message.data["videoId"], title: message.data["title"])));
+      } else {
+        print(message.data["category"]);
+        Navigator.of(context)
+            .pushNamed(MusicScreen.routeName, arguments: Audio(video: Video(videoId: message.data["videoId"], title: message.data["title"]) ));
       }
     });
   }
   //DISPOSE INIT PANGEMANGER
   @override
   Widget build(BuildContext context) {
-    return OverlaySupport(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Mbeshtetu App',
-        navigatorKey: navigatorKey,
-        theme: ThemeData(
-            fontFamily: 'Cera',
-            primaryColor: bold_blue,
-            primarySwatch: Colors.green,
-            buttonTheme: ButtonThemeData(
-              buttonColor: Colors.deepPurple, //  <-- dark color
-              textTheme: ButtonTextTheme
-                  .primary, //  <-- this auto selects the right color
-            ),
-        ),
-        initialRoute: SplashScreen.routeName,
-        routes: routes,
-      ),
+    return Scaffold(
+
     );
   }
 }

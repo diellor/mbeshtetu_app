@@ -73,7 +73,9 @@ class _BodyState extends State<Body> {
                   children: [
                     IconButton(
                         icon: SvgPicture.asset("images/audio_back_btn.svg"),
-                        onPressed: () {})
+                        onPressed: () {
+                          Navigator.pop(context);
+                        })
                   ],
                 )),
             Expanded(
@@ -83,6 +85,7 @@ class _BodyState extends State<Body> {
                     Text(
                       "Vlerëso",
                       style: TextStyle(
+
                           fontSize: 2.6 * SizeConfig.textMultiplier,
                           fontWeight: FontWeight.bold),
                     ),
