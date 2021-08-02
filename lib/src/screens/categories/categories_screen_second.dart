@@ -79,7 +79,7 @@ class _CatetegoriesScreenSecondState extends State<CatetegoriesScreenSecond>
       backgroundColor: primary_blue,
       bottomSheet: NavigationScreen(selectedCat: selectedCat),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(SizeConfig.heightMultiplier * 10),
+        preferredSize: Size.fromHeight(SizeConfig.heightMultiplier * 16),
         child: Padding(
           padding: EdgeInsets.only(top: 4 * SizeConfig.heightMultiplier),
           child: new AppBar(
