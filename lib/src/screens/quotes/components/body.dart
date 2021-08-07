@@ -69,11 +69,11 @@ class _BodyState extends State<Body> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(child: AutoSizeText("Miresevini!", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 3 * SizeConfig.textMultiplier), minFontSize: 4,)),
+                    Container(child: AutoSizeText("Mirësevini!", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 3 * SizeConfig.textMultiplier), minFontSize: 4,)),
                       Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Center(
-                          child: Container(child: AutoSizeText("Ky aplikacion nuk merr asnje te dhene personale, ju jeni plotesisht anoninm gjate perdorimit te aplikacionit!", style:
+                          child: Container(child: AutoSizeText("Ky aplikacion nuk merr asnjë të dhënë personale, ju jeni plotësisht anoninm gjatë përdorimit të aplikacionit!", style:
                             TextStyle(fontSize: 2 * SizeConfig.textMultiplier),textAlign: TextAlign.center,)),
                         ),
                       ),

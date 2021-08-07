@@ -51,7 +51,7 @@ class TitleRecommended extends StatelessWidget {
               color: primary_blue,
               child: FittedBox(
                 child: AutoSizeText(
-                  "Me shume",
+                  "Më shume",
                   maxLines: 1,
                   style: TextStyle(color: Colors.black.withOpacity(0.60), fontSize:4  * SizeConfig.textMultiplier),
                 ),

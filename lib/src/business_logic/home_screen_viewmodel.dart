@@ -52,27 +52,27 @@ class HomeScreenViewModel extends ChangeNotifier {
   }
 
   String getTitleRecomended(Category category) {
-    if (category.category == "Ankthi" && category.subCategory == "MESO") {
-      return "Meso per ankthin";
+    if (category.category == "Ankthi" && category.subCategory == "MËSO") {
+      return "Mëso per ankthin";
     } else if (category.category == "Ankthi" &&
-        category.subCategory == "LEHTESO") {
-      return "Lehteso simptomet e ankthit";
+        category.subCategory == "LEHTËSO") {
+      return "Lehtëso simptomet e ankthit";
     } else if (category.category == "Stresi" &&
-        category.subCategory == "MESO") {
-      return "Meso per stresin";
+        category.subCategory == "MËSO") {
+      return "Mëso per stresin";
     } else if (category.category == "Stresi" &&
-        category.subCategory == "LEHTESO") {
-      return "Lehteso simptomet e stresit";
-    } else if (category.category == "Drepresioni" &&
-        category.subCategory == "MESO") {
-      return "Meso per depresionin";
+        category.subCategory == "LEHTËSO") {
+      return "Lehtëso simptomet e stresit";
+    } else if (category.category == "Depresioni" &&
+        category.subCategory == "MËSO") {
+      return "Mëso per depresionin";
     } else if (category.category == "Recent" && category.videos.length > 0) {
       return "Shikuar së fundmi";
-    } else if (category.category == "Drepresioni" &&
-        category.subCategory == "LEHTESO") {
-      return "Lehteso simptomet e depresionit";
+    } else if (category.category == "Depresioni" &&
+        category.subCategory == "LEHTËSO") {
+      return "Lehtëso simptomet e depresionit";
     } else if (category.videos.length > 0){
-      return "Te tjera";
+      return "Të tjera";
     } else {
       return "";
     }

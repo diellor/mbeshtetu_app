@@ -33,7 +33,7 @@ class _BodyState extends State<Body> {
   _loadCategoryNames() async {
     final categories = await model.loadCategoryTabs();
     return categories
-        .where((element) => element.subCategory == "MESO")
+        .where((element) => element.subCategory == "MËSO")
         .toList();
   }
 
@@ -68,7 +68,7 @@ class _BodyState extends State<Body> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Cka ju sjell te",
+                          "Çka ju sjellë tek",
                           style: TextStyle(
                               fontSize: 3.2 * SizeConfig.textMultiplier,
                               fontWeight: FontWeight.bold),

@@ -100,7 +100,7 @@ class _BodyState extends State<Body> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                GestureDetector(
+                                InkWell(
                                   onTap: (){
                                     // Navigator.of(context)
                                     //     .pushNamed("/musicScreen", arguments: Audio(Reloaded 1 of 1540 libraries in 1,255ms., index: index, videos: videos));
@@ -109,13 +109,21 @@ class _BodyState extends State<Body> {
                                   },
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Expanded(flex: 1, child: SvgPicture.asset("images/meditimi_play_2.svg")),
-                                        Expanded(flex: 3, child:Text(videos[index].title,style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)), ),
-                                        Expanded(flex: 1, child: Text("10 min"))
-                                      ],
+                                    child: Container(
+                                      padding: const EdgeInsets.all(5.0),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(20),
+                                          border: Border.all(color: green.withOpacity(0.9)),
+
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Expanded(flex: 1, child: SvgPicture.asset("images/meditimi_play_2.svg")),
+                                          Expanded(flex: 3, child:Text(videos[index].title,style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)), ),
+                                          Expanded(flex: 1, child: Text("10 min"))
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 )

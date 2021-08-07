@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mbeshtetu_app/routes.dart';
-import 'package:mbeshtetu_app/src/business_logic/connection_status_singleton.dart';
 import 'package:mbeshtetu_app/src/business_logic/internet_check.dart';
 import 'package:mbeshtetu_app/src/business_logic/page_manager.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
@@ -78,7 +77,7 @@ void main() async {
   await setupServiceLocator();
 
   SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: primary_blue));
+      SystemUiOverlayStyle(statusBarColor: Colors.black));
   WidgetsFlutterBinding.ensureInitialized();
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await flutterLocalNotificationsPlugin
@@ -104,7 +103,7 @@ void main() async {
           ),
           initialRoute: SplashScreen.routeName,
           routes: routes,
-          home: MyApp()),
+        ),
     ));
   });
 }

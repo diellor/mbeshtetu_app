@@ -135,7 +135,7 @@ class _PreMeditationScreenState extends State<PreMeditationScreen> {
                     ),
                   ),
                 ),
-                AutoSizeText("7 ditet e qetësisë", style: TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 2.3 * SizeConfig.textMultiplier),),
+                AutoSizeText("7 ditët e qetësisë", style: TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 2.3 * SizeConfig.textMultiplier),),
                 Spacer(
                   flex: 1,
                 ),

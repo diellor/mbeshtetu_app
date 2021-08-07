@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mbeshtetu_app/src/business_logic/meditation_screen_viewmodel.dart';
+import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/models/audio_model.dart';
 import 'package:mbeshtetu_app/src/models/video_model.dart';
 import 'package:mbeshtetu_app/src/screens/music/music_screen.dart';
@@ -101,16 +102,23 @@ class _BodyState extends State<Body> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                GestureDetector(
+                                InkWell(
                                   onTap: (){
                                     // Navigator.of(context)
                                     //     .pushNamed("/musicScreen", arguments: Audio(Reloaded 1 of 1540 libraries in 1,255ms., index: index, videos: videos));
                                     Navigator.of(context)
                                         .pushNamed(MusicScreen.routeName, arguments: Audio(index: index, videos: videos));
                                   },
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),
-                                    child: Row(
+                            child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),
+                            child: Container(
+                            padding: const EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: primary_blue.withOpacity(0.9)),
+
+                            ),
+                            child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
                                         Expanded(flex: 1, child: SvgPicture.asset("images/meditimi_play_1.svg")),
@@ -119,6 +127,7 @@ class _BodyState extends State<Body> {
                                       ],
                                     ),
                                   ),
+                                ),
                                 )
                               ],
                             );

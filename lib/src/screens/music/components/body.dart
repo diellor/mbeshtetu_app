@@ -191,17 +191,16 @@ class _BodyState extends State<Body> {
                       SizedBox(
                         height: SizeConfig.heightMultiplier * 4,
                       ),
-                      // Text(
-                      //   widget.video.category != null? widget.video.category: widget.videos[widget.index].category,
-                      //   style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier),
-                      // ),
                       CurrentSongTitle(),
                       Container(
                         child: Expanded(
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                            AudioProgressBar(videoId: this.widget.video?.videoId != null?this.widget.video.videoId: this.widget.videos[this.widget.index].videoId ,),
+                              AudioProgressBar(videoId: this.widget.video?.videoId != null?this.widget.video.videoId: this.widget.videos[this.widget.index].videoId ,),
                               AudioControlButtons(),
+                              RepeatButton(),
                             ],
                           ),
                         ),
@@ -310,7 +309,6 @@ class AudioControlButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        RepeatButton(),
         PreviousSongButton(),
         PlayButton(),
         NextSongButton(),
