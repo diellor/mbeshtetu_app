@@ -139,7 +139,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     super.initState();
-    serviceLocator<PageManager>().init();
+    //serviceLocator<PageManager>().init();
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       print("onMessage: $message");
