@@ -171,12 +171,12 @@
 // }
 
 import 'package:flutter/foundation.dart';
+import 'package:mbeshtetu_app/src/business_logic/playlist_repository.dart';
+import 'package:mbeshtetu_app/src/service_locator.dart';
 import 'notifiers/play_button_notifier.dart';
 import 'notifiers/progress_notifier.dart';
 import 'notifiers/repeat_button_notifier.dart';
 import 'package:audio_service/audio_service.dart';
-import 'services/playlist_repository.dart';
-import 'services/service_locator.dart';
 
 class PageManager {
   // Listeners: Updates going to the UI
@@ -189,7 +189,7 @@ class PageManager {
   final isLastSongNotifier = ValueNotifier<bool>(true);
   final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
 
-  final _audioHandler = getIt<AudioHandler>();
+  final _audioHandler = serviceLocator<AudioHandler>();
 
   // Events: Calls coming from the UI
   void init() async {
@@ -203,7 +203,7 @@ class PageManager {
   }
 
   Future<void> _loadPlaylist() async {
-    final songRepository = getIt<PlaylistRepository>();
+    final songRepository = serviceLocator<PlaylistRepository>();
     final playlist = await songRepository.fetchInitialPlaylist();
     final mediaItems = playlist
         .map((song) => MediaItem(
@@ -334,7 +334,7 @@ class PageManager {
   }
 
   Future<void> add() async {
-    final songRepository = getIt<PlaylistRepository>();
+    final songRepository = serviceLocator<PlaylistRepository>();
     final song = await songRepository.fetchAnotherSong();
     final mediaItem = MediaItem(
       id: song['id'] ?? '',

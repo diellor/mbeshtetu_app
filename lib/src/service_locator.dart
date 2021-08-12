@@ -6,6 +6,7 @@ import 'package:mbeshtetu_app/src/business_logic/category_screen_viewmodel.dart'
 import 'package:mbeshtetu_app/src/business_logic/home_screen_viewmodel.dart';
 import 'package:mbeshtetu_app/src/business_logic/meditation_screen_viewmodel.dart';
 import 'package:mbeshtetu_app/src/business_logic/page_manager.dart';
+import 'package:mbeshtetu_app/src/business_logic/playlist_repository.dart';
 import 'package:mbeshtetu_app/src/business_logic/postVideo_screen_viewmodel.dart';
 import 'package:mbeshtetu_app/src/services/schedule_service.dart';
 import 'package:mbeshtetu_app/src/services/schedule_service_implementation.dart';
@@ -24,6 +25,8 @@ Future<void> setupServiceLocator() async {
   serviceLocator.registerFactory<CategoryScreenViewModel>(() => CategoryScreenViewModel());
   serviceLocator.registerFactory<PostVideoScreenViewModel>(() => PostVideoScreenViewModel());
   serviceLocator.registerFactory<MeditationScreenViewModel>(() => MeditationScreenViewModel());
-  serviceLocator.registerFactory<PageManager>(() => PageManager());
+ serviceLocator.registerLazySingleton<PlaylistRepository>(() => DemoPlaylist());
+
+ serviceLocator.registerLazySingleton<PageManager>(() => PageManager());
   // serviceLocator.registerFactory<AudioPlayer>(() => AudioPlayer());
 }

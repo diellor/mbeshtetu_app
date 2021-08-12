@@ -26,11 +26,15 @@ class BallinaVideoCard extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
       return InkWell(
         onTap: () => {
-          this.isAudio
-              ? Navigator.of(context)
-                  .pushNamed(MusicScreen.routeName, arguments: Audio(video: video))
-              : Navigator.of(context)
-              .pushNamed(VideoScreen.routeName, arguments: VideoArgs(video: video))
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MusicScreen()),
+        )
+        // this.isAudio
+          //     ? Navigator.of(context)
+          //         .pushNamed(MusicScreen.routeName, arguments: Audio(video: video))
+          //     : Navigator.of(context)
+          //     .pushNamed(VideoScreen.routeName, arguments: VideoArgs(video: video))
         },
       child: Container(
         margin: EdgeInsets.only(

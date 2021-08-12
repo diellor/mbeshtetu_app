@@ -15,6 +15,6 @@ class MusicScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context).settings.arguments as Audio;
-    return Scaffold(body: Body(video: args.video, index: args.index, videos: args.videos));
+    return Scaffold(body: Body());
   }
 }

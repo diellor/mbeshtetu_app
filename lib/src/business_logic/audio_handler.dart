@@ -279,12 +279,12 @@ class MyAudioHandler extends BaseAudioHandler {
           ProcessingState.buffering: AudioProcessingState.buffering,
           ProcessingState.ready: AudioProcessingState.ready,
           ProcessingState.completed: AudioProcessingState.completed,
-        }[_player.processingState]!,
+        }[_player.processingState],
         repeatMode: const {
           LoopMode.off: AudioServiceRepeatMode.none,
           LoopMode.one: AudioServiceRepeatMode.one,
           LoopMode.all: AudioServiceRepeatMode.all,
-        }[_player.loopMode]!,
+        }[_player.loopMode],
         shuffleMode: (_player.shuffleModeEnabled)
             ? AudioServiceShuffleMode.all
             : AudioServiceShuffleMode.none,
@@ -303,7 +303,7 @@ class MyAudioHandler extends BaseAudioHandler {
       final newQueue = queue.value;
       if (index == null || newQueue.isEmpty) return;
       if (_player.shuffleModeEnabled) {
-        index = _player.shuffleIndices![index];
+        index = _player.shuffleIndices[index];
       }
       final oldMediaItem = newQueue[index];
       final newMediaItem = oldMediaItem.copyWith(duration: duration);
@@ -318,14 +318,14 @@ class MyAudioHandler extends BaseAudioHandler {
       final playlist = queue.value;
       if (index == null || playlist.isEmpty) return;
       if (_player.shuffleModeEnabled) {
-        index = _player.shuffleIndices![index];
+        index = _player.shuffleIndices[index];
       }
       mediaItem.add(playlist[index]);
     });
   }
 
   void _listenForSequenceStateChanges() {
-    _player.sequenceStateStream.listen((SequenceState? sequenceState) {
+    _player.sequenceStateStream.listen((SequenceState sequenceState) {
       final sequence = sequenceState?.effectiveSequence;
       if (sequence == null || sequence.isEmpty) return;
       final items = sequence.map((source) => source.tag as MediaItem);
@@ -357,7 +357,7 @@ class MyAudioHandler extends BaseAudioHandler {
 
   UriAudioSource _createAudioSource(MediaItem mediaItem) {
     return AudioSource.uri(
-      Uri.parse(mediaItem.extras!['url']),
+      Uri.parse(mediaItem.extras['url']),
       tag: mediaItem,
     );
   }
@@ -385,7 +385,7 @@ class MyAudioHandler extends BaseAudioHandler {
   Future<void> skipToQueueItem(int index) async {
     if (index < 0 || index >= queue.value.length) return;
     if (_player.shuffleModeEnabled) {
-      index = _player.shuffleIndices![index];
+      index = _player.shuffleIndices[index];
     }
     _player.seek(Duration.zero, index: index);
   }
@@ -423,7 +423,7 @@ class MyAudioHandler extends BaseAudioHandler {
   }
 
   @override
-  Future customAction(String name, [Map<String, dynamic>? extras]) async {
+  Future customAction(String name, [Map<String, dynamic> extras]) async {
     if (name == 'dispose') {
       await _player.dispose();
       super.stop();
