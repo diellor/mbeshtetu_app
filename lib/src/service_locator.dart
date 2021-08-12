@@ -15,7 +15,7 @@ import 'package:mbeshtetu_app/src/services/youtube_service.dart';
 import 'package:mbeshtetu_app/src/services/youtube_service_implementation.dart';
 GetIt serviceLocator = GetIt.instance;
 
-setupServiceLocator() async{
+Future<void> setupServiceLocator() async {
  serviceLocator.registerSingleton<AudioHandler>(await initAudioService());
   serviceLocator.registerLazySingleton<YoutubeService>(() => YoutubeServiceImpl());
   serviceLocator.registerLazySingleton<UserService>(() => UserServiceImplementation());
