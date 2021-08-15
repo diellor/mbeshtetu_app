@@ -1,12 +1,11 @@
-import 'package:audio_service/audio_service.dart';
-import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:mbeshtetu_app/src/business_logic/audio_handler.dart';
-import 'package:mbeshtetu_app/src/business_logic/notifiers/play_button_notifier.dart';
-import 'package:mbeshtetu_app/src/business_logic/notifiers/progress_notifier.dart';
-import 'package:mbeshtetu_app/src/business_logic/notifiers/repeat_button_notifier.dart';
+import 'package:flutter/foundation.dart';
+import 'package:mbeshtetu_app/src/business_logic/playlist_repository.dart';
 import 'package:mbeshtetu_app/src/models/video_model.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
+import 'notifiers/play_button_notifier.dart';
+import 'notifiers/progress_notifier.dart';
+import 'notifiers/repeat_button_notifier.dart';
+import 'package:audio_service/audio_service.dart';
 
 class PageManager {
   // Listeners: Updates going to the UI
@@ -19,10 +18,11 @@ class PageManager {
   final isLastSongNotifier = ValueNotifier<bool>(true);
   final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
 
-  AudioHandler _audioHandler = serviceLocator<AudioHandler>();
+  final _audioHandler = serviceLocator<AudioHandler>();
 
   // Events: Calls coming from the UI
   void init() async {
+    await _loadPlaylist();
     _listenToChangesInPlaylist();
     _listenToPlaybackState();
     _listenToCurrentPosition();
@@ -31,7 +31,27 @@ class PageManager {
     _listenToChangesInSong();
   }
 
-  void setPlayList(Video video, [int index, List<Video> videos]) async {
+  Future<void>skipToNextItemInQueue(int index) async {
+    await _audioHandler.skipToQueueItem(index);
+  }
+
+
+  Future<void> _loadPlaylist() async {
+    final songRepository = serviceLocator<PlaylistRepository>();
+    final playlist = await songRepository.fetchInitialPlaylist();
+    final mediaItems = playlist
+        .map((song) => MediaItem(
+      id: song['id'] ?? '',
+      album: song['album'] ?? '',
+      title: song['title'] ?? '',
+      extras: {'url': song['url']},
+    ))
+        .toList();
+    _audioHandler.addQueueItems(mediaItems);
+  }
+
+  Future<void> setPlayList(Video video, [int index, List<Video> videos]) async {
+    await remove();
     if(index != null && index != -1 && videos != null && videos.length > 0){
       var mediaItems = videos
           .map((song) => MediaItem(
@@ -41,9 +61,11 @@ class PageManager {
         extras: {'url': song.videoId},
       ))
           .toList();
+        await _audioHandler.stop();
+
         await _audioHandler.addQueueItems(mediaItems);
         await _audioHandler.skipToQueueItem(index);
-
+        await _audioHandler.play();
     } else {
       var videoItem = MediaItem(
         id: video.videoId ?? '',
@@ -162,10 +184,38 @@ class PageManager {
     }
   }
 
+  void shuffle() {
+    final enable = !isShuffleModeEnabledNotifier.value;
+    isShuffleModeEnabledNotifier.value = enable;
+    if (enable) {
+      _audioHandler.setShuffleMode(AudioServiceShuffleMode.all);
+    } else {
+      _audioHandler.setShuffleMode(AudioServiceShuffleMode.none);
+    }
+  }
+
+  Future<void> add() async {
+    final songRepository = serviceLocator<PlaylistRepository>();
+    final song = await songRepository.fetchAnotherSong();
+    final mediaItem = MediaItem(
+      id: song['id'] ?? '',
+      album: song['album'] ?? '',
+      title: song['title'] ?? '',
+      extras: {'url': song['url']},
+    );
+    _audioHandler.addQueueItem(mediaItem);
+  }
+
+  Future<void> remove() async {
+    await _audioHandler.removeQueueItemAt(0);
+  }
+
   void dispose() {
     _audioHandler.customAction('dispose');
   }
+
   void stop() {
     _audioHandler.stop();
   }
+
 }

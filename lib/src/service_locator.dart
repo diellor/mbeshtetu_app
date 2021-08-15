@@ -6,6 +6,7 @@ import 'package:mbeshtetu_app/src/business_logic/category_screen_viewmodel.dart'
 import 'package:mbeshtetu_app/src/business_logic/home_screen_viewmodel.dart';
 import 'package:mbeshtetu_app/src/business_logic/meditation_screen_viewmodel.dart';
 import 'package:mbeshtetu_app/src/business_logic/page_manager.dart';
+import 'package:mbeshtetu_app/src/business_logic/playlist_repository.dart';
 import 'package:mbeshtetu_app/src/business_logic/postVideo_screen_viewmodel.dart';
 import 'package:mbeshtetu_app/src/services/schedule_service.dart';
 import 'package:mbeshtetu_app/src/services/schedule_service_implementation.dart';
@@ -15,15 +16,16 @@ import 'package:mbeshtetu_app/src/services/youtube_service.dart';
 import 'package:mbeshtetu_app/src/services/youtube_service_implementation.dart';
 GetIt serviceLocator = GetIt.instance;
 
-setupServiceLocator() async{
+Future<void> setupServiceLocator() async{
  serviceLocator.registerSingleton<AudioHandler>(await initAudioService());
   serviceLocator.registerLazySingleton<YoutubeService>(() => YoutubeServiceImpl());
+  serviceLocator.registerLazySingleton<PlaylistRepository>(() => DemoPlaylist());
   serviceLocator.registerLazySingleton<UserService>(() => UserServiceImplementation());
   serviceLocator.registerLazySingleton<ScheduleService>(() => ScheduleServiceImplementation());
   serviceLocator.registerFactory<HomeScreenViewModel>(() => HomeScreenViewModel());
   serviceLocator.registerFactory<CategoryScreenViewModel>(() => CategoryScreenViewModel());
   serviceLocator.registerFactory<PostVideoScreenViewModel>(() => PostVideoScreenViewModel());
   serviceLocator.registerFactory<MeditationScreenViewModel>(() => MeditationScreenViewModel());
-  serviceLocator.registerFactory<PageManager>(() => PageManager());
+  serviceLocator.registerLazySingleton<PageManager>(() => PageManager());
   // serviceLocator.registerFactory<AudioPlayer>(() => AudioPlayer());
 }

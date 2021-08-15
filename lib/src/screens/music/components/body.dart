@@ -127,8 +127,8 @@ class _BodyState extends State<Body> {
     super.initState();
     pageManager = serviceLocator<PageManager>();
     pageManager.init();
-    pageManager.setPlayList(
-        this.widget.video, this.widget.index, this.widget.videos);
+    // pageManager.setPlayList(
+    //     this.widget.video, this.widget.index, this.widget.videos);
   }
 
   @override

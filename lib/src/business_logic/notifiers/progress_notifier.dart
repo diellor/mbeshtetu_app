@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class ProgressNotifier extends ValueNotifier<ProgressBarState> {
   ProgressNotifier() : super(_initialValue);
@@ -7,14 +7,13 @@ class ProgressNotifier extends ValueNotifier<ProgressBarState> {
     buffered: Duration.zero,
     total: Duration.zero,
   );
-  
 }
 
 class ProgressBarState {
   const ProgressBarState({
-    this.current,
-    this.buffered,
-    this.total,
+     this.current,
+     this.buffered,
+     this.total,
   });
   final Duration current;
   final Duration buffered;

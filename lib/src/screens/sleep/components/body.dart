@@ -104,8 +104,11 @@ class _BodyState extends State<Body> {
                                   onTap: (){
                                     // Navigator.of(context)
                                     //     .pushNamed("/musicScreen", arguments: Audio(Reloaded 1 of 1540 libraries in 1,255ms., index: index, videos: videos));
-                                    Navigator.of(context)
-                                        .pushNamed(MusicScreen.routeName, arguments: Audio(index: index, videos: videos));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => MusicScreen(videos: videos, index: index,),
+                                        ));
                                   },
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),

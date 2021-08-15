@@ -20,8 +20,11 @@ class HeaderWithVideoDetails extends StatelessWidget {
 
     // TODO: implement build
     return InkWell(
-      onTap: () => video.isAudio ?  Navigator.of(context)
-          .pushNamed(MusicScreen.routeName, arguments: Audio(video: video))
+      onTap: () => video.isAudio ?  Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MusicScreen(video: this.video),
+          ))
     :Navigator.of(context)
           .pushNamed(VideoScreen.routeName, arguments: VideoArgs(video: video)),
       child: Container(

@@ -236,8 +236,11 @@ class CategoryTile extends StatelessWidget {
     return InkWell(
       onTap: () => {
         this.videos[index].isAudio
-            ?  Navigator.of(context)
-          .pushNamed(MusicScreen.routeName, arguments: Audio(index: index, videos: videos))
+            ?  Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MusicScreen(videos: videos, index: index,),
+            ))
             : Navigator.of(context)
           .pushNamed(VideoScreen.routeName, arguments: VideoArgs(video: videos[index])),
       },
