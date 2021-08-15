@@ -1,11 +1,14 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mbeshtetu_app/src/business_logic/notifiers/play_button_notifier.dart';
 import 'package:mbeshtetu_app/src/business_logic/notifiers/progress_notifier.dart';
 import 'package:mbeshtetu_app/src/business_logic/notifiers/repeat_button_notifier.dart';
 import 'package:mbeshtetu_app/src/business_logic/page_manager.dart';
+import 'package:mbeshtetu_app/src/commons.dart';
 import 'package:mbeshtetu_app/src/models/video_model.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
+import 'package:mbeshtetu_app/src/size_config.dart';
 
 class Body3 extends StatefulWidget {
 
@@ -35,6 +38,7 @@ class _Body3State extends State<Body3> {
   Future<void> removeItems() async {
     await serviceLocator<PageManager>().remove();
   }
+
   Future<void> setPlayList () async {
     if(this.widget.video != null && this.widget.index == null || this.widget.index == -1){
       await serviceLocator<PageManager>().setPlayList(this.widget.video);
@@ -44,11 +48,13 @@ class _Body3State extends State<Body3> {
      // await skipToNext();
     }
   }
+
   Future<void> skipToNext () async {
     if (this.widget.videos != null && this.widget.index != null || this.widget.index != -1 ){
        await serviceLocator<PageManager>().skipToNextItemInQueue(this.widget.index);
     }
   }
+
   @override
   void dispose() {
     serviceLocator<PageManager>().dispose();
@@ -63,17 +69,72 @@ class _Body3State extends State<Body3> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        children: [
-          CurrentSongTitle(),
-          Playlist(),
-          AddRemoveSongButtons(),
-          AudioProgressBar(),
-          AudioControlButtons(),
-        ],
-      ),
+    return Stack(
+      children: [
+        Positioned.fill(
+            child: Image.asset(
+              "images/audio_bg.png",
+              width: SizeConfig.screenWidth,
+              fit: BoxFit.fitWidth,
+              repeat: ImageRepeat.repeatX,
+              alignment: Alignment.bottomCenter,
+            )),
+        Column(
+          children: [
+            Expanded(
+                flex: 1,
+                child: Row(
+                  children: [
+                    IconButton(
+                        icon: SvgPicture.asset("images/audio_back_btn.svg"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        })
+                  ],
+                )),
+            Expanded(
+                flex: 4,
+                child: Padding(
+                  padding: EdgeInsets.all(25.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            bottom: 2 * SizeConfig.heightMultiplier),
+                        child: Container(
+                          width: 70 * SizeConfig.heightMultiplier,
+                          height: 70 * SizeConfig.widthMultiplier,
+                          child: Image.asset(
+                            "images/audio_bg_2.png",
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: SizeConfig.heightMultiplier * 4,
+                      ),
+                      CurrentSongTitle(),
+                      Container(
+                        child: Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AudioProgressBar(videoId: this.widget.video?.videoId != null?this.widget.video.videoId: this.widget.videos[this.widget.index].videoId ,),
+                              AudioControlButtons(),
+                              RepeatButton(),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+          ],
+        )
+      ],
     );
   }
 }
@@ -82,6 +143,7 @@ class _Body3State extends State<Body3> {
 
 class CurrentSongTitle extends StatelessWidget {
   const CurrentSongTitle({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final pageManager = serviceLocator<PageManager>();
@@ -89,8 +151,15 @@ class CurrentSongTitle extends StatelessWidget {
       valueListenable: pageManager.currentSongTitleNotifier,
       builder: (_, title, __) {
         return Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Text(title, style: TextStyle(fontSize: 40)),
+          padding: EdgeInsets.only(
+              bottom: 2 * SizeConfig.heightMultiplier),
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 3 * SizeConfig.textMultiplier,
+                fontWeight: FontWeight.bold),
+          ),
         );
       },
     );
@@ -99,6 +168,7 @@ class CurrentSongTitle extends StatelessWidget {
 
 class Playlist extends StatelessWidget {
   const Playlist({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final pageManager = serviceLocator<PageManager>();
@@ -120,39 +190,32 @@ class Playlist extends StatelessWidget {
   }
 }
 
-class AddRemoveSongButtons extends StatelessWidget {
-  const AddRemoveSongButtons({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    final pageManager = serviceLocator<PageManager>();
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          FloatingActionButton(
-            onPressed: pageManager.add,
-            child: Icon(Icons.add),
-          ),
-          FloatingActionButton(
-            onPressed: pageManager.remove,
-            child: Icon(Icons.remove),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class AudioProgressBar extends StatelessWidget {
-  const AudioProgressBar({Key key}) : super(key: key);
+  final String videoId;
+  AudioProgressBar({Key key, this.videoId}) : super(key: key);
+
+  var flag = false;
   @override
   Widget build(BuildContext context) {
     final pageManager = serviceLocator<PageManager>();
     return ValueListenableBuilder<ProgressBarState>(
       valueListenable: pageManager.progressNotifier,
       builder: (_, value, __) {
+        print("CURRENT"+value.current.toString());
+        print("TOTAL"+value.total.toString());
+        if(value.current.compareTo(value.total) > 0 && flag == false){
+          WidgetsBinding.instance.addPostFrameCallback((_){
+            flag = true;
+            print("VIDEOID"+videoId);
+            Navigator.of(context)
+                .pushNamed("/postVideo", arguments: videoId );
+          });
+        }
         return ProgressBar(
+          baseBarColor: secondary_blue,
+          bufferedBarColor: secondary_blue,
+          progressBarColor: preMeditation_bg,
+          thumbColor: preMeditation_bg ,
           progress: value.current,
           buffered: value.buffered,
           total: value.total,
@@ -165,29 +228,28 @@ class AudioProgressBar extends StatelessWidget {
 
 class AudioControlButtons extends StatelessWidget {
   const AudioControlButtons({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          RepeatButton(),
-          PreviousSongButton(),
-          PlayButton(),
-          NextSongButton(),
-          ShuffleButton(),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        PreviousSongButton(),
+        PlayButton(),
+        NextSongButton(),
+      ],
     );
   }
 }
 
 class RepeatButton extends StatelessWidget {
   const RepeatButton({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final pageManager = serviceLocator<PageManager>();
+
     return ValueListenableBuilder<RepeatState>(
       valueListenable: pageManager.repeatButtonNotifier,
       builder: (context, value, child) {
@@ -214,16 +276,17 @@ class RepeatButton extends StatelessWidget {
 
 class PreviousSongButton extends StatelessWidget {
   const PreviousSongButton({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final pageManager = serviceLocator<PageManager>();
+
     return ValueListenableBuilder<bool>(
       valueListenable: pageManager.isFirstSongNotifier,
       builder: (_, isFirst, __) {
         return IconButton(
-          icon: Icon(Icons.skip_previous),
-          onPressed: (isFirst) ? null : pageManager.previous,
-        );
+          icon: Image.asset("images/audio_left.png"),
+          onPressed: (isFirst) ? null : pageManager.previous,        );
       },
     );
   }
@@ -231,9 +294,11 @@ class PreviousSongButton extends StatelessWidget {
 
 class PlayButton extends StatelessWidget {
   const PlayButton({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final pageManager = serviceLocator<PageManager>();
+
     return ValueListenableBuilder<ButtonState>(
       valueListenable: pageManager.playButtonNotifier,
       builder: (_, value, __) {
@@ -247,13 +312,13 @@ class PlayButton extends StatelessWidget {
             );
           case ButtonState.paused:
             return IconButton(
-              icon: Icon(Icons.play_arrow),
+              icon: Image.asset("images/audio_play.png"),
               iconSize: 32.0,
               onPressed: pageManager.play,
             );
           case ButtonState.playing:
             return IconButton(
-              icon: Icon(Icons.pause),
+              icon: Image.asset("images/audio_pause.png"),
               iconSize: 32.0,
               onPressed: pageManager.pause,
             );
@@ -265,34 +330,17 @@ class PlayButton extends StatelessWidget {
 
 class NextSongButton extends StatelessWidget {
   const NextSongButton({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final pageManager = serviceLocator<PageManager>();
+
     return ValueListenableBuilder<bool>(
       valueListenable: pageManager.isLastSongNotifier,
       builder: (_, isLast, __) {
         return IconButton(
-          icon: Icon(Icons.skip_next),
+          icon: Image.asset("images/audio_right.png"),
           onPressed: (isLast) ? null : pageManager.next,
-        );
-      },
-    );
-  }
-}
-
-class ShuffleButton extends StatelessWidget {
-  const ShuffleButton({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    final pageManager = serviceLocator<PageManager>();
-    return ValueListenableBuilder<bool>(
-      valueListenable: pageManager.isShuffleModeEnabledNotifier,
-      builder: (context, isEnabled, child) {
-        return IconButton(
-          icon: (isEnabled)
-              ? Icon(Icons.shuffle)
-              : Icon(Icons.shuffle, color: Colors.grey),
-          onPressed: pageManager.shuffle,
         );
       },
     );

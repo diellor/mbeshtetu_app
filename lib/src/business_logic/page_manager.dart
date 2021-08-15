@@ -61,11 +61,13 @@ class PageManager {
         extras: {'url': song.videoId},
       ))
           .toList();
+      if(_audioHandler.playbackState.value.playing){
         await _audioHandler.stop();
+      }
 
         await _audioHandler.addQueueItems(mediaItems);
         await _audioHandler.skipToQueueItem(index);
-        await _audioHandler.play();
+      //  await _audioHandler.play();
     } else {
       var videoItem = MediaItem(
         id: video.videoId ?? '',
