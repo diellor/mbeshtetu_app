@@ -183,7 +183,7 @@ class _BodyState extends State<Body> {
                           width: 70 * SizeConfig.heightMultiplier,
                           height: 70 * SizeConfig.widthMultiplier,
                           child: Image.asset(
-                            "images/audio_player_img.png",
+                            "images/audio_bg_2.png",
                             fit: BoxFit.contain,
                           ),
                         ),

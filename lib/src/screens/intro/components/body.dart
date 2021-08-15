@@ -74,7 +74,7 @@ class _BodyState extends State<Body> {
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "mbështetu?",
+                          "Mbështetu?",
                           style: TextStyle(
                               fontSize: 3.2 * SizeConfig.textMultiplier,
                               fontWeight: FontWeight.bold),

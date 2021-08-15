@@ -25,10 +25,11 @@ class _ChatScreenState extends State<ChatScreen> {
           padding: EdgeInsets.only(bottom: SizeConfig.heightMultiplier *12, top: SizeConfig.heightMultiplier * 4),
           child: Tawk(
             directChatLink:
+           // 'https://tawk.to/chat/5eb4764681d25c0e5849d53a/default',
                 'https://tawk.to/chat/5ea35c7335bcbb0c9ab46bce/default',
             visitor: TawkVisitor(
-              name: 'Ayoub AMINE',
-              email: 'ayoubamine2a@gmail.com',
+              name: 'Përdorues anonim',
+              email: 'anonim@gmail.com',
             ), // onLoad: () {
             //   print('Hello Tawk!');
             // },

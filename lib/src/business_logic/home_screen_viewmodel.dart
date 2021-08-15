@@ -53,19 +53,19 @@ class HomeScreenViewModel extends ChangeNotifier {
 
   String getTitleRecomended(Category category) {
     if (category.category == "Ankthi" && category.subCategory == "MËSO") {
-      return "Mëso per ankthin";
+      return "Mëso për ankthin";
     } else if (category.category == "Ankthi" &&
         category.subCategory == "LEHTËSO") {
       return "Lehtëso simptomet e ankthit";
     } else if (category.category == "Stresi" &&
         category.subCategory == "MËSO") {
-      return "Mëso per stresin";
+      return "Mëso për stresin";
     } else if (category.category == "Stresi" &&
         category.subCategory == "LEHTËSO") {
       return "Lehtëso simptomet e stresit";
     } else if (category.category == "Depresioni" &&
         category.subCategory == "MËSO") {
-      return "Mëso per depresionin";
+      return "Mëso për depresionin";
     } else if (category.category == "Recent" && category.videos.length > 0) {
       return "Shikuar së fundmi";
     } else if (category.category == "Depresioni" &&
