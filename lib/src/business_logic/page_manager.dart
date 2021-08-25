@@ -21,7 +21,7 @@ class PageManager {
   final _audioHandler = serviceLocator<AudioHandler>();
 
   // Events: Calls coming from the UI
-  void init() async {
+  void init() async  {
     await _loadPlaylist();
     _listenToChangesInPlaylist();
     _listenToPlaybackState();
@@ -51,6 +51,9 @@ class PageManager {
   }
 
   Future<void> setPlayList(Video video, [int index, List<Video> videos]) async {
+    if(_audioHandler.playbackState.value.playing){
+      await _audioHandler.stop();
+    }
     await remove();
     if(index != null && index != -1 && videos != null && videos.length > 0){
       var mediaItems = videos
@@ -61,10 +64,6 @@ class PageManager {
         extras: {'url': song.videoId},
       ))
           .toList();
-      if(_audioHandler.playbackState.value.playing){
-        await _audioHandler.stop();
-      }
-
         await _audioHandler.addQueueItems(mediaItems);
         await _audioHandler.skipToQueueItem(index);
       //  await _audioHandler.play();
@@ -75,7 +74,10 @@ class PageManager {
         title: video.title ?? '',
         extras: {'url': video.videoId},
       );
-      await _audioHandler.addQueueItem(videoItem);
+      List<MediaItem> list = [];
+      list.add(videoItem);
+      await _audioHandler.addQueueItems(list);
+      await _audioHandler.skipToQueueItem(0);
     }
   }
 

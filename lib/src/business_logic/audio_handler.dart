@@ -127,7 +127,7 @@ class MyAudioHandler extends BaseAudioHandler {
   Future<void> addQueueItem(MediaItem mediaItem) async {
     // manage Just Audio
     final audioSource = _createAudioSource(mediaItem);
-    _playlist.add(audioSource);
+    await _playlist.add(audioSource);
 
     final newQueue = queue.value..add(mediaItem);
     queue.add(newQueue);

@@ -32,9 +32,6 @@ class _Body3State extends State<Body3> {
     setPlayList();
   }
 
-  // Future<void> removeItems () async {
-  //   serviceLocator<PageManager>().removeItems();
-  // }
   Future<void> removeItems() async {
     await serviceLocator<PageManager>().remove();
   }
@@ -44,6 +41,7 @@ class _Body3State extends State<Body3> {
       await serviceLocator<PageManager>().setPlayList(this.widget.video);
     } else
     if (this.widget.videos != null && this.widget.index != null || this.widget.index != -1 ){
+      print(this.widget.videos);
       await serviceLocator<PageManager>().setPlayList(this.widget.video, this.widget.index, this.widget.videos);
      // await skipToNext();
     }
@@ -131,7 +129,8 @@ class _Body3State extends State<Body3> {
                       ),
                     ],
                   ),
-                )),
+                )
+            ),
           ],
         )
       ],

@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mbeshtetu_app/src/commons.dart';
-import 'package:mbeshtetu_app/src/models/audio_model.dart';
 import 'package:mbeshtetu_app/src/models/video_model.dart';
 import 'package:mbeshtetu_app/src/models/video_model_arg.dart';
 import 'package:mbeshtetu_app/src/screens/home/components/video_screen.dart';
@@ -26,17 +25,25 @@ class BallinaVideoCard extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
       return InkWell(
         onTap: () => {
-        Navigator.push(
-        context,
-        MaterialPageRoute(
-        builder: (context) => MusicScreen(video: this.video),
-        ))
-
-        // this.isAudio
-          //     ? Navigator.of(context)
-          //         .pushNamed(MusicScreen.routeName, arguments: Audio(video: video))
-          //     : Navigator.of(context)
-          //     .pushNamed(VideoScreen.routeName, arguments: VideoArgs(video: video))
+        // Navigator.push(
+        // context,
+        // MaterialPageRoute(
+        // builder: (context) => MusicScreen(video: this.video),
+        // ))
+        //
+        // // this.isAudio
+        //   //     ? Navigator.of(context)
+        //   //         .pushNamed(MusicScreen.routeName, arguments: Audio(video: video))
+        //   //     : Navigator.of(context)
+        //   //     .pushNamed(VideoScreen.routeName, arguments: VideoArgs(video: video))
+          this.video.isAudio
+              ?  Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MusicScreen(video: this.video,),
+              ))
+              : Navigator.of(context)
+              .pushNamed(VideoScreen.routeName, arguments: VideoArgs(video: this.video)),
         },
       child: Container(
         margin: EdgeInsets.only(
