@@ -1,3 +1,4 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mbeshtetu_app/src/models/started_watching_videos_model.dart';
@@ -23,6 +24,7 @@ class _VideoScreenBodyState extends State<VideoScreenBody> {
   @override
   void initState() {
     super.initState();
+    stopAudio();
     _controller = YoutubePlayerController(
       initialVideoId: widget.video.videoId,
       flags: YoutubePlayerFlags(
@@ -34,6 +36,13 @@ class _VideoScreenBodyState extends State<VideoScreenBody> {
         _controller.initialVideoId,
         DateTime.now().millisecondsSinceEpoch ~/ 1000));
   }
+  void stopAudio () async {
+    final _audioHandler = serviceLocator<AudioHandler>();
+    if(_audioHandler.playbackState.value.playing){
+      await _audioHandler.stop();
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();

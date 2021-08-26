@@ -14,7 +14,6 @@ class VideoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context).settings.arguments as VideoArgs;
-    print(args);
     return Scaffold(body: VideoScreenBody(video: args.video,));
   }
 }
