@@ -73,7 +73,6 @@ class _VideoScreenBodyState extends State<VideoScreenBody> {
   }
 
   _scheduleVideo(DateTime dateTime, String videoId) {
-    print('qitu');
     final timestamp = dateTime.millisecondsSinceEpoch;
     // this._scheduleService.scheduleVideo(CreateSchedule(timestamp, videoId));
   }
@@ -89,7 +88,7 @@ class _VideoScreenBodyState extends State<VideoScreenBody> {
   }
 
   youtubeHierarchy() {
-    SystemChrome.setEnabledSystemUIOverlays([]);
+   // SystemChrome.setEnabledSystemUIOverlays([]);
     _controller.updateValue(_controller.value.copyWith(isFullScreen: true));
     print("ne hierarchy");
     return WillPopScope(
@@ -104,61 +103,58 @@ class _VideoScreenBodyState extends State<VideoScreenBody> {
 
         return new Future.value(true);
       },
-      child: Container(
-        color: Colors.white,
-        child: YoutubePlayerBuilder(
-          player: YoutubePlayer(
-            controller: _controller,
-            onEnded: (data) {
-              print("edhe qitu");
-              _pushToNextScreen();
-            },
-          ),
-          builder: (context, player) {
-            return Column(
-              children: [
-                // some widgets
-                Flexible(flex: 1, fit: FlexFit.loose, child: player),
-                Flexible(
-                  flex: 1,
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 2.5 * SizeConfig.heightMultiplier,
-                            horizontal: 3 * SizeConfig.widthMultiplier),
-                        child: Text(
-                          widget.video.title,
-                          style: TextStyle(
-                              fontSize: 3 * SizeConfig.textMultiplier),
-                        ),
+      child: YoutubePlayerBuilder(
+        player: YoutubePlayer(
+          controller: _controller,
+          aspectRatio: 16 / 9,
+          onEnded: (data) {
+            _pushToNextScreen();
+          },
+        ),
+        builder: (context, player) {
+          return Column(
+            children: [
+              // some widgets
+              Flexible(flex: 1, fit: FlexFit.loose, child: player),
+              Flexible(
+                flex: 1,
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 2.5 * SizeConfig.heightMultiplier,
+                          horizontal: 3 * SizeConfig.widthMultiplier),
+                      child: Text(
+                        widget.video.title,
+                        style: TextStyle(
+                            fontSize: 3 * SizeConfig.textMultiplier),
                       ),
                     ),
                   ),
                 ),
-                Flexible(
-                  flex: 1,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 13 * SizeConfig.widthMultiplier,
-                        vertical: 13 * SizeConfig.heightMultiplier),
-                    child: DefaultButton(
-                      text: "Kthehu",
-                      press: () {
-                        if (_controller.value.isPlaying) {
-                          _controller.pause();
-                        }
-                        //_controller.dispose();
-                        Navigator.pop(context);
-                      },
-                    ),
+              ),
+              Flexible(
+                flex: 1,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 13 * SizeConfig.widthMultiplier,
+                      vertical: 13 * SizeConfig.heightMultiplier),
+                  child: DefaultButton(
+                    text: "Kthehu",
+                    press: () {
+                      if (_controller.value.isPlaying) {
+                        _controller.pause();
+                      }
+                      //_controller.dispose();
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
-              ],
-            );
-          },
-        ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

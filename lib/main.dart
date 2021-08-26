@@ -86,25 +86,7 @@ void main() async {
       ?.createNotificationChannel(channel);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp(OverlaySupport(
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Mbeshtetu App',
-          navigatorKey: navigatorKey,
-          theme: ThemeData(
-            fontFamily: 'Cera',
-            primaryColor: bold_blue,
-            primarySwatch: Colors.green,
-            buttonTheme: ButtonThemeData(
-              buttonColor: Colors.deepPurple, //  <-- dark color
-              textTheme: ButtonTextTheme
-                  .primary, //  <-- this auto selects the right color
-            ),
-          ),
-          initialRoute: SplashScreen.routeName,
-          routes: routes,
-        ),
-    ));
+    runApp(MyApp());
   });
 }
 
@@ -126,7 +108,6 @@ class _MyAppState extends State<MyApp> {
         .connectivityStreamController
         .stream
         .listen((event) {
-      print(event);
       if (event == DataConnectionStatus.disconnected) {
         entry = showOverlayNotification((context) {
           return NetworkErrorAnimation();
@@ -161,8 +142,24 @@ class _MyAppState extends State<MyApp> {
   //DISPOSE INIT PANGEMANGER
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-
+    return OverlaySupport(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Mbeshtetu App',
+        navigatorKey: navigatorKey,
+        theme: ThemeData(
+          fontFamily: 'Cera',
+          primaryColor: bold_blue,
+          primarySwatch: Colors.green,
+          buttonTheme: ButtonThemeData(
+            buttonColor: Colors.deepPurple, //  <-- dark color
+            textTheme: ButtonTextTheme
+                .primary, //  <-- this auto selects the right color
+          ),
+        ),
+        initialRoute: SplashScreen.routeName,
+        routes: routes,
+      ),
     );
   }
 }
