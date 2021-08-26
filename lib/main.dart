@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mbeshtetu_app/global_variable.dart';
 import 'package:mbeshtetu_app/routes.dart';
 import 'package:mbeshtetu_app/src/business_logic/internet_check.dart';
 import 'package:mbeshtetu_app/src/business_logic/page_manager.dart';
@@ -97,6 +98,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>(debugLabel:"navigator");
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
@@ -108,6 +110,7 @@ class _MyAppState extends State<MyApp> {
         .connectivityStreamController
         .stream
         .listen((event) {
+      print(event);
       if (event == DataConnectionStatus.disconnected) {
         entry = showOverlayNotification((context) {
           return NetworkErrorAnimation();
@@ -127,39 +130,39 @@ class _MyAppState extends State<MyApp> {
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
       print("onMessageOpenedApp: $message");
-      print("videoid"+message.data["videoId"]);
-      print("title"+message.data["title"]);
-      if (message.data["videoId"] != null && !message.data["videoId"].toString().endsWith("mp3")) {
-        Navigator.of(context)
-            .pushNamed(VideoScreen.routeName, arguments: VideoArgs(video: Video(videoId: message.data["videoId"], title: message.data["title"])));
+      print("videoid" + message.data["videoId"]);
+      print("title" + message.data["title"]);
+      if (message.data["videoId"] != null &&
+          !message.data["videoId"].toString().endsWith("mp3")) {
+        navigatorKey.currentState.push(MaterialPageRoute(builder: (context) =>
+            VideoScreen(video: new Video(title: message.data["title"], videoId: message.data["videoId"]),)));
       } else {
         print(message.data["category"]);
-        Navigator.of(context)
-            .pushNamed(MusicScreen.routeName, arguments: Audio(video: Video(videoId: message.data["videoId"], title: message.data["title"]) ));
+        navigatorKey.currentState.push(MaterialPageRoute(builder: (context) =>
+            VideoScreen()));
       }
     });
   }
+
   //DISPOSE INIT PANGEMANGER
   @override
   Widget build(BuildContext context) {
-    return OverlaySupport(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Mbeshtetu App',
-        navigatorKey: navigatorKey,
-        theme: ThemeData(
-          fontFamily: 'Cera',
-          primaryColor: bold_blue,
-          primarySwatch: Colors.green,
-          buttonTheme: ButtonThemeData(
-            buttonColor: Colors.deepPurple, //  <-- dark color
-            textTheme: ButtonTextTheme
-                .primary, //  <-- this auto selects the right color
-          ),
+    return MaterialApp(
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      title: 'Mbeshtetu App',
+      theme: ThemeData(
+        fontFamily: 'Cera',
+        primaryColor: bold_blue,
+        primarySwatch: Colors.green,
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.deepPurple, //  <-- dark color
+          textTheme:
+          ButtonTextTheme.primary, //  <-- this auto selects the right color
         ),
-        initialRoute: SplashScreen.routeName,
-        routes: routes,
       ),
+      initialRoute: SplashScreen.routeName,
+      routes: routes,
     );
   }
 }
