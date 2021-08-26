@@ -139,7 +139,7 @@ class _MyAppState extends State<MyApp> {
       } else {
         print(message.data["category"]);
         navigatorKey.currentState.push(MaterialPageRoute(builder: (context) =>
-            VideoScreen()));
+            MusicScreen(video: new Video(title: message.data["title"], videoId: message.data["videoId"]),)));
       }
     });
   }
