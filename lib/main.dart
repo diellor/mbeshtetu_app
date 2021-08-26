@@ -147,22 +147,24 @@ class _MyAppState extends State<MyApp> {
   //DISPOSE INIT PANGEMANGER
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      title: 'Mbeshtetu App',
-      theme: ThemeData(
-        fontFamily: 'Cera',
-        primaryColor: bold_blue,
-        primarySwatch: Colors.green,
-        buttonTheme: ButtonThemeData(
-          buttonColor: Colors.deepPurple, //  <-- dark color
-          textTheme:
-          ButtonTextTheme.primary, //  <-- this auto selects the right color
+    return OverlaySupport(
+      child: MaterialApp(
+        navigatorKey: navigatorKey,
+        debugShowCheckedModeBanner: false,
+        title: 'Mbeshtetu App',
+        theme: ThemeData(
+          fontFamily: 'Cera',
+          primaryColor: bold_blue,
+          primarySwatch: Colors.green,
+          buttonTheme: ButtonThemeData(
+            buttonColor: Colors.deepPurple, //  <-- dark color
+            textTheme:
+            ButtonTextTheme.primary, //  <-- this auto selects the right color
+          ),
         ),
+        initialRoute: SplashScreen.routeName,
+        routes: routes,
       ),
-      initialRoute: SplashScreen.routeName,
-      routes: routes,
     );
   }
 }
