@@ -5,11 +5,9 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <application
         android:name=".Application"
-        android:label="Mbeshtetu"
+        android:label="Mbështetu"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
-
-
 
         <activity
             android:name="com.ryanheise.audioservice.AudioServiceActivity"

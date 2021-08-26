@@ -202,12 +202,9 @@ class AudioProgressBar extends StatelessWidget {
     return ValueListenableBuilder<ProgressBarState>(
       valueListenable: pageManager.progressNotifier,
       builder: (_, value, __) {
-        print("CURRENT"+value.current.toString());
-        print("TOTAL"+value.total.toString());
         if(value.current.compareTo(value.total) > 0 && flag == false){
           WidgetsBinding.instance.addPostFrameCallback((_){
             flag = true;
-            print("VIDEOID"+videoId);
             Navigator.of(context)
                 .pushNamed("/postVideo", arguments: videoId );
           });
