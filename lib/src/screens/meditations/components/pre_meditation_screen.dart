@@ -105,7 +105,7 @@ class _PreMeditationScreenState extends State<PreMeditationScreen> {
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => MeditationScreen(model.getCategoryTabList[1].id,"7 ditet e qetësisë", "images/10.png" ),
+                        builder: (_) => MeditationScreen(model.getCategoryTabList[1].id,"7 ditët e qetësisë", "images/10.png" ),
                       ),
                     ),
                     child: Container(

@@ -152,12 +152,14 @@ class CurrentSongTitle extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.only(
               bottom: 2 * SizeConfig.heightMultiplier),
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 3 * SizeConfig.textMultiplier,
-                fontWeight: FontWeight.bold),
+          child: FittedBox(
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 3 * SizeConfig.textMultiplier,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
         );
       },

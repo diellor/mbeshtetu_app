@@ -9,6 +9,7 @@ import 'package:mbeshtetu_app/src/screens/music/music_screen.dart';
 import 'package:mbeshtetu_app/src/screens/splash/components/default_button.dart';
 import 'package:mbeshtetu_app/src/service_locator.dart';
 import 'package:mbeshtetu_app/src/size_config.dart';
+
 class Body extends StatefulWidget {
   final Category category;
 
@@ -19,7 +20,6 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-
   Future categoriesWithVideos;
   MeditationScreenViewModel model = serviceLocator<MeditationScreenViewModel>();
   int _currentPage = 1, _limit = 10;
@@ -30,11 +30,9 @@ class _BodyState extends State<Body> {
     categoriesWithVideos = _sleepAudios(_currentPage, widget.category.id);
   }
 
-
   _sleepAudios(int page, int categoryId) async {
     return await model.loadVideosByCategoryId(_currentPage, categoryId);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -58,87 +56,138 @@ class _BodyState extends State<Body> {
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
               ),
-            ),child: Column(
-            children: <Widget>[
-              Padding(
-                padding:  EdgeInsets.only(top: 1 * SizeConfig.heightMultiplier),
-                child: Text("Gjumi", style: TextStyle(fontSize: 3 * SizeConfig.textMultiplier, fontWeight: FontWeight.bold),),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 2 * SizeConfig.heightMultiplier),
-                child: Text("Tinguj qetësues", style: TextStyle(fontSize: 2.5 * SizeConfig.textMultiplier,),),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier, horizontal: 18 * SizeConfig.widthMultiplier),
-                child: GreenDefaultButton(
-                  text: "Play",
-                  press: () {
-                    //  Navigator.pushNamed(context, TabsScreen.routeName);
-                  },
-                ),
-              ),
-              Container(
-                  color: Colors.white,
-                  height: SizeConfig.screenHeight - 60 * SizeConfig.heightMultiplier,
-                  child: FutureBuilder(
-                    future: categoriesWithVideos,
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData || model.getVideoMetadata.videos.length == 0)
-                        return Center(
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Theme.of(context).primaryColor, // Red
+            ),
+            child: FutureBuilder(
+                future: categoriesWithVideos,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData ||
+                      model.getVideoMetadata.videos.length == 0)
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).primaryColor, // Red
+                        ),
+                      ),
+                    );
+                  else
+                  return Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 1 * SizeConfig.heightMultiplier),
+                          child: Text(
+                            "Gjumi",
+                            style: TextStyle(
+                                fontSize: 3 * SizeConfig.textMultiplier,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 2 * SizeConfig.heightMultiplier),
+                          child: Text(
+                            "Tinguj qetësues",
+                            style: TextStyle(
+                              fontSize: 2.5 * SizeConfig.textMultiplier,
                             ),
                           ),
-                        );
-                      else
-                        return ListView.builder(
-                          itemCount: snapshot.data.videos.length,
-                          itemBuilder: (context, index) {
-                            List<Video> videos = snapshot.data.videos;
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                InkWell(
-                                  onTap: (){
-                                    // Navigator.of(context)
-                                    //     .pushNamed("/musicScreen", arguments: Audio(Reloaded 1 of 1540 libraries in 1,255ms., index: index, videos: videos));
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => MusicScreen(videos: videos, index: index,),
-                                        ));
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 1 * SizeConfig.heightMultiplier),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(5.0),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(20),
-                                          border: Border.all(color: green.withOpacity(0.9)),
-
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Expanded(flex: 1, child: SvgPicture.asset("images/meditimi_play_2.svg")),
-                                          Expanded(flex: 3, child:Text(videos[index].title,style: TextStyle(fontSize: 2 * SizeConfig.textMultiplier,)), ),
-                                          Expanded(flex: 1, child: Text("10 min"))
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 1 * SizeConfig.heightMultiplier,
+                              horizontal: 18 * SizeConfig.widthMultiplier),
+                          child: GreenDefaultButton(
+                            text: "Play",
+                            press: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        MusicScreen(
+                                          videos: model.getVideoMetadata.videos,
+                                          index: 0,
+                                        ),
+                                  ));
+                            },
+                          ),
+                        ),
+                        Container(
+                            color: Colors.white,
+                            height: SizeConfig.screenHeight -
+                                60 * SizeConfig.heightMultiplier,
+                            child: ListView.builder(
+                                    itemCount: model.getVideoMetadata.videos.length,
+                                    itemBuilder: (context, index) {
+                                      return Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          InkWell(
+                                            onTap: () {
+                                              // Navigator.of(context)
+                                              //     .pushNamed("/musicScreen", arguments: Audio(Reloaded 1 of 1540 libraries in 1,255ms., index: index, videos: videos));
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MusicScreen(
+                                                      videos: model.getVideoMetadata.videos,
+                                                      index: index,
+                                                    ),
+                                                  ));
+                                            },
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 1 *
+                                                      SizeConfig
+                                                          .heightMultiplier),
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  border: Border.all(
+                                                      color: green
+                                                          .withOpacity(0.9)),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    Expanded(
+                                                        flex: 1,
+                                                        child: SvgPicture.asset(
+                                                            "images/meditimi_play_2.svg")),
+                                                    Expanded(
+                                                      flex: 3,
+                                                      child: Text(
+                                                          model.getVideoMetadata.videos[index].title,
+                                                          style: TextStyle(
+                                                            fontSize: 2 *
+                                                                SizeConfig
+                                                                    .textMultiplier,
+                                                          )),
+                                                    ),
+                                                    Expanded(
+                                                        flex: 1,
+                                                        child: Text("10 min"))
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
                                         ],
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            );
-                          },
-                        );
-                    },
-                  )
-              ),
-            ],
-          ),),
+                                      );
+                                    },
+                            )),
+                      ],
+                    );
+                }),
+          ),
         ),
       ],
     );
