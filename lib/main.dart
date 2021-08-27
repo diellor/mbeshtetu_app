@@ -76,10 +76,14 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupServiceLocator();
-
-  SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: Colors.black));
+  await Firebase.initializeApp();
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.black, statusBarBrightness: Brightness.light));
   WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isIOS) {
+    FirebaseMessaging.instance
+        .requestPermission(alert: true, announcement: true, badge: true);
+  }
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
@@ -98,7 +102,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>(debugLabel:"navigator");
+  final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: "navigator");
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
@@ -134,12 +139,22 @@ class _MyAppState extends State<MyApp> {
       print("title" + message.data["title"]);
       if (message.data["videoId"] != null &&
           !message.data["videoId"].toString().endsWith("mp3")) {
-        navigatorKey.currentState.push(MaterialPageRoute(builder: (context) =>
-            VideoScreen(video: new Video(title: message.data["title"], videoId: message.data["videoId"]),)));
+        navigatorKey.currentState.push(MaterialPageRoute(
+            builder: (context) => VideoScreen(
+                  video: new Video(
+                      title: message.data["title"],
+                      videoId: message.data["videoId"]),
+                )));
       } else {
-        print(message.data["category"]);
-        navigatorKey.currentState.push(MaterialPageRoute(builder: (context) =>
-            MusicScreen(video: new Video(title: message.data["title"], videoId: message.data["videoId"]),)));
+        if (message.data["videoId"] != null) {
+          print(message.data["category"]);
+          navigatorKey.currentState.push(MaterialPageRoute(
+              builder: (context) => MusicScreen(
+                    video: new Video(
+                        title: message.data["title"],
+                        videoId: message.data["videoId"]),
+                  )));
+        }
       }
     });
   }
@@ -158,8 +173,8 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.green,
           buttonTheme: ButtonThemeData(
             buttonColor: Colors.deepPurple, //  <-- dark color
-            textTheme:
-            ButtonTextTheme.primary, //  <-- this auto selects the right color
+            textTheme: ButtonTextTheme
+                .primary, //  <-- this auto selects the right color
           ),
         ),
         initialRoute: SplashScreen.routeName,
